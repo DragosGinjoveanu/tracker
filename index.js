@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const user = require('./controller/user');
+const bodyParser = require('body-parser');
 
 app.set('view engine', 'pug');
 
