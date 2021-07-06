@@ -1,6 +1,7 @@
 CREATE DATABASE tracker_database;
 
-CREATE TABLE users(
-    user VARCHAR(225),
-    password VARCHAR(255)
+CREATE TABLE users (
+	id SERIAL PRIMARY KEY,
+	password VARCHAR (50),
+	name VARCHAR (50) UNIQUE
 );
