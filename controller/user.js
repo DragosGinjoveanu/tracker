@@ -17,6 +17,7 @@ router.post('/login', async function(req, res) {
     try {
         const user = await pool.query('SELECT name AS name, password AS password FROM users WHERE name = $1', [name]);
         if (user.rows[0].password == password) {
+            console.log(name +' logged in.');
             link = 'http://localhost:3000/' + name;
             res.redirect(link);
         } else {
