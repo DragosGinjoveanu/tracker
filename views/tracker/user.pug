@@ -2,6 +2,8 @@ extends ../layout
 
 block content
     .card
-        h1= 'Hello ' + user + '!'
-    .card.body 
-        h5 View user journal, add journal page feature - work in progress
+        .card-header
+            h1= 'Hello ' + user + '!'
+        .card-body 
+            -var link = 'http://localhost:3000/journal/create/' + user;
+            a(class="btn btn-secondary" href=link) Create new journal page
