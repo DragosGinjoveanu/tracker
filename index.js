@@ -4,6 +4,8 @@ const port = 3000;
 const user = require('./controller/user');
 const bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('view engine', 'pug');
 
 app.listen(port, () => {
