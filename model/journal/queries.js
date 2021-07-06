@@ -5,9 +5,9 @@ function createPage(user, title, content) {
     console.log(user + '\'s journal page was added in the database');
 }
 
-async function journal(user) {
+async function journalPages(user) {
     try {
-        const result = await pool.query("SELECT pasteId AS id, title AS title, content AS content FROM pastes WHERE name = $1", [user]);
+        const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM journals WHERE name = $1", [user]);
         return result.rows;
       } catch (err) {
         return console.log(err.message);
@@ -33,4 +33,4 @@ function deletePaste(id) {
     console.log("Paste ID: " + id + " was deleted");
 }
 
-module.exports = {createPage, journal, selectPaste, editPaste, deletePaste};
+module.exports = {createPage, journalPages, selectPaste, editPaste, deletePaste};

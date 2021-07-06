@@ -22,8 +22,9 @@ router.post('/create/:user', body('title').isLength({ min: 1 }), body('content')
             var user = req.params.user;
             var title = req.body.title;
             var content = req.body.content;
-            var page = queries.createPage(user, title, content);
-            //res.redirect('http://localhost:3000/pastesList');
+            queries.createPage(user, title, content);
+            var link = 'http://localhost:3000/journal/pages/' + user;
+            res.redirect(link);
         } catch (error) {
             console.log(error.message);
         }
@@ -34,10 +35,10 @@ router.post('/create/:user', body('title').isLength({ min: 1 }), body('content')
 router.get('/pages/:user', async function (req, res) {
     var journal = await queries.journalPages(req.params.user);
     console.log(journal);
-    res.render('journal', {pages: journal});
+    res.render('journal', {user: req.params.user, pages: journal});
 });
 
-// router.get('/pastes/:id', async function(req, res) {
+// router.get('/page/:id', async function(req, res) {
 //     var id = req.params.id;
 //     var paste = await queries.selectPaste(id);
 //     res.render('editPaste', {paste: paste, id: id});
