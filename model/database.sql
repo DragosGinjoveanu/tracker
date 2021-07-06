@@ -1,12 +1,12 @@
 CREATE DATABASE tracker_database;
 
 CREATE TABLE users (
-	id SERIAL PRIMARY KEY,
-	password VARCHAR (50),
-	name VARCHAR (50) UNIQUE
+	name VARCHAR (50) PRIMARY KEY,
+	password VARCHAR (50)
 );
 
-CREATE TABLE journal (
-	id SERIAL PRIMARY KEY,
-	
+CREATE TABLE journals (
+	name varchar(50) references users(name),
+	title varchar(255),
+	content varchar(255)
 );

@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const user = require('./controller/user');
 const tracker = require('./controller/tracker');
+const journal = require('./controller/journal');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -21,3 +22,4 @@ app.listen(port, () => {
 
 app.use('/user', user);
 app.use('/', tracker);
+app.use('/journal', journal);

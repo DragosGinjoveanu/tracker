@@ -8,6 +8,7 @@ router.get('/', function (req, res) {
 
 router.get('/:user', function (req, res) {
     res.render('user', {user: req.params.user});
+    //need to link the journals to the user
 });
 
 module.exports = router;
