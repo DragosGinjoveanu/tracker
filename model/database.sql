@@ -5,3 +5,8 @@ CREATE TABLE users (
 	password VARCHAR (50),
 	name VARCHAR (50) UNIQUE
 );
+
+CREATE TABLE journal (
+	id SERIAL PRIMARY KEY,
+	
+);

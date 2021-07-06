@@ -1,5 +1,12 @@
 extends ../layout
 
 block content
-    .card
-        h1 home page
+    .card.text-center.mx-auto(style="width: 30rem;")
+        .card.header
+            h2(style="color:green;") BeSuccessful
+            h4(style="color:blue;") -track your progress and be great-
+        .card.body
+            h5 Old user?
+            a(class="btn btn-primary" href='http://localhost:3000/user/login') Login here
+            h5 New user?
+            a(class="btn btn-primary" href='http://localhost:3000/user/register') Register here
