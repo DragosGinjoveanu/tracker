@@ -12,12 +12,15 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async function(req, res) {
-    var user = req.params.user;
-    var password = req.params.password;
+    var name = req.body.user;
+    var password = req.body.password;
     try {
-        const a = await pool.query('SELECT name AS name, password AS password FROM users WHERE name = $1', [user]);
-        // if password = password - redirectionare home page
-        console.log(a);
+        const user = await pool.query('SELECT name AS name, password AS password FROM users WHERE name = $1', [name]);
+        if (user.rows[0].password == password) {
+            res.redirect('http://localhost:3000');
+        } else {
+            res.render('loginFail', {fail: 'Login failed!', location: '/user/login', error: 'Wrong password/username.'});
+        }
     } catch (error) {
         console.log(error.message);
     }
