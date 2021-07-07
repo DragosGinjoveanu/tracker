@@ -5,5 +5,5 @@ block content
         .card-header
             h1= 'Hello ' + user + '!'
         .card-body 
-            -var link = 'http://localhost:3000/journal/create/' + user;
-            a(class="btn btn-secondary" href=link) Create new journal page
+            -var journal = 'http://localhost:3000/journal/pages/' + user;
+            a(class="btn btn-secondary" href=journal) Journal

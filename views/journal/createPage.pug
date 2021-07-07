@@ -18,5 +18,5 @@ block content
           button.btn.btn-success(type='submit') Post
   .card 
     .card-footer.text-muted.text-center
-      -var link = 'http://localhost:3000/journal/pages/' + username;
-      a(class="btn btn-secondary" href=link) View journal pages
+      -var journal = 'http://localhost:3000/journal/pages/' + username;
+      a(class="btn btn-secondary" href=journal) View journal pages

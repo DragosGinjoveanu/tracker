@@ -4,8 +4,10 @@ block content
     .card
         .card-body.text-center
             h2= user + '\'s journal'
-            -var link = 'http://localhost:3000/journal/create/' + user;
-            a(class="btn btn-secondary" href=link) Add another page
+            -var createPage = 'http://localhost:3000/journal/create/' + user;
+            a(class="btn btn-secondary" href=createPage) Add another page
+            -var home = 'http://localhost:3000/' + user;
+            a(class="btn btn-primary" href=home) Home
     ul
         each val in pages
             .card
