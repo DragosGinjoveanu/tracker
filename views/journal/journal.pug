@@ -4,6 +4,7 @@ block content
     .card
         .card-body.text-center
             h2= user + '\'s journal'
+            h5= '(' + pages.length + ' pages)'
             -var createPage = 'http://localhost:3000/journal/create/' + user;
             a(class="btn btn-secondary" href=createPage) Add another page
             -var home = 'http://localhost:3000/' + user;

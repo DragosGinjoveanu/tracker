@@ -46,7 +46,7 @@ router.post('/edit/page/:id', body('title').isLength({ min: 1 }), body('content'
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {location: '/page/' + id});
+        res.render('pageError', {location: '/journal/page/' + id});
     } else {
         try {
             var title = req.body.title;

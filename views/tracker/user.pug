@@ -1,9 +1,16 @@
 extends ../layout
 
 block content
+    -var journal = 'http://localhost:3000/journal/pages/' + user;
+    ul.nav
+        li.nav-item
+            a.nav-link.disabled(href='#')= user
+        li.nav-item
+            a.nav-link( href=journal) Journal
+        li.nav-item
+            a.nav-link(href='#') Task List
     .card
         .card-header
             h1= 'Hello ' + user + '!'
         .card-body 
-            -var journal = 'http://localhost:3000/journal/pages/' + user;
             a(class="btn btn-secondary" href=journal) Journal
