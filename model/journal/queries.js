@@ -14,23 +14,32 @@ async function journalPages(user) {
       }
 }
 
-async function selectPaste(id) {
+async function selectPage(id) {
     try {
-        const res = await pool.query('SELECT author AS name, description AS content FROM pastes WHERE pasteId = $1', [id]);
+        const res = await pool.query('SELECT title AS title, content AS content FROM journals WHERE id = $1', [id]);
         return res.rows[0];
       } catch (err){
         return err.stack;
       }
 }
 
-function editPaste(author, description, id) {
-    const paste = pool.query("UPDATE pastes SET author = $1, description = $2 WHERE pasteId = $3", [author, description, id]);
-    console.log("Paste ID: " + id + " was edited");
+function editPage(title, content, id) {
+    const page = pool.query("UPDATE journals SET title = $1, content = $2 WHERE id = $3 RETURNING name", [title, content, id]);
+    console.log("Page ID: " + id + " was edited");
 }
 
-function deletePaste(id) {
-    const paste = pool.query( "DELETE FROM pastes WHERE pasteId = $1", [id]);
-    console.log("Paste ID: " + id + " was deleted");
+function deletePage(id) {
+    const page = pool.query( "DELETE FROM journals WHERE id = $1", [id]);
+    console.log("Page ID: " + id + " was deleted");
 }
 
-module.exports = {createPage, journalPages, selectPaste, editPaste, deletePaste};
+async function getUser(id) {
+  try {
+    const user = await pool.query('SELECT name AS name FROM journals WHERE id = $1', [id]);
+    return user.rows[0];
+  } catch (err){
+    return err.stack;
+  }
+}
+
+module.exports = {createPage, journalPages, selectPage, editPage, deletePage, getUser};

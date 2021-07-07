@@ -11,5 +11,3 @@ CREATE TABLE journals (
 	title varchar(255),
 	content varchar(255)
 );
-
-INSERT INTO journals(name, title, content) VALUES ('Ciui', 'sda', 'dsadsa d sa');
