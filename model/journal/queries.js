@@ -7,7 +7,7 @@ function createPage(user, title, content) {
 
 async function journalPages(user) {
     try {
-        const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM journals WHERE name = $1", [user]);
+        const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM journals WHERE name = $1 ORDER BY id ASC", [user]);
         return result.rows;
       } catch (err) {
         return console.log(err.message);
