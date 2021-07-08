@@ -37,7 +37,7 @@ router.post('/register', body('user').isLength({ min: 3 }), body('password').isL
         try {
             var user = req.body.user;
             var password = req.body.password;
-            queries.newUser(user, password);
+            await queries.newUser(user, password);
             console.log('Account created.\nUsername: ' + user +', Password: '+ password);
             res.redirect('http://localhost:3000/user/login');
         } catch (error) {
