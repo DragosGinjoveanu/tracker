@@ -2,13 +2,14 @@ extends ../layout
 
 block content
     -var journal = 'http://localhost:3000/journal/pages/' + user;
+    -var tasks = 'http://localhost:3000/tasks/all/' + user;
     ul.nav.nav-tabs.justify-content-center
         li.nav-item
             a.nav-link.disabled(href='#')= user
         li.nav-item
-            a.nav-link( href=journal) Journal
+            a.nav-link(href=journal) Journal
         li.nav-item
-            a.nav-link(href='#') Task List
+            a.nav-link(href=tasks) Tasks
         li.nav-item
             a.nav-link(href='http://localhost:3000/') Logout
     .card

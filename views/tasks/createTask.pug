@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  .card 
+    .card-header 
+      h3(style="color:green;") Add a new task!
+    .card-body
+      -var action= '/tasks/create/' + username;
+      form(action= action method='POST')
+          .mb-3
+            label.form-label(for='title') Title
+            input#authorName.form-control(type='text', name='title' placeholder='add appropiate title')
+          .mb-3
+            label.form-label(for='content') Description
+            input#descriptionName.form-control(type='text', name='content' placeholder='add task description')
+            .form-text write a short description of what you have to do
+          .mb-3
+            label.form-label(for='date') Date
+            input#datepicker.form-control(type='text', name='date' placeholder='add task date')
+          button.btn.btn-success(type='submit') Add
+  .card 
+    .card-footer.text-muted.text-center
+      -var journal = 'http://localhost:3000/tasks/all/' + username;
+      a(class="btn btn-secondary" href=journal) View tasks
+    script. 
+        $(function () {
+            $('#datepicker').datepicker({ 
+              dateFormat: 'yy-mm-dd',
+              minDate: 0 
+            });
+        });

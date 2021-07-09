@@ -1,7 +1,7 @@
 const pool = require('../database');
 
-function createPage(user, title, content) {
-    const paste = pool.query("INSERT INTO journals (name, title, content) VALUES ($1, $2, $3) RETURNING *", [user, title, content]);
+async function createPage(user, title, content) {
+    await pool.query("INSERT INTO journals (name, title, content) VALUES ($1, $2, $3) RETURNING *", [user, title, content]);
     console.log(user + '\'s journal page was added in the database');
 }
 
@@ -23,13 +23,13 @@ async function selectPage(id) {
       }
 }
 
-function editPage(title, content, id) {
-    const page = pool.query("UPDATE journals SET title = $1, content = $2 WHERE id = $3 RETURNING name", [title, content, id]);
+async function editPage(title, content, id) {
+    const page = await pool.query("UPDATE journals SET title = $1, content = $2 WHERE id = $3 RETURNING name", [title, content, id]);
     console.log("Page ID: " + id + " was edited");
 }
 
-function deletePage(id) {
-    const page = pool.query( "DELETE FROM journals WHERE id = $1", [id]);
+async function deletePage(id) {
+    const page = await pool.query( "DELETE FROM journals WHERE id = $1", [id]);
     console.log("Page ID: " + id + " was deleted");
 }
 
