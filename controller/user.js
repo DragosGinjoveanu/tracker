@@ -18,15 +18,14 @@ router.post('/login', async function(req, res) {
         const user = await queries.selectUser(name);
         if (user.password == password) {
             console.log(name +' logged in.');
-            link = 'http://localhost:3000/' + name;
-            res.redirect(link);
+            res.redirect('http://localhost:3000/' + name);
         } else {
             res.render('loginFail', {fail: 'Login failed!', location: '/user/login', error: 'Wrong password/username.'});
         }
     } catch (error) {
         console.log(error.message);
     }
-})
+});
 
 router.post('/register', body('user').isLength({ min: 3 }), body('password').isLength({ min: 5 }), async function(req, res){
     const errors = validationResult(req);

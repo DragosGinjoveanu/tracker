@@ -20,8 +20,7 @@ router.post('/create/:user', body('title').isLength({ min: 1 }), body('content')
             var title = req.body.title;
             var content = req.body.content;
             await queries.createPage(user, title, content);
-            var link = 'http://localhost:3000/journal/pages/' + user;
-            res.redirect(link);
+            res.redirect('http://localhost:3000/journal/pages/' + user);
         } catch (error) {
             console.log(error.message);
         }
