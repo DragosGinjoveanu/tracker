@@ -11,6 +11,11 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
+router.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('http://localhost:3000/');
+});
+
 router.post('/login', async function(req, res) {
     var name = req.body.user;
     var password = req.body.password;
@@ -18,7 +23,9 @@ router.post('/login', async function(req, res) {
         const user = await queries.selectUser(name);
         if (user.password == password) {
             console.log(name +' logged in.');
-            res.redirect('http://localhost:3000/' + name);
+            req.session.loggedin = true;
+            req.session.username = name;
+            res.redirect('http://localhost:3000/home');
         } else {
             res.render('loginFail', {fail: 'Login failed!', location: '/user/login', error: 'Wrong password/username.'});
         }

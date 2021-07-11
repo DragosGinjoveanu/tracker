@@ -8,6 +8,13 @@ const user = require('./controller/user');
 const tracker = require('./controller/tracker');
 const journal = require('./controller/journal');
 const tasks = require('./controller/tasks');
+var session = require('express-session');
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
