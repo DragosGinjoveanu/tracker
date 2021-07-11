@@ -5,7 +5,7 @@ async function createPage(user, title, content) {
     console.log(user + '\'s journal page was added in the database');
 }
 
-async function journalPages(user) {
+async function getJournalPages(user) {
     try {
         const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM journals WHERE name = $1 ORDER BY id ASC", [user]);
         return result.rows;
@@ -33,4 +33,4 @@ async function deletePage(id) {
     console.log("Page ID: " + id + " was deleted");
 }
 
-module.exports = {createPage, journalPages, selectPage, editPage, deletePage};
+module.exports = {createPage, getJournalPages, selectPage, editPage, deletePage};

@@ -5,7 +5,7 @@ const queries = require('../model/journal/queries');
 
 //gets all pages
 router.get('/', async function (req, res) {
-    var journal = await queries.journalPages(req.session.username);
+    var journal = await queries.getJournalPages(req.session.username);
     res.render('journal', {user: req.session.username, pages: journal});
 });
 
@@ -26,7 +26,6 @@ router.post('/create/page', body('title').isLength({ min: 1 }), body('content').
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.render('pageError', {location: '/journal/create/page'});
-        console.log(errors);
     } else {
         try {
             var user = req.session.username;
