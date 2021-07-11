@@ -4,8 +4,8 @@ const { body, validationResult } = require('express-validator');
 const queries = require('../model/tasks/queries');
 
 //gets all the tasks (need to implement a calendar to see the given tasks from a specific date)
-router.get('/all/:user', function (req, res) {
-    res.send(req.params.user);
+router.get('/all/', function (req, res) {
+    res.send(req.session.username);
 });
 
 //create new task form page

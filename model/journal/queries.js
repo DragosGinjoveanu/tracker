@@ -33,13 +33,4 @@ async function deletePage(id) {
     console.log("Page ID: " + id + " was deleted");
 }
 
-async function getUser(id) {
-  try {
-    const user = await pool.query('SELECT name AS name FROM journals WHERE id = $1', [id]);
-    return user.rows[0];
-  } catch (err){
-    return err.stack;
-  }
-}
-
-module.exports = {createPage, journalPages, selectPage, editPage, deletePage, getUser};
+module.exports = {createPage, journalPages, selectPage, editPage, deletePage};
