@@ -5,12 +5,24 @@ const queries = require('../model/todos/queries');
 
 //gets all the todos (need to implement a calendar to see the given tasks from a specific date)
 router.get('/', function (req, res) {
-    res.send(req.session.username);
+    res.render('todos', {user: req.session.username});
 });
 
 //'create new todo' form page
-router.get('/create', async function (req, res) {
+router.get('/create', function (req, res) {
     res.render('createToDo', {user: req.session.username});
+});
+
+router.post('/view', async function (req, res) {
+    try {
+        var user = req.session.username;
+        var date = req.body.date;
+        console.log(date);
+        var todos = await queries.getToDos(user, date);
+        console.log(todos);
+    } catch (error) {
+        console.log(error.message);
+    }
 });
 
 //adds todo to database
@@ -24,7 +36,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             var title = req.body.title;
             var content = req.body.content;
             var date = req.body.date;
-            await queries.createTask(user, title, content, date);
+            await queries.createToDo(user, title, content, date);
             res.redirect('http://localhost:3000/todos');
         } catch (error) {
             res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
