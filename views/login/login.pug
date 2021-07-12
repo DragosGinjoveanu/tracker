@@ -1,11 +1,11 @@
-extends layout
+extends ../layout
 
 block content
   .card 
     .card-header 
       h3 Login!
     .card-body
-      form(action='/login' method='GET')
+      form(action='/user/login' method='POST')
           .mb-3
             label.form-label(for='name') User
             input#authorName.form-control(type='text', name='user' placeholder='enter your username')

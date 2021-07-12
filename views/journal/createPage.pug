@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  .card 
+    .card-header 
+      h3(style="color:green;") Create a new journal page!
+      h5= username + '\'s journal'
+    .card-body
+      -var action= '/journal/create/' + username;
+      form(action= action method='POST')
+          .mb-3
+            label.form-label(for='title') Title
+            input#authorName.form-control(type='text', name='title' placeholder='add appropiate title')
+          .mb-3
+            label.form-label(for='content') Content
+            input#descriptionName.form-control(type='text', name='content' placeholder='add page content')
+            .form-text write a short journal page
+          button.btn.btn-success(type='submit') Post
+  .card 
+    .card-footer.text-muted.text-center
+      -var journal = 'http://localhost:3000/journal/pages/' + username;
+      a(class="btn btn-secondary" href=journal) View journal pages
