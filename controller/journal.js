@@ -11,21 +11,21 @@ router.get('/', async function (req, res) {
 
 //'create page' form
 router.get('/page/create', function (req, res) {
-    res.render('createPage', {username: req.session.username});
+    res.render('createPage', {user: req.session.username});
 });
 
 //gets selected page
 router.get('/page/:id', async function(req, res) {
     var id = req.params.id;
     var page = await queries.selectPage(id);
-    res.render('page', {page: page, id: id});
+    res.render('page', {user: req.session.username, page: page, id: id});
 });
 
 //adds page to journal database
 router.post('/page/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {location: '/journal/page/create'});
+        res.render('pageError', {user: req.session.username, location: '/journal/page/create'});
     } else {
         try {
             var user = req.session.username;
@@ -44,7 +44,7 @@ router.post('/page/:id/edit', body('title').isLength({ min: 1 }), body('content'
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {location: '/journal/page/' + id});
+        res.render('pageError', {user: req.session.username, location: '/journal/page/' + id});
     } else {
         try {
             var title = req.body.title;

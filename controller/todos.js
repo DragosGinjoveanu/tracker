@@ -10,14 +10,14 @@ router.get('/', function (req, res) {
 
 //'create new todo' form page
 router.get('/create', async function (req, res) {
-    res.render('createToDo', {username: req.session.username});
+    res.render('createToDo', {user: req.session.username});
 });
 
 //adds todo to database
 router.post('/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('toDoError', {location: '/todos/create', message: 'Please complete title/description'});
+        res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description'});
     } else {
         try {
             var user = req.session.username;
@@ -27,7 +27,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             await queries.createTask(user, title, content, date);
             res.redirect('http://localhost:3000/todos');
         } catch (error) {
-            res.render('toDoError', {location: '/todos/create', message: 'Please enter valid date'});
+            res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
         }
     }
 });

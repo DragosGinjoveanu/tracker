@@ -1,10 +1,10 @@
-extends ../layout
+extends ../logedInLayout
 
 block content
   .card 
     .card-header 
       h3(style="color:green;") Create a new journal page!
-      h5= username + '\'s journal'
+      h5= user + '\'s journal'
     .card-body
       form(action= '/journal/page/create' method='POST')
           .mb-3

@@ -1,15 +1,6 @@
-extends ../layout
+extends ../logedInLayout
 
 block content
-    ul.nav.nav-tabs.justify-content-center
-        li.nav-item
-            a.nav-link.disabled(href='#')= user
-        li.nav-item
-            a.nav-link(href='http://localhost:3000/journal') Journal
-        li.nav-item
-            a.nav-link(href='http://localhost:3000/todos') To-Dos
-        li.nav-item
-            a.nav-link(href='http://localhost:3000/user/logout') Logout
     .card
         .card-header
             h1= 'Hello ' + user + '!'

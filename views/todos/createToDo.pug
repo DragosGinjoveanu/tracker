@@ -1,9 +1,10 @@
-extends ../layout
+extends ../logedInLayout
 
 block content
   .card 
     .card-header 
       h3(style="color:green;") Add a new to-do!
+      h5= user + '\'s to-dos'
     .card-body
       form(action= '/todos/create' method='POST')
           .mb-3
