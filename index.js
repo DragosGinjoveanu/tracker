@@ -7,7 +7,7 @@ const path = require('path');
 const user = require('./controller/user');
 const tracker = require('./controller/tracker');
 const journal = require('./controller/journal');
-const tasks = require('./controller/tasks');
+const todos = require('./controller/todos');
 var session = require('express-session');
 
 app.use(session({
@@ -24,7 +24,7 @@ app.set('views', [
   path.join(__dirname, 'views/tracker'),
   path.join(__dirname, 'views/login'),
   path.join(__dirname, 'views/journal'),
-  path.join(__dirname, 'views/tasks')
+  path.join(__dirname, 'views/todos')
 ]);
 
 app.listen(port, () => {
@@ -34,4 +34,4 @@ app.listen(port, () => {
 app.use('/', tracker);
 app.use('/user', user);
 app.use('/journal', journal);
-app.use('/tasks', tasks);
+app.use('/todos', todos);

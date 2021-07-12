@@ -12,10 +12,10 @@ CREATE TABLE journals (
 	content varchar(255)
 );
 
-CREATE TABLE tasks (
+CREATE TABLE todos (
 	name varchar(50) references users(name),
 	id SERIAL,
 	title varchar(255),
 	content varchar(255),
-	task_date date
+	todo_date date
 );
