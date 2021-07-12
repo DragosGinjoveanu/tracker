@@ -6,7 +6,7 @@ block content
       h3(style="color:green;") Create a new journal page!
       h5= username + '\'s journal'
     .card-body
-      form(action= '/journal/create/page' method='POST')
+      form(action= '/journal/page/create' method='POST')
           .mb-3
             label.form-label(for='title') Title
             input#authorName.form-control(type='text', name='title' placeholder='add appropiate title')

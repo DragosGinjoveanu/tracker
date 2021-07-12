@@ -9,6 +9,11 @@ router.get('/', async function (req, res) {
     res.render('journal', {user: req.session.username, pages: journal});
 });
 
+//'create page' form
+router.get('/page/create', function (req, res) {
+    res.render('createPage', {username: req.session.username});
+});
+
 //gets selected page
 router.get('/page/:id', async function(req, res) {
     var id = req.params.id;
@@ -16,16 +21,11 @@ router.get('/page/:id', async function(req, res) {
     res.render('page', {page: page, id: id});
 });
 
-//'create page' form
-router.get('/create/page', function (req, res) {
-    res.render('createPage', {username: req.session.username});
-});
-
 //adds page to journal database
-router.post('/create/page', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
+router.post('/page/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {location: '/journal/create/page'});
+        res.render('pageError', {location: '/journal/page/create'});
     } else {
         try {
             var user = req.session.username;
@@ -40,7 +40,7 @@ router.post('/create/page', body('title').isLength({ min: 1 }), body('content').
 });
 
 //edits journal page content
-router.post('/edit/page/:id', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
+router.post('/page/:id/edit', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -58,7 +58,7 @@ router.post('/edit/page/:id', body('title').isLength({ min: 1 }), body('content'
 });
 
 //deletes selected journal page
-router.post('/delete/page/:id', async function(req, res) {
+router.post('/page/:id/delete', async function(req, res) {
     var id = req.params.id;
     try {
         await queries.deletePage(id);
