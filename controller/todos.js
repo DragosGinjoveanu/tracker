@@ -79,7 +79,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
 router.post('/:id/delete', async function(req, res) {
     var id = req.params.id;
     try {
-        await queries.deleteToDo(id);
+        await queries.deleteToDo(req.session.username, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
@@ -90,7 +90,7 @@ router.post('/:id/delete', async function(req, res) {
 router.post('/:id/done', async function(req, res) {
     var id = req.params.id;
     try {
-        await queries.doneToDo(id);
+        await queries.doneToDo(req.session.username, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
@@ -101,7 +101,7 @@ router.post('/:id/done', async function(req, res) {
 router.post('/:id/undone', async function(req, res) {
     var id = req.params.id;
     try {
-        await queries.undoneToDo(id);
+        await queries.undoneToDo(req.session.username, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);

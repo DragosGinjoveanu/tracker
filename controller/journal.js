@@ -61,7 +61,7 @@ router.post('/page/:id/edit', body('title').isLength({ min: 1 }), body('content'
 router.post('/page/:id/delete', async function(req, res) {
     var id = req.params.id;
     try {
-        await queries.deletePage(id);
+        await queries.deletePage(req.session.username, id);
         res.redirect('http://localhost:3000/journal');
     } catch (error) {
         console.log(error.message);
