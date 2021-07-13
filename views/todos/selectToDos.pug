@@ -1,0 +1,21 @@
+extends ../logedInLayout
+
+block content
+  .card 
+    .card-header
+      h3(style="color:green;") Select a date.
+    .card-body
+      form(action= '/todos/view' method='POST')
+          .mb-3
+            label.form-label(for='date') Date
+            input#datepicker.form-control(type='text', name='date' placeholder='date of to-dos')
+          button.btn.btn-success(type='submit') View to-dos
+  .card 
+    .card-footer.text-muted.text-center
+      a(class="btn btn-secondary" href='http://localhost:3000/todos/create') Create new to-do
+    script. 
+        $(function () {
+            $('#datepicker').datepicker({ 
+                dateFormat: 'yy-mm-dd',
+            });
+        });

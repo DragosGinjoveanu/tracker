@@ -14,4 +14,13 @@ async function getToDos(user, date) {
       }
 }
 
-module.exports = {createToDo, getToDos};
+async function selectToDo(id) {
+  try {
+      const result = await pool.query('SELECT title AS title, content AS content, todo_date AS date FROM todos WHERE id = $1', [id]);
+      return result.rows[0];
+    } catch (err){
+      return err.stack;
+    }
+}
+
+module.exports = {createToDo, getToDos, selectToDo};
