@@ -33,4 +33,9 @@ async function deleteToDo(id) {
   console.log("ToDo ID: " + id + " was deleted");
 }
 
-module.exports = {createToDo, getToDos, selectToDo, editToDo, deleteToDo};
+async function doneToDo(id) {
+  const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [true, id]);
+  console.log("ToDo ID: " + id + " was marked as completed");
+}
+
+module.exports = {createToDo, getToDos, selectToDo, editToDo, deleteToDo, doneToDo};

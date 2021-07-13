@@ -55,7 +55,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
     }
 });
 
-//edits journal page content
+//edits todo data
 router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
     var id = req.params.id;
     const errors = validationResult(req);
@@ -74,11 +74,22 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
     }
 });
 
-//deletes selected journal page
+//deletes selected todo
 router.post('/:id/delete', async function(req, res) {
     var id = req.params.id;
     try {
         await queries.deleteToDo(id);
+        res.redirect('http://localhost:3000/todos');
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+//marks todo as completed
+router.post('/:id/done', async function(req, res) {
+    var id = req.params.id;
+    try {
+        await queries.doneToDo(id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
