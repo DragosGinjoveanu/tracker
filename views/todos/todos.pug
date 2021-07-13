@@ -16,7 +16,10 @@ block content
                     h5.card-text= val.content
                     -var editUrl = 'http://localhost:3000/todos/' + val.id;
                     -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
+                    -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/done';
                     .card-footer
+                        a(class="btn btn-success" href=editUrl) Edit
                         form(method="POST" action=deleteUrl)
-                            a(class="btn btn-success" href=editUrl) Edit
-                            button.btn.btn-danger(type='submit') Done
+                            button.btn.btn-danger(type='submit') Delete
+                        form(method="POST" action=doneUrl)
+                            button.btn.btn-primary(type='submit') Done

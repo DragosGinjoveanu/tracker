@@ -17,5 +17,6 @@ CREATE TABLE todos (
 	id SERIAL,
 	title varchar(255),
 	content varchar(255),
-	todo_date date
+	todo_date date,
+	done BOOLEAN DEFAULT false
 );
