@@ -1,0 +1,8 @@
+extends ../logedInLayout
+
+block content
+  .card 
+    .card.header.text-center
+      h3= user + '\'s stats'
+    .card.body.text-center
+      h5(style='color:green')= 'Points: ' + points
