@@ -23,4 +23,14 @@ async function selectToDo(id) {
     }
 }
 
-module.exports = {createToDo, getToDos, selectToDo};
+async function editToDo(title, content, date, id) {
+  const todo = await pool.query("UPDATE todos SET title = $1, content = $2, todo_date = $3 WHERE id = $4 RETURNING name", [title, content, date, id]);
+  console.log("ToDo ID: " + id + " was edited");
+}
+
+async function deleteToDo(id) {
+  const page = await pool.query( "DELETE FROM todos WHERE id = $1", [id]);
+  console.log("ToDo ID: " + id + " was deleted");
+}
+
+module.exports = {createToDo, getToDos, selectToDo, editToDo, deleteToDo};

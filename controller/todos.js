@@ -17,6 +17,7 @@ router.get('/create', function (req, res) {
 router.get('/:id', async function(req, res) {
     var id = req.params.id;
     var todo = await queries.selectToDo(id);
+    //bug data format incorect
     res.render('todo', {user: req.session.username, todo: todo, id: id});
 });
 
@@ -51,6 +52,36 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
         } catch (error) {
             res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
         }
+    }
+});
+
+//edits journal page content
+router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
+    var id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description'});
+    } else {
+        try {
+            var title = req.body.title;
+            var content = req.body.content;
+            var date = req.body.date;
+            await queries.editToDo(title, content, date, id);
+            res.redirect('http://localhost:3000/todos');
+        } catch (error) {
+            res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date'});
+        }
+    }
+});
+
+//deletes selected journal page
+router.post('/:id/delete', async function(req, res) {
+    var id = req.params.id;
+    try {
+        await queries.deleteToDo(id);
+        res.redirect('http://localhost:3000/todos');
+    } catch (error) {
+        console.log(error.message);
     }
 });
 
