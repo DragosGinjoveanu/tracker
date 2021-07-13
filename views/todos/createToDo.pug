@@ -1,0 +1,30 @@
+extends ../logedInLayout
+
+block content
+  .card 
+    .card-header 
+      h3(style="color:green;") Add a new to-do!
+      h5= user + '\'s to-dos'
+    .card-body
+      form(action= '/todos/create' method='POST')
+          .mb-3
+            label.form-label(for='title') Title
+            input#authorName.form-control(type='text', name='title' placeholder='add appropiate title')
+          .mb-3
+            label.form-label(for='content') Description
+            input#descriptionName.form-control(type='text', name='content' placeholder='add to-do description')
+            .form-text write a short description of what you have to do
+          .mb-3
+            label.form-label(for='date') Date
+            input#datepicker.form-control(type='text', name='date' placeholder='add to-do date')
+          button.btn.btn-success(type='submit') Add
+  .card 
+    .card-footer.text-muted.text-center
+      a(class="btn btn-secondary" href= 'http://localhost:3000/todos') View to-dos
+    script. 
+        $(function () {
+            $('#datepicker').datepicker({ 
+              dateFormat: 'yy-mm-dd',
+              minDate: 0 
+            });
+        });

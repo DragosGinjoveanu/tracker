@@ -11,3 +11,12 @@ CREATE TABLE journals (
 	title varchar(255),
 	content varchar(255)
 );
+
+CREATE TABLE todos (
+	name varchar(50) references users(name),
+	id SERIAL,
+	title varchar(255),
+	content varchar(255),
+	todo_date date,
+	done BOOLEAN DEFAULT false
+);

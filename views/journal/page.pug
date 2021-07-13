@@ -1,12 +1,11 @@
-extends ../layout
+extends ../logedInLayout
 
 block content
   .card 
     .card.header.text-center
       h3 Edit page
     .card.body
-      -var action= "/journal/edit/page/" + id;
-      form(action= action method='POST')
+      form(action= '/journal/page/' + id + '/edit' method='POST')
           .mb-3
             label.form-label(for='name' style="color:red") Title
             input#authorName.form-control(type='text', name='title', value= page.title)

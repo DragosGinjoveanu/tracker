@@ -1,13 +1,12 @@
-extends ../layout
+extends ../logedInLayout
 
 block content
   .card 
     .card-header 
       h3(style="color:green;") Create a new journal page!
-      h5= username + '\'s journal'
+      h5= user + '\'s journal'
     .card-body
-      -var action= '/journal/create/' + username;
-      form(action= action method='POST')
+      form(action= '/journal/page/create' method='POST')
           .mb-3
             label.form-label(for='title') Title
             input#authorName.form-control(type='text', name='title' placeholder='add appropiate title')
@@ -18,5 +17,4 @@ block content
           button.btn.btn-success(type='submit') Post
   .card 
     .card-footer.text-muted.text-center
-      -var journal = 'http://localhost:3000/journal/pages/' + username;
-      a(class="btn btn-secondary" href=journal) View journal pages
+      a(class="btn btn-secondary" href='http://localhost:3000/journal') View journal pages
