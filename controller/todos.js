@@ -30,8 +30,9 @@ router.post('/view', async function (req, res) {
         var doneToDos = await queries.getDoneToDos(user, date);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+        } else {
+            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
         }
-        res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
     } catch (error) {
         res.render('toDoError', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
     }
