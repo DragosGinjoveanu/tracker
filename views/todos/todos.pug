@@ -5,21 +5,45 @@ block content
         .card-body.text-center
             h2= user + '\'s to-dos'
             h4=  date
-            h5= '(' + todos.length + ' to-dos)'
+            -var length = doneToDos.length + undoneToDos.length;
+            h5= '(' + length + ' to-dos)'
             a(class="btn btn-primary" href='http://localhost:3000/todos') View other to-dos
             a(class="btn btn-secondary" href='http://localhost:3000/todos/create') Create new to-do
-    ul
-        each val in todos
-            .card
-                .card-body
-                    h3.card-title(style="color:#585858;")=val.title 
-                    h5.card-text= val.content
-                    -var editUrl = 'http://localhost:3000/todos/' + val.id;
-                    -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
-                    -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/done';
-                    .card-footer
-                        a(class="btn btn-success" href=editUrl) Edit
-                        form(method="POST" action=deleteUrl)
-                            button.btn.btn-danger(type='submit') Delete
-                        form(method="POST" action=doneUrl)
-                            button.btn.btn-primary(type='submit') Done
+    .card 
+        .card-header.text-center
+            h4 Unfinished tasks 
+        .card-body 
+            ul
+                each val in undoneToDos
+                    .card
+                        .card-body
+                            h3.card-title(style="color:#585858;")=val.title 
+                            h5.card-text= val.content
+                            -var editUrl = 'http://localhost:3000/todos/' + val.id;
+                            -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
+                            -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/done';
+                            .card-footer
+                                a(class="btn btn-success" href=editUrl) Edit
+                                form(method="POST" action=deleteUrl)
+                                    button.btn.btn-danger(type='submit') Delete
+                                form(method="POST" action=doneUrl)
+                                    button.btn.btn-primary(type='submit') Done
+    .card 
+        .card-header.text-center
+            h4 Finished tasks 
+        .card-body 
+            ul
+                each val in doneToDos
+                    .card
+                        .card-body
+                            h3.card-title(style="color:#585858;")=val.title 
+                            h5.card-text= val.content
+                            -var editUrl = 'http://localhost:3000/todos/' + val.id;
+                            -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
+                            -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/undone';
+                            .card-footer
+                                a(class="btn btn-success" href=editUrl) Edit
+                                form(method="POST" action=deleteUrl)
+                                    button.btn.btn-danger(type='submit') Delete
+                                form(method="POST" action=doneUrl)
+                                    button.btn.btn-primary(type='submit') Undone

@@ -5,13 +5,22 @@ async function createToDo(user, title, content, date) {
     console.log(user + '\'s todo was added in the database');
 }
 
-async function getToDos(user, date) {
+async function getUndoneToDos(user, date) {
     try {
-        const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM todos WHERE name = $1 AND todo_date = $2 ORDER BY id ASC", [user, date]);
+        const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, false]);
         return result.rows;
       } catch (err) {
         return console.log(err.message);
       }
+}
+
+async function getDoneToDos(user, date) {
+  try {
+      const result = await pool.query("SELECT id AS id, title AS title, content AS content FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, true]);
+      return result.rows;
+    } catch (err) {
+      return console.log(err.message);
+    }
 }
 
 async function selectToDo(id) {
@@ -35,7 +44,12 @@ async function deleteToDo(id) {
 
 async function doneToDo(id) {
   const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [true, id]);
-  console.log("ToDo ID: " + id + " was marked as completed");
+  console.log("ToDo ID: " + id + " was marked as finished");
 }
 
-module.exports = {createToDo, getToDos, selectToDo, editToDo, deleteToDo, doneToDo};
+async function undoneToDo(id) {
+  const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [false, id]);
+  console.log("ToDo ID: " + id + " was marked as unfinished");
+}
+
+module.exports = {createToDo, getUndoneToDos, selectToDo, editToDo, deleteToDo, doneToDo, undoneToDo, getUndoneToDos, getDoneToDos};
