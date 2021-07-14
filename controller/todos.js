@@ -86,22 +86,16 @@ router.post('/:id/delete', async function(req, res) {
     }
 });
 
-//marks todo as completed
-router.post('/:id/done', async function(req, res) {
+//marks todo as completed/uncompleted
+router.post('/:id/:status', async function(req, res) {
     var id = req.params.id;
+    var status = req.params.status;
     try {
-        await queries.doneToDo(id);
-        res.redirect('http://localhost:3000/todos');
-    } catch (error) {
-        console.log(error.message);
-    }
-});
-
-//marks todo as uncompleted
-router.post('/:id/undone', async function(req, res) {
-    var id = req.params.id;
-    try {
-        await queries.undoneToDo(id);
+        if (status == 'done') {
+            await queries.doneToDo(id);
+        } else if (status == 'undone') {
+            await queries.undoneToDo(id);
+        }
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
