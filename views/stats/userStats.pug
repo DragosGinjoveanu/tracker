@@ -2,14 +2,18 @@ extends ../logedInLayout
 
 block content
   .card 
-    .card.header.text-center
+    .card-body.text-center
+      h2 TOP:
+      a(class="btn btn-secondary" href='http://localhost:3000/stats/top') See all the users
+  .card 
+    .card-header.text-center
       h3= user + '\'s stats'
-    .card.body.text-center
+    .card-body.text-center
       h5(style='color:blue')= 'Points: ' + stats.points
       h5(style='color:green')= 'Journal pages: ' + stats.pages
       h5(style='color:green')= 'Finished tasks: ' + stats.doneTasks
       h5(style='color:red')= 'Unfinished tasks: ' + stats.undoneTasks
-    .card.footer.text-muted
+    .card-footer.text-muted
       h4 To-Dos completion:
       .progress(style="height: 30px;")
         -var width = 'width: ' + stats.percentage + '%';

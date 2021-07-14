@@ -1,0 +1,18 @@
+extends ../logedInLayout
+
+block content
+    .card
+        .card-body.text-center
+            h2 Most active users
+            h5= '(' + users.length + ' users)'
+            a(class="btn btn-success" href='http://localhost:3000/stats') See YOUR stats
+    ul
+        each val in users
+            .card
+                .card-body
+                    h3.card-title(style="color:#585858;")=val.name
+                    h5.card-text= 'Points: ' + val.points
+                    -var userStats = 'http://localhost:3000/stats/' + val.name;
+                    .card-footer
+                        form(method="POST" action=userStats)
+                            button.btn.btn-primary(type='submit') View all stats

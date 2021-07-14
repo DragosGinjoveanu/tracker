@@ -19,4 +19,14 @@ router.get('/', async function(req, res) {
     }
 });
 
+router.get('/top', async function(req, res) {
+    try {
+        const users = await queries.getUsers();
+        //fara buton see my stats
+        res.render('top', {user: req.session.username, users: users});
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
 module.exports = router;
