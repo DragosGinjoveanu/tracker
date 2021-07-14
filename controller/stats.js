@@ -2,28 +2,28 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
 
-router.get('/', async function(req, res) {
+router.get('/top', async function(req, res) {
     try {
-        const points = await queries.getPoints(req.session.username);
-        const pages = await queries.getNrJournalPages(req.session.username);
-        const doneTasks = await queries.getNrTasks(req.session.username, true);
-        const undoneTasks = await queries.getNrTasks(req.session.username, false);
-        var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
-        if (isNaN(percentage)) {
-            percentage = 0;
-        }
-        const stats = {points, pages, doneTasks, undoneTasks, percentage};
-        res.render('userStats', {user: req.session.username, stats: stats});
+        const users = await queries.getUsers();
+        res.render('top', {user: req.session.username, users: users});
     } catch (error) {
         console.log(error.message);
     }
 });
 
-router.get('/top', async function(req, res) {
+router.get('/:username', async function(req, res) {
     try {
-        const users = await queries.getUsers();
-        //fara buton see my stats
-        res.render('top', {user: req.session.username, users: users});
+        const name = req.params.username;
+        const points = await queries.getPoints(name);
+        const pages = await queries.getNrJournalPages(name);
+        const doneTasks = await queries.getNrTasks(name, true);
+        const undoneTasks = await queries.getNrTasks(name, false);
+        var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+        const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
+        res.render('userStats', {user: req.session.username, stats: stats});
     } catch (error) {
         console.log(error.message);
     }
