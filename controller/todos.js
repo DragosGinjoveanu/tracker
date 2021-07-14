@@ -30,9 +30,8 @@ router.post('/view', async function (req, res) {
         var doneToDos = await queries.getDoneToDos(user, date);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
-        } else {
-            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
         }
+        res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
     } catch (error) {
         res.render('toDoError', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
     }
@@ -80,29 +79,23 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
 router.post('/:id/delete', async function(req, res) {
     var id = req.params.id;
     try {
-        await queries.deleteToDo(req.session.username, id);
+        await queries.deleteToDo(id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
     }
 });
 
-//marks todo as completed
-router.post('/:id/done', async function(req, res) {
+//marks todo as completed/uncompleted
+router.post('/:id/:status', async function(req, res) {
     var id = req.params.id;
+    var status = req.params.status;
     try {
-        await queries.doneToDo(req.session.username, id);
-        res.redirect('http://localhost:3000/todos');
-    } catch (error) {
-        console.log(error.message);
-    }
-});
-
-//marks todo as uncompleted
-router.post('/:id/undone', async function(req, res) {
-    var id = req.params.id;
-    try {
-        await queries.undoneToDo(req.session.username, id);
+        if (status == 'done') {
+            await queries.doneToDo(id);
+        } else if (status == 'undone') {
+            await queries.undoneToDo(id);
+        }
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
