@@ -5,6 +5,12 @@ block content
     .card.header.text-center
       h3= user + '\'s stats'
     .card.body.text-center
-      h5(style='color:green')= 'Points: ' + stats.points
+      h5(style='color:blue')= 'Points: ' + stats.points
       h5(style='color:green')= 'Journal pages: ' + stats.pages
       h5(style='color:green')= 'Finished tasks: ' + stats.doneTasks
+      h5(style='color:red')= 'Unfinished tasks: ' + stats.undoneTasks
+    .card.footer.text-muted
+      h4 To-Dos completion:
+      .progress(style="height: 30px;")
+        -var width = 'width: ' + stats.percentage + '%';
+        .progress-bar.progress-bar-striped.progress-bar-animated.bg-success(role='progress', style= width, aria-valuemin='0', aria-valuemax='100')= stats.percentage + '%'
