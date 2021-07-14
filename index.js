@@ -3,12 +3,13 @@ const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 const path = require('path');
+var session = require('express-session');
 
 const user = require('./controller/user');
 const tracker = require('./controller/tracker');
 const journal = require('./controller/journal');
 const todos = require('./controller/todos');
-var session = require('express-session');
+const stats = require('./controller/stats');
 
 app.use(session({
 	secret: 'secret',
@@ -24,7 +25,8 @@ app.set('views', [
   path.join(__dirname, 'views/tracker'),
   path.join(__dirname, 'views/login'),
   path.join(__dirname, 'views/journal'),
-  path.join(__dirname, 'views/todos')
+  path.join(__dirname, 'views/todos'),
+  path.join(__dirname, 'views/stats')
 ]);
 
 app.listen(port, () => {
@@ -35,3 +37,4 @@ app.use('/', tracker);
 app.use('/user', user);
 app.use('/journal', journal);
 app.use('/todos', todos);
+app.use('/stats', stats);

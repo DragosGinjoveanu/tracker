@@ -2,9 +2,9 @@ extends ../logedInLayout
 
 block content
   .card 
-    .card.header.text-center
+    .card-header.text-center
       h3 Edit page
-    .card.body
+    .card-body
       form(action= '/journal/page/' + id + '/edit' method='POST')
           .mb-3
             label.form-label(for='name' style="color:red") Title

@@ -1,4 +1,5 @@
 const pool = require('../database');
+const stats = require('../stats/queries');
 
 async function createToDo(user, title, content, date) {
     await pool.query("INSERT INTO todos (name, title, content, todo_date) VALUES ($1, $2, $3, $4) RETURNING *", [user, title, content, date]);
@@ -37,18 +38,25 @@ async function editToDo(title, content, date, id) {
   console.log("ToDo ID: " + id + " was edited");
 }
 
-async function deleteToDo(id) {
-  const page = await pool.query( "DELETE FROM todos WHERE id = $1", [id]);
+async function deleteToDo(user, id) {
+  const result = await pool.query("SELECT done as done FROM todos WHERE id = $1", [id]);
+  const done = result.rows[0].done;
+  if (done == true) {
+    stats.removePoints(user, 10);
+  }
+  const todo = await pool.query( "DELETE FROM todos WHERE id = $1", [id]);
   console.log("ToDo ID: " + id + " was deleted");
 }
 
-async function doneToDo(id) {
+async function doneToDo(user, id) {
   const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [true, id]);
+  stats.addPoints(user, 10);
   console.log("ToDo ID: " + id + " was marked as finished");
 }
 
-async function undoneToDo(id) {
+async function undoneToDo(user, id) {
   const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [false, id]);
+  stats.removePoints(user, 10);
   console.log("ToDo ID: " + id + " was marked as unfinished");
 }
 

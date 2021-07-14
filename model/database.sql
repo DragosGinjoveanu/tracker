@@ -2,7 +2,8 @@ CREATE DATABASE tracker_database;
 
 CREATE TABLE users (
 	name VARCHAR (50) PRIMARY KEY,
-	password VARCHAR (50)
+	password VARCHAR (50),
+	points INT DEFAULT 0
 );
 
 CREATE TABLE journals (

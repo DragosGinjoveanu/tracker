@@ -1,0 +1,20 @@
+extends ../logedInLayout
+
+block content
+  .card 
+    .card-body.text-center
+      h2 TOP:
+      a(class="btn btn-secondary" href='http://localhost:3000/stats/top') See all the users
+  .card 
+    .card-header.text-center
+      h1= stats.name + '\'s stats'
+      h4(style='color:blue')= 'Points: ' + stats.points
+    .card-body.text-center
+      h5(style='color:green')= 'Journal pages: ' + stats.pages
+      h5(style='color:green')= 'Finished tasks: ' + stats.doneTasks
+      h5(style='color:red')= 'Unfinished tasks: ' + stats.undoneTasks
+    .card-footer.text-muted
+      h4 To-Dos completion:
+      .progress(style="height: 30px;")
+        -var width = 'width: ' + stats.percentage + '%';
+        .progress-bar.progress-bar-striped.progress-bar-animated.bg-success(role='progress', style= width, aria-valuemin='0', aria-valuemax='100')= stats.percentage + '%'
