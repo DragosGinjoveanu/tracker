@@ -1,7 +1,7 @@
 const pool = require('../database');
 
-async function getUsers() {
-    const users = await pool.query('SELECT * from users ORDER BY points DESC');
+async function getUsers(selection) {
+    const users = await pool.query('SELECT * from users ORDER BY $1 DESC', [selection]);
     return users.rows;
 }
 

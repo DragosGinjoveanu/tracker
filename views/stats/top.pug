@@ -1,11 +1,21 @@
 extends ../logedInLayout
 
 block content
+    .card.text-center
+        .card-footer.text-muted
+            a(class="btn btn-success" href='http://localhost:3000/stats/' + user) See YOUR stats
     .card
         .card-body.text-center
             h2 Most active users
             h5= '(' + users.length + ' users)'
-            a(class="btn btn-success" href='http://localhost:3000/stats/' + user) See YOUR stats
+            form(method = 'POST', action = '/stats/top')
+                .mb-3
+                    h3 Select by:
+                    select.form-select(name='selection')
+                        option(value='points', selected) total points
+                        option(value='pages') journal pages
+                        option(value='todos') completed tasks
+                    button.btn.btn-secondary(type='submit') See top
     ul
         each val in users
             .card

@@ -4,7 +4,18 @@ const queries = require('../model/stats/queries');
 
 router.get('/top', async function(req, res) {
     try {
-        const users = await queries.getUsers();
+        const users = await queries.getUsers('points');
+        res.render('top', {user: req.session.username, users: users});
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+router.post('/top', async function(req, res) {
+    const selection = req.body.selection;
+    console.log(selection);
+    try {
+        const users = await queries.getUsers(selection);
         res.render('top', {user: req.session.username, users: users});
     } catch (error) {
         console.log(error.message);
