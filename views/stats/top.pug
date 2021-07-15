@@ -11,11 +11,9 @@ block content
             .card
                 .card-body
                     if val.name != user
-                        h3.card-title(style="color:#585858;")=val.name
+                        a(href='http://localhost:3000/stats/' + val.name)
+                            h3.card-title(style="color:#585858;")=val.name
                     else 
-                        h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
-                    -var userStats = 'http://localhost:3000/stats/' + val.name;
+                        a(href='http://localhost:3000/stats/' + val.name)
+                            h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
                     h5.card-text= 'Points: ' + val.points
-                    .card-footer
-                    form(method="GET" action=userStats)
-                        button.btn.btn-primary(type='submit') View all stats
