@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
 
+//displays top by points(default)
 router.get('/top', async function(req, res) {
     try {
         const users = await queries.getUsers('points');
@@ -11,17 +12,7 @@ router.get('/top', async function(req, res) {
     }
 });
 
-router.post('/top', async function(req, res) {
-    const selection = req.body.selection;
-    console.log(selection);
-    try {
-        const users = await queries.getUsers(selection);
-        res.render('top', {user: req.session.username, users: users});
-    } catch (error) {
-        console.log(error.message);
-    }
-});
-
+//displays specific user stats
 router.get('/:username', async function(req, res) {
     try {
         const name = req.params.username;
@@ -35,6 +26,19 @@ router.get('/:username', async function(req, res) {
         }
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
         res.render('userStats', {user: req.session.username, stats: stats});
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+//table stats separat?
+//displays top by selected parameter
+router.post('/top', async function(req, res) {
+    const selection = req.body.selection;
+    console.log(selection);
+    try {
+        const users = await queries.getUsers(selection);
+        res.render('top', {user: req.session.username, users: users});
     } catch (error) {
         console.log(error.message);
     }
