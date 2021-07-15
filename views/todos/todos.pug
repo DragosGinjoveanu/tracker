@@ -28,6 +28,7 @@ block content
                                     button.btn.btn-danger(type='submit') Delete
                                 form(method="POST" action=doneUrl)
                                     button.btn.btn-primary(type='submit') Done
+                                    input.form-control(type='hidden', name ='date', value=date)
     .card 
         .card-header.text-center
             h4 Finished tasks 
@@ -47,3 +48,4 @@ block content
                                     button.btn.btn-danger(type='submit') Delete
                                 form(method="POST" action=doneUrl)
                                     button.btn.btn-primary(type='submit') Undone
+                                    input.form-control(type='hidden', name ='date', value=date)
