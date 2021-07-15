@@ -1,5 +1,12 @@
 CREATE DATABASE tracker_database;
 
+CREATE TABLE stats? references users(name) ??? pt top
+Points
+pages
+done/undone todos
+
+ar trebui updatata de fiecare data cand creem/stergem un anumit task/pagina jurnal etc
+
 CREATE TABLE users (
 	name VARCHAR (50) PRIMARY KEY,
 	password VARCHAR (50),

@@ -21,9 +21,9 @@ block content
             .card
                 .card-body
                     if val.name != user
-                        a(href='http://localhost:3000/stats/' + val.name)
+                        a(class="link-dark", href='http://localhost:3000/stats/' + val.name)
                             h3.card-title(style="color:#585858;")=val.name
                     else 
-                        a(href='http://localhost:3000/stats/' + val.name)
+                        a(class="link-success", href='http://localhost:3000/stats/' + val.name)
                             h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
                     h5.card-text= 'Points: ' + val.points
