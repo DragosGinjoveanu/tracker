@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/todos/queries');
+const moment = require('moment');
 
 //'select todos by date' form
 router.get('/', function (req, res) {
@@ -17,8 +18,9 @@ router.get('/create', function (req, res) {
 router.get('/:id', async function(req, res) {
     var id = req.params.id;
     var todo = await queries.selectToDo(id);
-    //bug data format incorect
-    res.render('todo', {user: req.session.username, todo: todo, id: id});
+    var todo_date = moment(todo.date).format('YYYY-MM-DD'); // correct format
+    console.log(todo_date)
+    res.render('todo', {user: req.session.username, todo: todo, date: todo_date});
 });
 
 //gets todos from selected date
@@ -30,8 +32,9 @@ router.post('/view', async function (req, res) {
         var doneToDos = await queries.getDoneToDos(user, date);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+        } else {
+            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
         }
-        res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
     } catch (error) {
         res.render('toDoError', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
     }
@@ -90,12 +93,13 @@ router.post('/:id/delete', async function(req, res) {
 router.post('/:id/:status', async function(req, res) {
     var id = req.params.id;
     var status = req.params.status;
+    if (status == 'done') {
+        status = true;
+    } else {
+        status = false;
+    }
     try {
-        if (status == 'done') {
-            await queries.doneToDo(id);
-        } else if (status == 'undone') {
-            await queries.undoneToDo(id);
-        }
+        await queries.changeToDoStatus(req.session.username, status, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);

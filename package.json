@@ -1,7 +1,7 @@
 {
   "name": "tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "-work in progress- The app is an easy-to-use tool which is meant to help a person implement healthy, long term habits.  ###### Functionalities:   -multiple users   -journal   -todos ###### Technologies:   -express.js   -postgresql   -bootstrap & pug",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +16,14 @@
     "moment": "^2.29.1",
     "pg": "^8.6.0",
     "pug": "^3.0.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DragosGinjoveanu/tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DragosGinjoveanu/tracker/issues"
+  },
+  "homepage": "https://github.com/DragosGinjoveanu/tracker#readme"
 }

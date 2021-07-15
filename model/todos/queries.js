@@ -26,7 +26,7 @@ async function getDoneToDos(user, date) {
 
 async function selectToDo(id) {
   try {
-      const result = await pool.query('SELECT title AS title, content AS content, todo_date AS date FROM todos WHERE id = $1', [id]);
+      const result = await pool.query('SELECT id as id, title AS title, content AS content, todo_date AS date FROM todos WHERE id = $1', [id]);
       return result.rows[0];
     } catch (err){
       return err.stack;
@@ -48,16 +48,14 @@ async function deleteToDo(user, id) {
   console.log("ToDo ID: " + id + " was deleted");
 }
 
-async function doneToDo(user, id) {
-  const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [true, id]);
-  stats.addPoints(user, 10);
+async function changeToDoStatus(user, status, id) {
+  const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [status, id]);
+  if (status == true) {
+    stats.addPoints(user, 10);
+  } else {
+    stats.removePoints(user, 10);
+  }
   console.log("ToDo ID: " + id + " was marked as finished");
 }
 
-async function undoneToDo(user, id) {
-  const todo = await pool.query("UPDATE todos SET done = $1 WHERE id = $2", [false, id]);
-  stats.removePoints(user, 10);
-  console.log("ToDo ID: " + id + " was marked as unfinished");
-}
-
-module.exports = {createToDo, getUndoneToDos, selectToDo, editToDo, deleteToDo, doneToDo, undoneToDo, getUndoneToDos, getDoneToDos};
+module.exports = {createToDo, getUndoneToDos, selectToDo, editToDo, deleteToDo, changeToDoStatus, getUndoneToDos, getDoneToDos};

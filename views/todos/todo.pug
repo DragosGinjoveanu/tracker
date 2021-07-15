@@ -5,7 +5,7 @@ block content
     .card-header.text-center
       h3 Edit to-do
     .card-body
-      form(action= '/todos/' + id + '/edit' method='POST')
+      form(action= '/todos/' + todo.id + '/edit' method='POST')
           .mb-3
             label.form-label(for='name' style='color:red') Title
             input#authorName.form-control(type='text', name='title', value= todo.title)
@@ -14,7 +14,7 @@ block content
             input#descriptionName.form-control(type='text', name='content', value= todo.content)
           .mb-3
             label.form-label(for='date' style='color:red') Date
-            input#datepicker.form-control(type='text', name='date' value= todo.date)
+            input#datepicker.form-control(type='text', name='date' value= date)
             .form-text edit to-do content
           button.btn.btn-success(type='submit') Edit
     script. 
