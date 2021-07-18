@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 const path = require('path');
-var session = require('express-session');
+const session = require('express-session');
 
 const user = require('./controller/user');
 const tracker = require('./controller/tracker');
@@ -11,8 +11,13 @@ const journal = require('./controller/journal');
 const todos = require('./controller/todos');
 const stats = require('./controller/stats');
 
+//problem: Failed to prune sessions: relation "session" does not exist
 app.use(session({
-	secret: 'secret',
+	store: new (require('connect-pg-simple')(session))({
+    conString: 'postgres://postgres:password@localhost:5432/tracker_database'
+  }),
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+  secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
