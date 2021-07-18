@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
+const authentication = require('../public/javascript/authentication');
 
-//displays top by points(default)
-router.get('/top', async function(req, res) {
+router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
         const users = await queries.getUsers('points');
         res.render('top', {user: req.session.username, users: users});
@@ -12,8 +12,18 @@ router.get('/top', async function(req, res) {
     }
 });
 
-//displays specific user stats
-router.get('/:username', async function(req, res) {
+router.post('/top', async function(req, res) {
+    const selection = req.body.selection;
+    console.log(selection);
+    try {
+        const users = await queries.getUsers(selection);
+        res.render('top', {user: req.session.username, users: users});
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+router.get('/:username', authentication.restrictUser(), async function(req, res) {
     try {
         const name = req.params.username;
         const points = await queries.getPoints(name);
@@ -31,7 +41,7 @@ router.get('/:username', async function(req, res) {
     }
 });
 
-//table stats separat?
+//separate table for stats?
 //displays top by selected parameter
 router.post('/top', async function(req, res) {
     const selection = req.body.selection;
