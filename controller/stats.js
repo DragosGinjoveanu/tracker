@@ -41,4 +41,17 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
     }
 });
 
+//separate table for stats?
+//displays top by selected parameter
+router.post('/top', async function(req, res) {
+    const selection = req.body.selection;
+    console.log(selection);
+    try {
+        const users = await queries.getUsers(selection);
+        res.render('top', {user: req.session.username, users: users});
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
 module.exports = router;

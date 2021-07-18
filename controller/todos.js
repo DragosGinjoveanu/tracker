@@ -40,7 +40,7 @@ router.get('/:id', authentication.restrictUser(), async function(req, res) {
     res.render('todo', {user: req.session.username, todo: todo, date: todo_date});
 });
 
-//adds todo to database
+//adds todo to database and redirects user to all the todos from selected date
 router.post('/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -52,14 +52,14 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             var content = req.body.content;
             var date = req.body.date;
             await queries.createToDo(user, title, content, date);
-            res.redirect('http://localhost:3000/todos');
+            res.redirect(307, '/todos/view');
         } catch (error) {
             res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
         }
     }
 });
 
-//edits todo data
+//edits todo data and redirects user to all the todos from specific date
 router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
     var id = req.params.id;
     const errors = validationResult(req);
