@@ -34,7 +34,7 @@ app.set('views', [
   path.join(__dirname, 'views/stats')
 ]);
 
-app.use('/static', express.static(path.join(__dirname, 'public')));
+//app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/', tracker);
 app.use('/user', user);
 app.use('/journal', journal);

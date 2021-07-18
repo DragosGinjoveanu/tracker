@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
-const authentication = require('../public/javascript/authentication');
+const authentication = require('../helper/javascript/authentication');
 
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {

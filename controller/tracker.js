@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authentication = require('../public/javascript/authentication');
+const authentication = require('../helper/javascript/authentication');
 
 //default page when opening app (before logging in)
 router.get('/', function (req, res) {
