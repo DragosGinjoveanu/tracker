@@ -34,12 +34,13 @@ app.set('views', [
   path.join(__dirname, 'views/stats')
 ]);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
-
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/', tracker);
 app.use('/user', user);
 app.use('/journal', journal);
 app.use('/todos', todos);
 app.use('/stats', stats);
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});

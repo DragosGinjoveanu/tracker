@@ -2,15 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/todos/queries');
+const authentication = require('../public/javascript/authentication');
 const moment = require('moment');
 
 //'select todos by date' form
-router.get('/', function (req, res) {
+router.get('/', authentication.restrictUser(), function (req, res) {
     res.render('selectToDos', {user: req.session.username});
 });
 
 //'create new todo' form page
-router.get('/create', function (req, res) {
+router.get('/create', authentication.restrictUser(), function (req, res) {
     res.render('createToDo', {user: req.session.username});
 });
 
@@ -32,7 +33,7 @@ router.post('/view', async function (req, res) {
 });
 
 //gets selected todo
-router.get('/:id', async function(req, res) {
+router.get('/:id', authentication.restrictUser(), async function(req, res) {
     var id = req.params.id;
     var todo = await queries.selectToDo(id);
     var todo_date = moment(todo.date).format('YYYY-MM-DD'); // correct format
@@ -104,5 +105,5 @@ router.post('/:id/:status', async function(req, res) {
         console.log(error.message);
     }
 });
-//commit - modified redirect routes
+
 module.exports = router;

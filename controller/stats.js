@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
+const authentication = require('../public/javascript/authentication');
 
-router.get('/top', async function(req, res) {
+router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
         const users = await queries.getUsers('points');
         res.render('top', {user: req.session.username, users: users});
@@ -22,7 +23,7 @@ router.post('/top', async function(req, res) {
     }
 });
 
-router.get('/:username', async function(req, res) {
+router.get('/:username', authentication.restrictUser(), async function(req, res) {
     try {
         const name = req.params.username;
         const points = await queries.getPoints(name);

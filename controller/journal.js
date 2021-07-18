@@ -2,20 +2,21 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/journal/queries');
+const authentication = require('../public/javascript/authentication');
 
 //gets all pages
-router.get('/', async function (req, res) {
+router.get('/', authentication.restrictUser(), async function (req, res) {
     var journal = await queries.getJournalPages(req.session.username);
     res.render('journal', {user: req.session.username, pages: journal});
 });
 
 //'create page' form
-router.get('/page/create', function (req, res) {
+router.get('/page/create', authentication.restrictUser(), function (req, res) {
     res.render('createPage', {user: req.session.username});
 });
 
 //gets selected page
-router.get('/page/:id', async function(req, res) {
+router.get('/page/:id', authentication.restrictUser(), async function(req, res) {
     var id = req.params.id;
     var page = await queries.selectPage(id);
     res.render('page', {user: req.session.username, page: page, id: id});
