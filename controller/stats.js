@@ -5,7 +5,7 @@ const authentication = require('../helper/javascript/authentication');
 
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
-        const users = await queries.getUsers('points');
+        const users = await queries.getMostActiveUsers();
         res.render('top', {user: req.session.username, users: users});
     } catch (error) {
         console.log(error.message);
@@ -14,12 +14,15 @@ router.get('/top', authentication.restrictUser(), async function(req, res) {
 
 router.post('/top', async function(req, res) {
     const selection = req.body.selection;
-    console.log(selection);
-    try {
-        const users = await queries.getUsers(selection);
-        res.render('top', {user: req.session.username, users: users});
-    } catch (error) {
-        console.log(error.message);
+    if (selection == 'points') {
+        res.redirect('http://localhost:3000/stats/top');
+    } else {
+        try {
+            const users = await queries.getUsers(selection);
+            res.render('top', {user: req.session.username, users: users});
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 });
 
@@ -36,19 +39,6 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         }
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
         res.render('userStats', {user: req.session.username, stats: stats});
-    } catch (error) {
-        console.log(error.message);
-    }
-});
-
-//separate table for stats?
-//displays top by selected parameter
-router.post('/top', async function(req, res) {
-    const selection = req.body.selection;
-    console.log(selection);
-    try {
-        const users = await queries.getUsers(selection);
-        res.render('top', {user: req.session.username, users: users});
     } catch (error) {
         console.log(error.message);
     }
