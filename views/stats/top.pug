@@ -11,9 +11,9 @@ block content
                 h5= '(' + users.length + ' users)'
             form(method = 'POST', action = '/stats/top')
                 .mb-3
-                    h3 Select by:
                     select.form-select(name='selection' onchange="this.form.submit();")
-                        option(value='points', selected) total points
+                        option(selected) Selecy by:
+                        option(value='points') total points
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
     ul
