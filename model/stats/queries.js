@@ -32,12 +32,12 @@ async function getNrTasks(user, status) {
     return res.rows[0].count;
 }
 
-async function addPoints(user, points) {
-    await pool.query('UPDATE users SET points = points + $1 WHERE name = $2', [points, user]);
+function addPoints(user, points) {
+    pool.query('UPDATE users SET points = points + $1 WHERE name = $2', [points, user]);
 }
 
-async function removePoints(user, points) {
-    await pool.query('UPDATE users SET points = points - $1 WHERE name = $2', [points, user]);
+function removePoints(user, points) {
+    pool.query('UPDATE users SET points = points - $1 WHERE name = $2', [points, user]);
 }
 
 module.exports = {getPoints, getNrJournalPages, getNrTasks, removePoints, addPoints, getMostActiveUsers, getUsers};
