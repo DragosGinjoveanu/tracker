@@ -10,4 +10,10 @@ async function newUser(user, password) {
     return newUser.rows[0];
 }
 
-module.exports = {selectUser, newUser};
+async function deleteUser(name) {
+    await pool.query('DELETE FROM todos WHERE name = $1', [name]);
+    await pool.query('DELETE FROM journals WHERE name = $1', [name]);
+    await pool.query('DELETE FROM users WHERE name = $1', [name]);
+}
+
+module.exports = {selectUser, newUser, deleteUser};
