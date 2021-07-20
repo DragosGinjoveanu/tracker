@@ -12,11 +12,10 @@ block content
             form(method = 'POST', action = '/stats/top')
                 .mb-3
                     h3 Select by:
-                    select.form-select(name='selection')
+                    select.form-select(name='selection' onchange="this.form.submit();")
                         option(value='points', selected) total points
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
-                    button.btn.btn-secondary(type='submit') See top
     ul
         each val in users
             .card
