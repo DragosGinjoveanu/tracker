@@ -11,7 +11,6 @@ const journal = require('./controller/journal');
 const todos = require('./controller/todos');
 const stats = require('./controller/stats');
 
-//problem: Failed to prune sessions: relation "session" does not exist
 app.use(session({
 	store: new (require('connect-pg-simple')(session))({
     conString: 'postgres://postgres:password@localhost:5432/tracker_database'
@@ -34,7 +33,7 @@ app.set('views', [
   path.join(__dirname, 'views/stats')
 ]);
 
-//app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/', tracker);
 app.use('/user', user);
 app.use('/journal', journal);
