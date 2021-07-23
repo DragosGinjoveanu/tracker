@@ -11,8 +11,6 @@ async function newUser(user, password) {
 }
 
 async function deleteUser(name) {
-    await pool.query('DELETE FROM todos WHERE name = $1', [name]);
-    await pool.query('DELETE FROM journals WHERE name = $1', [name]);
     await pool.query('DELETE FROM users WHERE name = $1', [name]);
 }
 

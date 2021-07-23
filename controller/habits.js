@@ -8,7 +8,7 @@ const authentication = require('../helper/javascript/authentication');
 router.post('/create/:habit', async function(req, res) {
     const user = req.session.username;
     const habit = req.params.habit;
-    //label/no label? 
+    //do you want to add a label?
     res.redirect('http://localhost:3000/habits');
 });
 
