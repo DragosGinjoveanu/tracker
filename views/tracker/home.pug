@@ -5,4 +5,51 @@ block content
         .card-header
             h1= 'Hello ' + user + '!'
             h5= message
+        .card 
         .card-body 
+            .row
+                .col
+                    .card(style='width: 18rem;')
+                        img.card-img-top(src='/images/writing.png' alt='Card image cap')
+                        .card-body
+                            h3.card-title Journaling
+                            p.card-text
+                            | Commit to writing daily. <br>
+                            | Set aside the time. <br>
+                            | Start small. <br>
+                            | <hr>
+                        .card-footer.text-muted
+                            form(action='/habits/create/journaling' method='POST')    
+                                .btn-group(role='group')
+                                button.btn.btn-info(type='button' data-toggle='modal' data-target='#writing') Why?
+                                button.btn.btn-success(type='submit') Add habit
+                .col
+                    .card(style='width: 18rem;')
+                        img.card-img-top(src='/images/diet.png' alt='Card image cap')
+                        .card-body
+                            h3.card-title Eating healthy
+                            p.card-text
+                            | Read labels. <br>
+                            | Reduce fat and sugar. <br>
+                            | Eat lots of fruit and vegetables. <br>
+                            | <hr>
+                        .card-footer.text-muted   
+                            form(action='/habits/create/eatinghealthy' method='POST')  
+                                .btn-group(role='group')
+                                button.btn.btn-info(type='button' data-toggle='modal' data-target='#eating') Why?
+                                button.btn.btn-success(type='submit') Add habit
+                .col
+                    .card(style='width: 18rem;')
+                        img.card-img-top(src='/images/workingOut.png' alt='Card image cap')
+                        .card-body
+                            h3.card-title Working out
+                            p.card-text
+                            | Start slowly and build up. <br>
+                            | Use proper form. Breathe. <br>
+                            | Listen to your body. <br>
+                            | <hr>
+                        .card-footer.text-muted    
+                            form(action='/habits/create/workingout' method='POST')
+                                .btn-group(role='group')
+                                button.btn.btn-info(type='button' data-toggle='modal' data-target='#exampleModal') Why?
+                                button.btn.btn-success(type='submit') Add habit
