@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authentication = require('../helper/javascript/authentication');
-const functions = require('../public/javascript/functions.js');
+const functions = require('../helper/javascript/randomMessage.js');
 
 //default page when opening app (before logging in)
 router.get('/', function (req, res) {

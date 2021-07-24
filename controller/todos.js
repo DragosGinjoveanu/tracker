@@ -31,7 +31,6 @@ router.get('/view/all', async function (req, res) {
     }
 });
 
-
 //gets todos from selected date
 router.post('/view', async function (req, res) {
     try {
