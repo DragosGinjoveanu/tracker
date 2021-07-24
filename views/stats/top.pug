@@ -6,16 +6,16 @@ block content
             a(class="btn btn-success" href='http://localhost:3000/stats/' + user) See YOUR stats
     .card
         .card-body.text-center
-            h2 Most active users
-            h5= '(' + users.length + ' users)'
+            div
+                h2 Most active users
+                h5= '(' + users.length + ' users)'
             form(method = 'POST', action = '/stats/top')
                 .mb-3
-                    h3 Select by:
-                    select.form-select(name='selection')
-                        option(value='points', selected) total points
-                        option(value='pages') journal pages
+                    select.form-select(name='selection' onchange="this.form.submit();")
+                        option(selected) Selecy by:
+                        option(value='points') total points
+                        option(value='journals') journal pages
                         option(value='todos') completed tasks
-                    button.btn.btn-secondary(type='submit') See top
     ul
         each val in users
             .card
@@ -26,4 +26,9 @@ block content
                     else 
                         a(class="link-success", href='http://localhost:3000/stats/' + val.name)
                             h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
-                    h5.card-text= 'Points: ' + val.points
+                    if val.points != undefined
+                        h5.card-text= 'Points: ' + val.points
+                    else if val.numberofpages != undefined
+                        h5.card-text= 'Journal pages: ' + val.numberofpages
+                    else if val.numberoftasks != undefined
+                         h5.card-text= 'Done tasks: ' + val.numberoftasks
