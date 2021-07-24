@@ -41,6 +41,8 @@ block content
                         .card-body
                             h3.card-title(style="color:#585858;")=val.title 
                             h5.card-text= val.content
+                            if date == '-all-'
+                                h5.card-text= val.date
                             -var editUrl = 'http://localhost:3000/todos/' + val.id;
                             -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
                             -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/undone';

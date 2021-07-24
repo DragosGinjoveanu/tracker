@@ -22,7 +22,7 @@ router.get('/view/all', async function (req, res) {
         undoneToDos = await queries.getAllToDos(user, false);
         doneToDos = await queries.getAllToDos(user, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
-            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks'});
         } else {
             res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
         }
