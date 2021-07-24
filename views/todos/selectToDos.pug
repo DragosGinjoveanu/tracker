@@ -5,6 +5,7 @@ block content
     .card-body.text-center
         h2= user + '\'s to-dos'
         a(class="btn btn-secondary" href='http://localhost:3000/todos/create') Create new to-do
+        a(class="btn btn-primary" href='http://localhost:3000/todos/view/all') View all to-dos
   .card 
     .card-body
       form(action= '/todos/view' method='POST')

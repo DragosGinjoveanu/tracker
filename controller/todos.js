@@ -15,13 +15,31 @@ router.get('/create', authentication.restrictUser(), function (req, res) {
     res.render('createToDo', {user: req.session.username});
 });
 
+//gets all the todos
+router.get('/view/all', async function (req, res) {
+    try {
+        const user = req.session.username;
+        undoneToDos = await queries.getAllToDos(user, false);
+        doneToDos = await queries.getAllToDos(user, true);
+        if (undoneToDos.length == 0 && doneToDos.length == 0) {
+            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+        } else {
+            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
 //gets todos from selected date
 router.post('/view', async function (req, res) {
     try {
-        var user = req.session.username;
+        const user = req.session.username;
         var date = req.body.date;
-        var undoneToDos = await queries.getUndoneToDos(user, date);
-        var doneToDos = await queries.getDoneToDos(user, date);
+        date = moment(date).format('YYYY-MM-DD'); // correct format
+        var undoneToDos = await queries.getToDosByDate(user, date, false);
+        var doneToDos = await queries.getToDosByDate(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
         } else {
@@ -80,9 +98,10 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
 
 //deletes selected todo
 router.post('/:id/delete', async function(req, res) {
-    var id = req.params.id;
+    const id = req.params.id;
+    const user = req.session.username;
     try {
-        await queries.deleteToDo(id);
+        await queries.deleteToDo(user, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);
