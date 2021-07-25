@@ -6,3 +6,17 @@ block content
             h2= user + '\'s habits'
             h5= '(' + habits.length + ' habit/s)'
             a(class="btn btn-secondary" href='http://localhost:3000/journal/page/create') Create custom habit
+    .card 
+        .card-body 
+            .card.text-center(style='width: 20rem;')
+                ul.list-group.list-group-flush
+                    each habit in habits 
+                        li.list-group-item
+                            form(action="/habits/" + habit.title + '/status', method='POST') 
+                                .card-header
+                                    button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
+                                .card-body(style="background-color: " + habit.label_color + ";")
+                                    h5= habit.title
+                                .card-footer
+                                    button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
+                    

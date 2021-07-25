@@ -33,7 +33,21 @@ router.post('/create/:habit', async function(req, res) {
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
+    console.log(habits)
     res.render('habits', {user: user, habits: habits});
+});
+
+//marks habit as completed/uncompleted
+router.post('/:habit/status', async function(req, res) {
+    const user = req.session.username;
+    const habit = req.params.habit;
+    //query habit_completion
+    if (req.body.hasOwnProperty("plus")) {
+        console.log('plus');
+    } else if (req.body.hasOwnProperty("minus")) {
+        console.log('minus');
+    }
+    console.log(habit);
 });
 
 module.exports = router;
