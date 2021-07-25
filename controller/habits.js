@@ -12,7 +12,7 @@ router.post('/create/:habit', async function(req, res) {
         const label = req.body.label;
         if (label.length == 0) {
             //combine error templates
-            res.render('habitError', {message: 'Please add a label', location: '/habits/create/journaling'});
+            res.render('error', {message: 'Please add a label', location: '/habits/create/journaling'});
         } else {
             const color = req.body.color;
             await queries.createHabit(user, habit, label, color);

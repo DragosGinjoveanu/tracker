@@ -32,7 +32,8 @@ app.set('views', [
   path.join(__dirname, 'views/journal'),
   path.join(__dirname, 'views/todos'),
   path.join(__dirname, 'views/stats'),
-  path.join(__dirname, 'views/habits')
+  path.join(__dirname, 'views/habits'),
+  path.join(__dirname, 'views/errors')
 ]);
 
 app.use(express.static(path.join(__dirname, 'public')));

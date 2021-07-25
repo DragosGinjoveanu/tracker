@@ -22,7 +22,7 @@ router.get('/view/all', async function (req, res) {
         undoneToDos = await queries.getAllToDos(user, false);
         doneToDos = await queries.getAllToDos(user, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
-            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks'});
+            res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks'});
         } else {
             res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
         }
@@ -40,12 +40,12 @@ router.post('/view', async function (req, res) {
         var undoneToDos = await queries.getToDosByDate(user, date, false);
         var doneToDos = await queries.getToDosByDate(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
-            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+            res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
         } else {
             res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
         }
     } catch (error) {
-        res.render('toDoError', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
+        res.render('error', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
     }
 });
 
@@ -61,7 +61,7 @@ router.get('/:id', authentication.restrictUser(), async function(req, res) {
 router.post('/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description'});
+        res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description'});
     } else {
         try {
             var user = req.session.username;
@@ -71,7 +71,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             await queries.createToDo(user, title, content, date);
             res.redirect(307, '/todos/view');
         } catch (error) {
-            res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
+            res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
         }
     }
 });
@@ -81,7 +81,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description'});
+        res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description'});
     } else {
         try {
             var title = req.body.title;
@@ -90,7 +90,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
             await queries.editToDo(title, content, date, id);
             res.redirect(307, '/todos/view');
         } catch (error) {
-            res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date'});
+            res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date'});
         }
     }
 });
