@@ -5,7 +5,11 @@ const functions = require('../helper/javascript/randomMessage.js');
 
 //default page when opening app (before logging in)
 router.get('/', function (req, res) {
-    res.render('tracker');
+    if (req.session.loggedin) {
+        res.redirect('/home')
+    } else {
+        res.render('tracker');
+    }
 });
 
 router.get('/home', authentication.restrictUser(), function (req, res) {

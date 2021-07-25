@@ -11,7 +11,6 @@ router.post('/create/:habit', async function(req, res) {
     if (req.body.hasOwnProperty("yes")) {
         const label = req.body.label;
         if (label.length == 0) {
-            //combine error templates
             res.render('error', {message: 'Please add a label', location: '/habits/create/journaling', method: 'POST'});
         } else {
             const color = req.body.color;
@@ -26,7 +25,7 @@ router.post('/create/:habit', async function(req, res) {
      }
 });
 
-//gets the user's habits (no labels)
+//gets all the user's habits (no labels)
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
