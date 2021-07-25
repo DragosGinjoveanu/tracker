@@ -27,7 +27,8 @@ CREATE TABLE habits (
 	name VARCHAR(255) REFERENCES users(name) ON DELETE CASCADE,
 	title VARCHAR(255),
 	label VARCHAR(255),
-	label_color VARCHAR(255)
+	label_color VARCHAR(255),
+	UNIQUE(name, title)
 );
 
 CREATE TABLE habit_completion (
