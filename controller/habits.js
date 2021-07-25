@@ -8,14 +8,30 @@ const authentication = require('../helper/javascript/authentication');
 router.post('/create/:habit', async function(req, res) {
     const user = req.session.username;
     const habit = req.params.habit;
-    //do you want to add a label?
-    res.redirect('http://localhost:3000/habits');
+    if (req.body.hasOwnProperty("yes")) {
+        const label = req.body.label;
+        if (label.length == 0) {
+            //combine error templates
+            res.render('habitError', {message: 'Please add a label', location: '/habits/create/journaling'});
+        } else {
+            const color = req.body.color;
+            await queries.createHabit(user, habit, label, color);
+            res.redirect('http://localhost:3000/habits');
+        }
+     } else if (req.body.hasOwnProperty("no")){
+        await queries.createHabit(user, habit);
+        res.redirect('http://localhost:3000/habits');
+     } else {
+        res.render('habitModal', {habit: habit, message: 'Do you want to add a label to ' + habit + '?'});
+     }
 });
 
 //gets the user's habits (no labels)
-router.get('/', async function(req, res) {
+router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
-    var habits;
+    var habits = await queries.getAllHabits(user);
+    console.log(habits, user)
+    res.render('habits', {habits: habits});
 });
 
 module.exports = router;

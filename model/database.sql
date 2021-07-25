@@ -26,10 +26,11 @@ CREATE TABLE habits (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) REFERENCES users(name) ON DELETE CASCADE,
 	title VARCHAR(255),
-	label VARCHAR(255)
+	label VARCHAR(255),
+	label_color VARCHAR(255)
 );
 
-CREATE TABLE habitcompletion (
+CREATE TABLE habit_completion (
 	name VARCHAR(255) REFERENCES users(name) ON DELETE CASCADE,
 	id INTEGER REFERENCES habits(id) ON DELETE CASCADE,
 	habit_date DATE,
