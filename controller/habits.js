@@ -29,7 +29,6 @@ router.post('/create/:habit', async function(req, res) {
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
-    console.log(habits, user)
     res.render('habits', {habits: habits});
 });
 
