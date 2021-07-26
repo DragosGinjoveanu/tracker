@@ -29,7 +29,6 @@ async function setHabitCompletion(user, status, id) {
 
 async function getHabitStatus(user, id, status) {
     const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE name = $1 AND id = $2 AND status = $3', [user, id, status]);
-    console.log(res.rows[0].count);
     return res.rows[0].count;
 }
 

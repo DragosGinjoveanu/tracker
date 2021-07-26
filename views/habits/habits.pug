@@ -24,8 +24,8 @@ block content
                                     button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
                                 .card-body(style="background-color: " + habit.label_color + ";")
                                     h5.text-center= habit.title
-                                    p= 'label: ' + habit.label
-                                        | <br> status: 
+                                    p= habit.label
+                                        | <br> + #{habit.done}/ - #{habit.undone}
                                 .card-footer.text-center
                                     button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
                     

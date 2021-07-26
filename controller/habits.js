@@ -34,8 +34,13 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
     // pt fiecare habit in parte
-    queries.getHabitStatus(user, 29, true);
-    queries.getHabitStatus(user, 29, false);
+    for (let i = 0; i < habits.length; i++) {
+        const id = habits[i].id;
+        const done = await queries.getHabitStatus(user, id, true);
+        const undone = await queries.getHabitStatus(user, id, false);
+        habits[i].done = done;
+        habits[i].undone = undone;
+    }
     res.render('habits', {user: user, habits: habits});
 });
 
