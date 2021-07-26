@@ -33,7 +33,9 @@ router.post('/create/:habit', async function(req, res) {
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
-    console.log(habits)
+    // pt fiecare habit in parte
+    queries.getHabitStatus(user, 29, true);
+    queries.getHabitStatus(user, 29, false);
     res.render('habits', {user: user, habits: habits});
 });
 
@@ -41,13 +43,15 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
 router.post('/:habit/status', async function(req, res) {
     const user = req.session.username;
     const habit = req.params.habit;
-    //query habit_completion
+    const habitStats = await queries.getHabit(user, habit);
+    const id = habitStats.id;
     if (req.body.hasOwnProperty("plus")) {
-        console.log('plus');
+        await queries.setHabitCompletion(user, true, id);
     } else if (req.body.hasOwnProperty("minus")) {
-        console.log('minus');
+        await queries.setHabitCompletion(user, false, id);
     }
-    console.log(habit);
+    res.redirect('http://localhost:3000/habits');
+    //modificam in pug pt fiecare completare/necompletare
 });
 
 module.exports = router;

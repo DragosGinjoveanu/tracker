@@ -11,4 +11,26 @@ async function getAllHabits(user) {
     return habits.rows;
 }
 
-module.exports = {createHabit, getAllHabits};
+async function getHabit(user, title) {
+    const habits = await pool.query('SELECT * FROM habits WHERE name = $1 AND title = $2', [user, title]);
+    return habits.rows[0];
+}
+
+async function setHabitCompletion(user, status, id) {
+    const current_date = await pool.query('SELECT CURRENT_DATE');
+    const habit_date = current_date.rows[0].current_date;
+    await pool.query('INSERT INTO habit_completion (name, id, habit_date, status) VALUES ($1, $2, $3, $4)', [user, id, habit_date, status]);
+    if (status == true) {
+        console.log('Habit id: ' + id + ' was marked as completed on ' + habit_date + '.');
+    } else {
+        console.log('Habit id: ' + id + ' was marked as uncompleted on ' + habit_date + '.');
+    }
+}
+
+async function getHabitStatus(user, id, status) {
+    const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE name = $1 AND id = $2 AND status = $3', [user, id, status]);
+    console.log(res.rows[0].count);
+    return res.rows[0].count;
+}
+
+module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus};
