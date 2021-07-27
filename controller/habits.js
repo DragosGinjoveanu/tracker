@@ -57,4 +57,10 @@ router.post('/:habit/status', async function(req, res) {
     res.redirect('http://localhost:3000/habits');
 });
 
+router.post('/:id/delete', async function(req, res) {
+    const id = req.params.id;
+    await queries.deleteHabit(id);
+    res.redirect('http://localhost:3000/habits');
+});
+
 module.exports = router;

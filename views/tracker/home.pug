@@ -5,18 +5,19 @@ block content
         .card-header
             h1= 'Hello ' + user + '!'
             h5= message
-        .card 
         .card-body
             .row
                 each image, index in habits.images
                     .col
-                        .card(style='width: 18rem;')
+                        .card(style='width: 20rem;')
                             img.card-img-top(src='/images/' + image, alt='Card image cap')
                             .card-body
-                                h3.card-title= habits.titles[index]
+                                h3.card-title.text-center= habits.titles[index]
                                 p.card-text= habits.descriptions[index]
                             .card-footer.text-muted
                                 form(action='/habits/create/' + habits.titles[index], method='POST')    
-                                    .btn-group(role='group')
-                                    button.btn.btn-info(type='button' data-toggle='modal' data-target='#writing') Why?
-                                    button.btn.btn-success(type='submit') Add habit
+                                    .row
+                                        .col.text-left
+                                            button.btn.btn-info(type='button' data-toggle='modal' data-target='#writing') Why?
+                                        .col.text-right
+                                            button.btn.btn-success.text-right(type='submit') Add habit

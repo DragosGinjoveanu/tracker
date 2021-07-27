@@ -32,4 +32,9 @@ async function getHabitStatus(user, id, status) {
     return res.rows[0].count;
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus};
+async function deleteHabit(id) {
+    await pool.query('DELETE FROM habits WHERE id = $1', [id]);
+    console.log('Habit id: ' + id + ' was deleted.');
+}
+
+module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus, deleteHabit};
