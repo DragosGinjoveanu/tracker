@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/habits/queries');
-const authentication = require('../helper/javascript/authentication');
+const authentication = require('../helper/authentication');
+const habitHelper = require('../helper/addHabitStats');
 
 //for adding habit from default list (home page)
 router.post('/create/:habit', async function(req, res) {
@@ -33,13 +34,8 @@ router.post('/create/:habit', async function(req, res) {
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
-    for (let i = 0; i < habits.length; i++) {
-        const id = habits[i].id;
-        const done = await queries.getHabitStatus(user, id, true);
-        const undone = await queries.getHabitStatus(user, id, false);
-        habits[i].done = done;
-        habits[i].undone = undone;
-    }
+    habits = await habitHelper.addHabitStats(user, habits);
+    console.log(habits)
     res.render('habits', {user: user, habits: habits});
 });
 
@@ -56,6 +52,16 @@ router.post('/:habit/status', async function(req, res) {
     }
     res.redirect('http://localhost:3000/habits');
 });
+
+router.post('/label', async function(req, res){
+    const user = req.session.username;
+    const label = req.body.selection;
+    var habits = queries.getHabitsByLabel(user, label);
+    habits = await habitHelper.addHabitStats(user, habits);
+    console.log(habits);
+    res.render('habits', {user: user, habits: habits});
+});
+
 
 router.post('/:id/delete', async function(req, res) {
     const id = req.params.id;

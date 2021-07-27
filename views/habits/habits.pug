@@ -6,6 +6,14 @@ block content
             h2= user + '\'s habits'
             h5= '(' + habits.length + ' habit/s)'
             a(class="btn btn-secondary" href='http://localhost:3000/journal/page/create') Create custom habit
+            form(method = 'POST', action = '/habits/label')
+                .mb-3
+                    select.form-select(name='selection' onchange="this.form.submit();")
+                        option(selected) Select by label:
+                        option(value= 'no label') no label
+                        each habit in habits
+                            if habit.label != null
+                                option(value= habit.label)= habit.label
     .card 
         .card-body
             .row

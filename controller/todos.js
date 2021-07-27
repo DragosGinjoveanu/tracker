@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/todos/queries');
-const authentication = require('../helper/javascript/authentication');
+const authentication = require('../helper/authentication');
 const moment = require('moment');
 
 //'select todos by date' form

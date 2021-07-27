@@ -32,9 +32,18 @@ async function getHabitStatus(user, id, status) {
     return res.rows[0].count;
 }
 
+async function getHabitsByLabel(user, label) {
+    if (label == 'no label') {
+        const res = await pool.query('SELECT * FROM habits WHERE name = $1 AND label IS NULL', [user]);
+        return res.rows;
+    }
+    const res = await pool.query('SELECT * FROM habits WHERE name = $1 AND label = $2', [user, label]);
+    return res.rows;
+}
+
 async function deleteHabit(id) {
     await pool.query('DELETE FROM habits WHERE id = $1', [id]);
     console.log('Habit id: ' + id + ' was deleted.');
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus, deleteHabit};
+module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus, getHabitsByLabel, deleteHabit};

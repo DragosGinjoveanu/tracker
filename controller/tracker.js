@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authentication = require('../helper/javascript/authentication');
-const functions = require('../helper/javascript/randomMessage.js');
-const habits = require('../helper/javascript/homeHabits.js');
+const authentication = require('../helper/authentication');
+const functions = require('../helper/randomMessage.js');
+const habits = require('../helper/homeHabits.js');
 
 //default page when opening app (before logging in)
 router.get('/', function (req, res) {

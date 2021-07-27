@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/journal/queries');
-const authentication = require('../helper/javascript/authentication');
+const authentication = require('../helper/authentication');
 
 //gets all pages
 router.get('/', authentication.restrictUser(), async function (req, res) {
