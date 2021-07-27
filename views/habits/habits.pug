@@ -11,9 +11,9 @@ block content
                     select.form-select(name='selection' onchange="this.form.submit();")
                         option(selected) Select by label:
                         option(value= 'no label') no label
-                        each habit in habits
-                            if habit.label != null
-                                option(value= habit.label)= habit.label
+                        each val in labels
+                            if val.label != null
+                                option(value= val.label)= val.label
     .card 
         .card-body
             .row

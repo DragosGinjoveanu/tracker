@@ -11,6 +11,11 @@ async function getAllHabits(user) {
     return habits.rows;
 }
 
+async function getLabels(user) {
+    const labels = await pool.query('SELECT label FROM habits WHERE name = $1', [user]);
+    return labels.rows;
+}
+
 async function getHabit(user, title) {
     const habits = await pool.query('SELECT * FROM habits WHERE name = $1 AND title = $2', [user, title]);
     return habits.rows[0];
@@ -46,4 +51,4 @@ async function deleteHabit(id) {
     console.log('Habit id: ' + id + ' was deleted.');
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus, getHabitsByLabel, deleteHabit};
+module.exports = {createHabit, getAllHabits, getHabit, setHabitCompletion, getHabitStatus, getHabitsByLabel, deleteHabit, getLabels};

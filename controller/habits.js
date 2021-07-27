@@ -35,8 +35,9 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
-    console.log(habits)
-    res.render('habits', {user: user, habits: habits});
+    const labels = await queries.getLabels(user);
+    console.log(labels);
+    res.render('habits', {user: user, habits: habits, labels: labels});
 });
 
 //marks habit as completed/uncompleted
@@ -56,12 +57,11 @@ router.post('/:habit/status', async function(req, res) {
 router.post('/label', async function(req, res){
     const user = req.session.username;
     const label = req.body.selection;
-    var habits = queries.getHabitsByLabel(user, label);
+    var habits = await queries.getHabitsByLabel(user, label);
     habits = await habitHelper.addHabitStats(user, habits);
-    console.log(habits);
-    res.render('habits', {user: user, habits: habits});
+    const labels = await queries.getLabels(user);
+    res.render('habits', {user: user, habits: habits, labels: labels});
 });
-
 
 router.post('/:id/delete', async function(req, res) {
     const id = req.params.id;
