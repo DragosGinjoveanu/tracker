@@ -15,6 +15,10 @@ block content
                         option(value='green') green
                         option(value='blue') blue
                         option(value='red') red
+                .form-check
+                    input.form-check-input(type="checkbox", name="not_checked", value="false")
+                    input.form-check-input(type="checkbox", name="checked", checked, value="true")
+                    label.form-check-label(for='check') add color only
                 button.btn.btn-success(type='submit', name='yes') Add
                 button.btn.btn-danger(type='submit', name='no') No
 

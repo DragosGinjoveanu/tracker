@@ -12,11 +12,19 @@ router.post('/create/:habit', async function(req, res) {
     try {
         if (req.body.hasOwnProperty("yes")) {
             const label = req.body.label;
-            if (label.length == 0) {
+            if (label.length == 0 && req.body.checked == undefined) {
                 res.render('error', {user: user, message: 'Please add a label', location: '/habits/create/journaling', method: 'POST'});
-            } else {
+            } else if (req.body.checked != undefined && label.length != 0) {
+                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/create/journaling', method: 'POST'});
+            } else if (label.length == 0 && req.body.checked != undefined){
+                //color only
                 const color = req.body.color;
-                await queries.createHabit(user, habit, label, color);
+                await queries.createHabit(user, habit, color);
+                res.redirect('http://localhost:3000/habits');
+            } else if (label.length != 0) {
+                //color and label
+                const color = req.body.color;
+                await queries.createHabit(user, habit, color, label);
                 res.redirect('http://localhost:3000/habits');
             }
          } else if (req.body.hasOwnProperty("no")){
@@ -36,7 +44,6 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabels(user);
-    console.log(labels);
     res.render('habits', {user: user, habits: habits, labels: labels});
 });
 
