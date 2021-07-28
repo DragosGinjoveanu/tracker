@@ -39,7 +39,7 @@ router.post('/create/:habit', async function(req, res) {
 });
 
 //create custom habit page
-router.get('/create', function req(req, res) {
+router.get('/create', authentication.restrictUser(), function req(req, res) {
     const user = req.session.username;
     res.render('createHabit', {user: user});
 });
@@ -62,11 +62,12 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
-    res.render('habits', {user: user, habits: habits, labels: labels});
+    res.render('habits', {user: user, habits: habits, labels: labels, current_label: 'all'});
 });
 
 //marks habit as completed/uncompleted
 router.post('/:habit/status', async function(req, res) {
+    const current_label = req.body.current_label;
     const user = req.session.username;
     const habit = req.params.habit;
     const habitStats = await queries.getHabit(user, habit);
@@ -76,29 +77,36 @@ router.post('/:habit/status', async function(req, res) {
     } else if (req.body.hasOwnProperty("minus")) {
         await queries.setHabitCompletion(user, false, id);
     }
-    if ('ok') {
+    if (current_label == 'all') {
         res.redirect('http://localhost:3000/habits');
     } else {
-        res.redirect(307, req.session.habitUrl);
+        res.redirect(307, 'back');
     }
 });
 
 router.post('/label', async function(req, res){
     const user = req.session.username;
-    const label = req.body.label_selection;
+    var label = req.body.label_selection;
+    if (label == undefined) {
+        label = req.body.current_label;
+    }
     var habits = await queries.getHabitsByLabel(user, label);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
-    res.render('habits', {user: user, habits: habits, labels: labels});
+    res.render('habits', {user: user, habits: habits, labels: labels, current_label: label});
 });
 
 router.post('/color', async function(req, res){
     const user = req.session.username;
-    const color = req.body.color_selection;
+    const label = req.body.current_label;
+    var color = req.body.color_selection;
+    if (color == undefined) {
+        color = label
+    }
     var habits = await queries.getHabitsByColor(user, color);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
-    res.render('habits', {user: user, habits: habits, labels: labels});
+    res.render('habits', {user: user, habits: habits, labels: labels, current_label: color});
 });
 
 router.post('/:id/delete', async function(req, res) {

@@ -6,50 +6,53 @@ block content
             h2= user + '\'s habits'
             h5= '(' + habits.length + ' habit/s)'
             a(class="btn btn-secondary" href='http://localhost:3000/habits/create') Create custom habit
-            .row 
-                .col
-                    form(method = 'POST', action = '/habits/label')
-                        .mb-3
-                            select.form-select(name='label_selection' onchange="this.form.submit();")
-                                option(selected) Select by label:
-                                option(value= 'no label') no label
-                                each val in labels.labels
-                                    if val.label != null
-                                        option(value= val.label)= val.label
-                .col 
-                    form(method = 'POST', action = '/habits/color')
-                        .mb-3
-                            select.form-select(name='color_selection' onchange="this.form.submit();")
-                                option(selected) Select by color:
-                                each val in labels.colors
-                                    option(value= val.label_color)= val.label_color
+            if habits.length != 0
+                .row 
+                    .col
+                        form(method = 'POST', action = '/habits/label')
+                            input(type='hidden', value= current_label, name='current_label')
+                            .mb-3
+                                select.form-select(name='label_selection' onchange="this.form.submit();")
+                                    option(selected) Select by label:
+                                    option(value= 'no label') no label
+                                    each val in labels.labels
+                                        if val.label != null
+                                            option(value= val.label)= val.label
+                    .col 
+                        form(method = 'POST', action = '/habits/color')
+                            input(type='hidden', value= current_label, name='current_label')
+                            .mb-3
+                                select.form-select(name='color_selection' onchange="this.form.submit();")
+                                    option(selected) Select by color:
+                                    each val in labels.colors
+                                        option(value= val.label_color)= val.label_color
     .card 
         .card-body
-            each habit, index in habits 
-                if index % 3 == 1
-                    .row
-                .col
-                    .card(style='width: 20rem;')       
-                        form(action="/habits/" + habit.title + '/status', method='POST') 
-                            .card-body
-                                .row
-                                    .col.text-left 
-                                        button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
-                                    .col.text-center
-                                        h5(style="color: " + habit.label_color + ";").text-center= habit.title
-                                        p= habit.label
-                                            | <br> + #{habit.done}/ - #{habit.undone}
-                                    .col.text-right
-                                        button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
-                            .card-footer.text-muted.text-center
-                                .dropdown
-                                    button.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
-                                        | <i class="las la-hammer"></i>
-                                        span.caret
-                                    ul.dropdown-menu
-                                        li
-                                        a(href='#') HTML
-                                        li
-                                        a(href='#') CSS
-                                        li
-                                        a(href='#') JavaScript
+            .row
+                each habit, index in habits 
+                    .col
+                        .card(style='width: 20rem;')       
+                            form(action="/habits/" + habit.title + '/status', method='POST') 
+                                input(type='hidden', value= current_label, name='current_label')
+                                .card-body
+                                    .row
+                                        .col.text-left 
+                                            button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
+                                        .col.text-center
+                                            h5(style="color: " + habit.label_color + ";").text-center= habit.title
+                                            p= habit.label
+                                                | <br> + #{habit.done}/ - #{habit.undone}
+                                        .col.text-right
+                                            button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
+                                .card-footer.text-muted.text-center
+                                    .dropdown
+                                        button.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
+                                            | <i class="las la-hammer"></i>
+                                            span.caret
+                                        ul.dropdown-menu
+                                            li
+                                            a(href='#') HTML
+                                            li
+                                            a(href='#') CSS
+                                            li
+                                            a(href='#') JavaScript
