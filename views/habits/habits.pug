@@ -6,14 +6,23 @@ block content
             h2= user + '\'s habits'
             h5= '(' + habits.length + ' habit/s)'
             a(class="btn btn-secondary" href='http://localhost:3000/journal/page/create') Create custom habit
-            form(method = 'POST', action = '/habits/label')
-                .mb-3
-                    select.form-select(name='selection' onchange="this.form.submit();")
-                        option(selected) Select by label:
-                        option(value= 'no label') no label
-                        each val in labels
-                            if val.label != null
-                                option(value= val.label)= val.label
+            .row 
+                .col
+                    form(method = 'POST', action = '/habits/label')
+                        .mb-3
+                            select.form-select(name='label_selection' onchange="this.form.submit();")
+                                option(selected) Select by label:
+                                option(value= 'no label') no label
+                                each val in labels.labels
+                                    if val.label != null
+                                        option(value= val.label)= val.label
+                .col 
+                    form(method = 'POST', action = '/habits/color')
+                        .mb-3
+                            select.form-select(name='color_selection' onchange="this.form.submit();")
+                                option(selected) Select by color:
+                                each val in labels.colors
+                                    option(value= val.label_color)= val.label_color
     .card 
         .card-body
             .row

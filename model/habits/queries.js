@@ -16,9 +16,13 @@ async function getHabit(user, title) {
     return habits.rows[0];
 }
 
-async function getLabels(user) {
-    const labels = await pool.query('SELECT label FROM habits WHERE name = $1', [user]);
-    return labels.rows;
+async function getLabelsAndColors(user) {
+    const colors_res = await pool.query('SELECT DISTINCT label_color FROM habits WHERE name = $1', [user]);
+    const labels_res = await pool.query('SELECT DISTINCT label FROM habits WHERE name = $1', [user]);
+    var labels = {};
+    labels.colors = colors_res.rows;
+    labels.labels = labels_res.rows;
+    return labels;
 }
 
 async function setHabitCompletion(user, status, id) {
@@ -47,11 +51,8 @@ async function getHabitsByLabel(user, label) {
 }
 
 async function getHabitsByColor(user, color) {
-    if (label == 'black') {
-        const res = await pool.query('SELECT * FROM habits WHERE name = $1 AND label IS NULL', [user]);
-        return res.rows;
-    }
     const res = await pool.query('SELECT * FROM habits WHERE name = $1 AND label_color = $2', [user, color]);
+    console.log(res)
     return res.rows;
 }
 
@@ -60,4 +61,4 @@ async function deleteHabit(id) {
     console.log('Habit id: ' + id + ' was deleted.');
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, getLabels, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, deleteHabit};
+module.exports = {createHabit, getAllHabits, getHabit, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, deleteHabit};

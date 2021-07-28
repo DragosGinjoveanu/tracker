@@ -43,7 +43,7 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
-    const labels = await queries.getLabels(user);
+    const labels = await queries.getLabelsAndColors(user);
     res.render('habits', {user: user, habits: habits, labels: labels});
 });
 
@@ -58,15 +58,24 @@ router.post('/:habit/status', async function(req, res) {
     } else if (req.body.hasOwnProperty("minus")) {
         await queries.setHabitCompletion(user, false, id);
     }
-    res.redirect('http://localhost:3000/habits');
+    res.redirect(307, 'back');
 });
 
 router.post('/label', async function(req, res){
     const user = req.session.username;
-    const label = req.body.selection;
+    const label = req.body.label_selection;
     var habits = await queries.getHabitsByLabel(user, label);
     habits = await habitHelper.addHabitStats(user, habits);
-    const labels = await queries.getLabels(user);
+    const labels = await queries.getLabelsAndColors(user);
+    res.render('habits', {user: user, habits: habits, labels: labels});
+});
+
+router.post('/color', async function(req, res){
+    const user = req.session.username;
+    const color = req.body.color_selection;
+    var habits = await queries.getHabitsByColor(user, color);
+    habits = await habitHelper.addHabitStats(user, habits);
+    const labels = await queries.getLabelsAndColors(user);
     res.render('habits', {user: user, habits: habits, labels: labels});
 });
 
