@@ -13,9 +13,9 @@ router.post('/create/:habit', async function(req, res) {
         if (req.body.hasOwnProperty("yes")) {
             const label = req.body.label;
             if (label.length == 0 && req.body.checked == undefined) {
-                res.render('error', {user: user, message: 'Please add a label', location: '/habits/create/journaling', method: 'POST'});
+                res.render('error', {user: user, message: 'Please add a label', location: '/habits/create/' + habit, method: 'POST'});
             } else if (req.body.checked != undefined && label.length != 0) {
-                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/create/journaling', method: 'POST'});
+                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/create/' + habit, method: 'POST'});
             } else if (label.length == 0 && req.body.checked != undefined){
                 //color only
                 const color = req.body.color;
@@ -34,7 +34,7 @@ router.post('/create/:habit', async function(req, res) {
             res.render('habitModal', {user: user, habit: habit, message: 'Do you want to add a label to ' + habit + '?'});
          }
     } catch (error) {
-        res.render('error', {user: user, message: 'The habit already exists', location: '/home'});
+        res.render('error', {user: user, message: 'The habit already exists', location: '/habits'});
     }
 });
 
@@ -62,7 +62,6 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
-    console.log(labels)
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: 'all'});
 });
 
