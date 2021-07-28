@@ -134,8 +134,12 @@ router.post('/:id/delete', async function(req, res) {
 router.post('/:id/reset', async function(req, res) {
     const id = req.params.id;
     await queries.resetHabitStats(id);
-    //redirectionare
-    res.redirect('http://localhost:3000/habits');
+    const current_label = req.body.current_label;
+    if (current_label == 'all') {
+        res.redirect('http://localhost:3000/habits');
+    } else {
+        res.redirect(307, 'back');
+    }
 });
 
 

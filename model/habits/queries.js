@@ -60,4 +60,9 @@ async function deleteHabit(id) {
     console.log('Habit id: ' + id + ' was deleted.');
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, deleteHabit};
+async function resetHabitStats(id) {
+    await pool.query('DELETE FROM habit_completion WHERE id = $1', [id]);
+    console.log('Habit id: ' + id + ' has been reset.');
+}
+
+module.exports = {createHabit, getAllHabits, getHabit, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, deleteHabit, resetHabitStats};
