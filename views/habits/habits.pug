@@ -25,30 +25,31 @@ block content
                                     option(value= val.label_color)= val.label_color
     .card 
         .card-body
-            .row
-                each habit in habits 
-                    .col
-                        .card(style='width: 20rem;')       
-                            form(action="/habits/" + habit.title + '/status', method='POST') 
-                                .card-body
-                                    .row
-                                        .col.text-left 
-                                            button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
-                                        .col.text-center
-                                            h5(style="color: " + habit.label_color + ";").text-center= habit.title
-                                            p= habit.label
-                                                | <br> + #{habit.done}/ - #{habit.undone}
-                                        .col.text-right
-                                            button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
-                                .card-footer.text-muted.text-center
-                                    .dropdown
-                                        button.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
-                                            | <i class="las la-hammer"></i>
-                                            span.caret
-                                        ul.dropdown-menu
-                                            li
-                                            a(href='#') HTML
-                                            li
-                                            a(href='#') CSS
-                                            li
-                                            a(href='#') JavaScript
+            each habit, index in habits 
+                if index % 3 == 1
+                    .row
+                .col
+                    .card(style='width: 20rem;')       
+                        form(action="/habits/" + habit.title + '/status', method='POST') 
+                            .card-body
+                                .row
+                                    .col.text-left 
+                                        button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
+                                    .col.text-center
+                                        h5(style="color: " + habit.label_color + ";").text-center= habit.title
+                                        p= habit.label
+                                            | <br> + #{habit.done}/ - #{habit.undone}
+                                    .col.text-right
+                                        button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
+                            .card-footer.text-muted.text-center
+                                .dropdown
+                                    button.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
+                                        | <i class="las la-hammer"></i>
+                                        span.caret
+                                    ul.dropdown-menu
+                                        li
+                                        a(href='#') HTML
+                                        li
+                                        a(href='#') CSS
+                                        li
+                                        a(href='#') JavaScript
