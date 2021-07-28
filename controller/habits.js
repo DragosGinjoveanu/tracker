@@ -84,6 +84,7 @@ router.post('/:habit/status', async function(req, res) {
     }
 });
 
+//gets habits by their label
 router.post('/label', async function(req, res){
     const user = req.session.username;
     var label = req.body.label_selection;
@@ -96,6 +97,7 @@ router.post('/label', async function(req, res){
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: label});
 });
 
+//gets habits by their color
 router.post('/color', async function(req, res){
     const user = req.session.username;
     const label = req.body.current_label;
@@ -109,10 +111,32 @@ router.post('/color', async function(req, res){
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: color});
 });
 
+router.get('/:id/edit', async function(req, res){
+    //query get habit
+});
+
+router.post('/:id/edit', async function(req, res){
+    //query edit habit
+});
+
+//deletes habit
 router.post('/:id/delete', async function(req, res) {
     const id = req.params.id;
     await queries.deleteHabit(id);
+    const current_label = req.body.current_label;
+    if (current_label == 'all') {
+        res.redirect('http://localhost:3000/habits');
+    } else {
+        res.redirect(307, 'back');
+    }
+});
+
+router.post('/:id/reset', async function(req, res) {
+    const id = req.params.id;
+    await queries.resetHabitStats(id);
+    //redirectionare
     res.redirect('http://localhost:3000/habits');
 });
+
 
 module.exports = router;
