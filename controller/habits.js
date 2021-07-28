@@ -62,6 +62,7 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     var habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
+    console.log(labels)
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: 'all'});
 });
 
@@ -120,16 +121,25 @@ router.get('/:id/edit', async function(req, res){
 });
 
 //edits habit
-router.post('/:id/edit', async function(req, res){
-    try {
-        const id = req.params.id;
-        const title = req.body.title;
-        const label = req.body.label;
-        const color = req.body.color;
-        await queries.editHabit(id, title, label, color);
-        res.redirect('http://localhost:3000/habits');
-    } catch (error) {
-        console.log(error.message)
+router.post('/:id/edit', body('title').isLength({ min: 1 }), async function(req, res){
+    const user = req.session.username;
+    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('error', {user: user, location: '/habits/' + id + '/edit', message: 'Please complete the habit\'s title'});
+    } else {
+        try {
+            const title = req.body.title;
+            var label = req.body.label;
+            if(label.length == 0) {
+                label = null;
+            }
+            const color = req.body.color;
+            await queries.editHabit(id, title, label, color);
+            res.redirect('http://localhost:3000/habits');
+        } catch (error) {
+            res.render('error', {user: user, message: 'The habit already exists', location: '/habits/' + id + '/edit'});
+        }
     }
 });
 
