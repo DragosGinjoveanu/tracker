@@ -1,0 +1,14 @@
+extends ../layouts/loggedInLayout
+
+block content
+    .card.mx-auto(style='width: 20rem;')
+        .card-header 
+            h3(style="color:green;") Create a custom habit!
+        .card-body
+            form(action= '/habits/custom/create'  method='POST')
+                .mb-3
+                    label.form-label(for='title') Title
+                    input.form-control(type='text', name='title' placeholder='add the habit title')
+                button.btn.btn-success(type='submit') Add habit
+        .card-footer.text-muted.text-center
+            a(class="btn btn-secondary" href='http://localhost:3000/habits') View your habits

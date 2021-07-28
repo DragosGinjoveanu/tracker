@@ -38,6 +38,24 @@ router.post('/create/:habit', async function(req, res) {
     }
 });
 
+//create custom habit page
+router.get('/create', function req(req, res) {
+    const user = req.session.username;
+    res.render('createHabit', {user: user});
+});
+
+//redirects to the create habit route for adding labels
+router.post('/custom/create', body('title').isLength({ min: 1 }), async function(req, res) {
+    const habit = req.body.title;
+    const user = req.session.username;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('error', {user: user, location: '/habits/create', message: 'Please complete the habit\'s title'});
+    } else {
+        res.redirect(307, '/habits/create/' + habit);
+    }
+});
+
 //gets all the user's habits (no labels)
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
@@ -58,7 +76,11 @@ router.post('/:habit/status', async function(req, res) {
     } else if (req.body.hasOwnProperty("minus")) {
         await queries.setHabitCompletion(user, false, id);
     }
-    res.redirect(307, 'back');
+    if ('ok') {
+        res.redirect('http://localhost:3000/habits');
+    } else {
+        res.redirect(307, req.session.habitUrl);
+    }
 });
 
 router.post('/label', async function(req, res){

@@ -52,7 +52,6 @@ async function getHabitsByLabel(user, label) {
 
 async function getHabitsByColor(user, color) {
     const res = await pool.query('SELECT * FROM habits WHERE name = $1 AND label_color = $2', [user, color]);
-    console.log(res)
     return res.rows;
 }
 

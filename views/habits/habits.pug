@@ -5,7 +5,7 @@ block content
         .card-body.text-center
             h2= user + '\'s habits'
             h5= '(' + habits.length + ' habit/s)'
-            a(class="btn btn-secondary" href='http://localhost:3000/journal/page/create') Create custom habit
+            a(class="btn btn-secondary" href='http://localhost:3000/habits/create') Create custom habit
             .row 
                 .col
                     form(method = 'POST', action = '/habits/label')
@@ -31,7 +31,7 @@ block content
                         .card(style='width: 20rem;')       
                             form(action="/habits/" + habit.title + '/status', method='POST') 
                                 .card-body
-                                    .row 
+                                    .row
                                         .col.text-left 
                                             button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
                                         .col.text-center
