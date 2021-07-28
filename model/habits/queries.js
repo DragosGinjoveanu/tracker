@@ -11,8 +11,13 @@ async function getAllHabits(user) {
     return habits.rows;
 }
 
-async function getHabit(user, title) {
+async function getHabitByTitle(user, title) {
     const habits = await pool.query('SELECT * FROM habits WHERE name = $1 AND title = $2', [user, title]);
+    return habits.rows[0];
+}
+
+async function getHabitById(id) {
+    const habits = await pool.query('SELECT * FROM habits WHERE id = $1', [id]);
     return habits.rows[0];
 }
 
@@ -55,6 +60,11 @@ async function getHabitsByColor(user, color) {
     return res.rows;
 }
 
+async function editHabit(id, title, label, color) {
+    await pool.query('UPDATE habits SET title = $1, label = $2, label_color = $3 WHERE id = $4', [title, label, color, id]);
+    console.log('Habit id: ' + id + ' was edited.');
+}
+
 async function deleteHabit(id) {
     await pool.query('DELETE FROM habits WHERE id = $1', [id]);
     console.log('Habit id: ' + id + ' was deleted.');
@@ -65,4 +75,4 @@ async function resetHabitStats(id) {
     console.log('Habit id: ' + id + ' has been reset.');
 }
 
-module.exports = {createHabit, getAllHabits, getHabit, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, deleteHabit, resetHabitStats};
+module.exports = {createHabit, getAllHabits, getHabitByTitle, getHabitById, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, editHabit, deleteHabit, resetHabitStats};

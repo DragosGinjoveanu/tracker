@@ -70,7 +70,8 @@ router.post('/:habit/status', async function(req, res) {
     const current_label = req.body.current_label;
     const user = req.session.username;
     const habit = req.params.habit;
-    const habitStats = await queries.getHabit(user, habit);
+    //problem
+    const habitStats = await queries.getHabitByTitle(user, habit);
     const id = habitStats.id;
     if (req.body.hasOwnProperty("plus")) {
         await queries.setHabitCompletion(user, true, id);
@@ -111,12 +112,25 @@ router.post('/color', async function(req, res){
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: color});
 });
 
+//gets selected habit
 router.get('/:id/edit', async function(req, res){
-    //query get habit
+    const id = req.params.id;
+    const habit = await queries.getHabitById(id);
+    res.render('editHabit', {user: req.session.username, habit: habit});
 });
 
+//edits habit
 router.post('/:id/edit', async function(req, res){
-    //query edit habit
+    try {
+        const id = req.params.id;
+        const title = req.body.title;
+        const label = req.body.label;
+        const color = req.body.color;
+        await queries.editHabit(id, title, label, color);
+        res.redirect('http://localhost:3000/habits');
+    } catch (error) {
+        console.log(error.message)
+    }
 });
 
 //deletes habit
@@ -131,6 +145,7 @@ router.post('/:id/delete', async function(req, res) {
     }
 });
 
+//resets habit stats(completions/uncompletions)
 router.post('/:id/reset', async function(req, res) {
     const id = req.params.id;
     await queries.resetHabitStats(id);

@@ -1,0 +1,28 @@
+extends ../layouts/loggedInLayout
+
+block content
+    .card.mx-auto(style='width: 20rem;')
+        .card-header 
+            h3(style="color:green;") Edit habit
+            h5= habit.title
+        .card-body
+            form(action= '/habits/' + habit.id + '/edit'  method='POST')
+                .mb-3
+                    label.form-label(for='title') Title
+                    input.form-control(type='text', name='title', placeholder='add new title', value= habit.title)
+                .mb-3
+                    label.form-label(for='label') Label
+                    input.form-control(type='text', name='label', placeholder='add new label', value= habit.label)
+                .mb-3
+                    label.form-label(for='color') Color
+                    select.form-select(name='color')
+                        option(selected, value= habit.label_color)= 'Current: ' + habit.label_color  
+                        option(value='black') black
+                        option(value='green') green
+                        option(value='blue') blue
+                        option(value='red') red
+                        option(value='yellow') yellow
+                        option(value='brown') brown   
+                button.btn.btn-success(type='submit') Edit habit
+        .card-footer.text-muted.text-center
+            a(class="btn btn-secondary" href='http://localhost:3000/habits') View your habits
