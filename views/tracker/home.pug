@@ -5,6 +5,13 @@ block content
         .card-header
             h1= 'Hello ' + user + '!'
             h5= message
+        .card-header.text-center
+            .row
+                .col.text-left
+                    a(class="btn btn-primary" href='http://localhost:3000/habits/info') Info
+                .col.text-left
+                    h3 List of habits for success:
+                .col
         .card-body
             .row
                 each image, index in habits.images

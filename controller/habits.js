@@ -5,6 +5,12 @@ const queries = require('../model/habits/queries');
 const authentication = require('../helper/authentication');
 const habitHelper = require('../helper/addHabitStats');
 
+//info of how the habits work for the user
+router.get('/info', authentication.restrictUser(), function(req, res) {
+    const user = req.session.username;
+    res.render('info', {user: user});
+});
+
 //for adding habit from default list (home page)
 router.post('/:habit/create', async function(req, res) {
     const user = req.session.username;
