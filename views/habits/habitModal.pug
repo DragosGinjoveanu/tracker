@@ -5,7 +5,7 @@ block content
         .card-header.text-center
             h4(style="color:green;")= message
         .card-body.text-center
-            form(action='/habits/create/' + habit, method='POST')
+            form(action='/habits/' + habit + '/create', method='POST')
                 .mb-3
                     input#label.form-control(type='text', name='label' placeholder='add a label')
                 .mb-3

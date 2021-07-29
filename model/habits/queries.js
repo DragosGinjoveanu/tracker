@@ -30,6 +30,11 @@ async function getLabelsAndColors(user) {
     return labels;
 }
 
+async function getHabitStatus(user, id, status) {
+    const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE name = $1 AND id = $2 AND status = $3', [user, id, status]);
+    return res.rows[0].count;
+}
+
 async function setHabitCompletion(user, status, id) {
     const current_date = await pool.query('SELECT CURRENT_DATE');
     const habit_date = current_date.rows[0].current_date;
@@ -39,11 +44,6 @@ async function setHabitCompletion(user, status, id) {
     } else {
         console.log('Habit id: ' + id + ' was marked as uncompleted on ' + habit_date + '.');
     }
-}
-
-async function getHabitStatus(user, id, status) {
-    const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE name = $1 AND id = $2 AND status = $3', [user, id, status]);
-    return res.rows[0].count;
 }
 
 async function getHabitsByLabel(user, label) {

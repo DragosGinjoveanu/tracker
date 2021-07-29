@@ -6,16 +6,16 @@ const authentication = require('../helper/authentication');
 const habitHelper = require('../helper/addHabitStats');
 
 //for adding habit from default list (home page)
-router.post('/create/:habit', async function(req, res) {
+router.post('/:habit/create', async function(req, res) {
     const user = req.session.username;
     const habit = req.params.habit;
     try {
         if (req.body.hasOwnProperty("yes")) {
             const label = req.body.label;
             if (label.length == 0 && req.body.checked == undefined) {
-                res.render('error', {user: user, message: 'Please add a label', location: '/habits/create/' + habit, method: 'POST'});
+                res.render('error', {user: user, message: 'Please add a label', location: '/habits/' + habit + '/create', method: 'POST'});
             } else if (req.body.checked != undefined && label.length != 0) {
-                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/create/' + habit, method: 'POST'});
+                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/' + habit + '/create', method: 'POST'});
             } else if (label.length == 0 && req.body.checked != undefined){
                 //color only
                 const color = req.body.color;
@@ -38,24 +38,6 @@ router.post('/create/:habit', async function(req, res) {
     }
 });
 
-//create custom habit page
-router.get('/create', authentication.restrictUser(), function req(req, res) {
-    const user = req.session.username;
-    res.render('createHabit', {user: user});
-});
-
-//redirects to the create habit route for adding labels
-router.post('/custom/create', body('title').isLength({ min: 1 }), async function(req, res) {
-    const habit = req.body.title;
-    const user = req.session.username;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.render('error', {user: user, location: '/habits/create', message: 'Please complete the habit\'s title'});
-    } else {
-        res.redirect(307, '/habits/create/' + habit);
-    }
-});
-
 //gets all the user's habits (no labels)
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
@@ -65,12 +47,29 @@ router.get('/', authentication.restrictUser(), async function(req, res) {
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: 'all'});
 });
 
+//create custom habit page
+router.get('/create', authentication.restrictUser(), function req(req, res) {
+    const user = req.session.username;
+    res.render('createHabit', {user: user});
+});
+
+//redirects to the create habit route for adding labels
+router.post('/create/custom', body('title').isLength({ min: 1 }), async function(req, res) {
+    const habit = req.body.title;
+    const user = req.session.username;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('error', {user: user, location: '/habits/create', message: 'Please complete the habit\'s title'});
+    } else {
+        res.redirect(307, '/habits/' + habit + '/create');
+    }
+});
+
 //marks habit as completed/uncompleted
 router.post('/:habit/status', async function(req, res) {
     const current_label = req.body.current_label;
     const user = req.session.username;
     const habit = req.params.habit;
-    //problem
     const habitStats = await queries.getHabitByTitle(user, habit);
     const id = habitStats.id;
     if (req.body.hasOwnProperty("plus")) {
@@ -165,6 +164,5 @@ router.post('/:id/reset', async function(req, res) {
         res.redirect(307, 'back');
     }
 });
-
 
 module.exports = router;

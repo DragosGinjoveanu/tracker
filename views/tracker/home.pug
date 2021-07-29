@@ -15,9 +15,7 @@ block content
                                 h3.card-title.text-center= habits.titles[index]
                                 p.card-text= habits.descriptions[index]
                             .card-footer.text-muted
-                                form(action='/habits/create/' + habits.titles[index], method='POST')    
+                                form(action='/habits/' + habits.titles[index] + '/create', method='POST')    
                                     .row
-                                        .col.text-left
-                                            button.btn.btn-info(type='button' data-toggle='modal' data-target='#writing') Why?
                                         .col.text-right
                                             button.btn.btn-success.text-right(type='submit') Add habit
