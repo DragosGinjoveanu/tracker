@@ -9,52 +9,54 @@ block content
             a(class="btn btn-secondary" href='http://localhost:3000/habits/create') Create custom habit
             a(class="btn btn-primary" href='http://localhost:3000/habits') View all habits
             if habits.length != 0
-                .row 
-                    .col
-                        form(method = 'POST', action = '/habits/label')
-                            input(type='hidden', value= current_label, name='current_label')
-                            .mb-3
-                                select.form-select(name='label_selection' onchange="this.form.submit();")
-                                    option(selected) Select by label:
-                                    option(value= 'no label') no label
-                                    each val in labels.labels
-                                        if val.label != null
-                                            option(value= val.label)= val.label
-                    .col 
-                        form(method = 'POST', action = '/habits/color')
-                            input(type='hidden', value= current_label, name='current_label')
-                            .mb-3
-                                select.form-select(name='color_selection' onchange="this.form.submit();")
-                                    option(selected) Select by color:
-                                    each val in labels.colors
-                                        option(value= val.label_color)= val.label_color
-    .card 
-        .card-body
-            .row
-                each habit, index in habits 
-                    .col
-                        .card(style='width: 20rem;')       
-                                .card-body
-                                    form(action='/habits/' + habit.title + '/status', method='POST') 
-                                        input(type='hidden', value= current_label, name='current_label')
-                                        .row
-                                            .col.text-left 
-                                                button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
-                                            .col.text-center
-                                                h5(style="color: " + habit.label_color + ";").text-center= habit.title
-                                                p= habit.label
-                                                    | <br> + #{habit.done}/ - #{habit.undone}
-                                            .col.text-right
-                                                button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
-                                .card-footer.text-muted.text-center
-                                    .dropup
-                                        button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                                            | <i class="las la-hammer"></i>
-                                        .dropdown-menu(aria-labelledby='dropdownMenuButton')
-                                            a.dropdown-item(href='http://localhost:3000/habits/' + habit.id + '/edit') Edit
-                                            form(action='/habits/' + habit.id + '/delete', method='POST')
-                                                input(type='hidden', value= current_label, name='current_label')
-                                                button.dropdown-item(type='submit') Delete
-                                            form(action='/habits/' + habit.id + '/reset', method='POST') 
-                                                input(type='hidden', value= current_label, name='current_label')
-                                                button.dropdown-item(type='submit') Reset progress
+                .card-body
+                    .row 
+                        .col
+                            form(method = 'POST', action = '/habits/label')
+                                input(type='hidden', value= current_label, name='current_label')
+                                .mb-3
+                                    select.form-select(name='label_selection' onchange="this.form.submit();")
+                                        option(selected) Select by label:
+                                        option(value= 'no label') no label
+                                        each val in labels.labels
+                                            if val.label != null
+                                                option(value= val.label)= val.label
+                        .col
+                            form(method = 'POST', action = '/habits/color')
+                                input(type='hidden', value= current_label, name='current_label')
+                                .mb-3
+                                    select.form-select(name='color_selection' onchange="this.form.submit();")
+                                        option(selected) Select by color:
+                                        each val in labels.colors
+                                            option(value= val.label_color)= val.label_color
+    if habits.length != 0
+        .card 
+            .card-body
+                .row
+                    each habit, index in habits 
+                        .col
+                            .card(style='width: 20rem;')       
+                                    .card-body
+                                        form(action='/habits/' + habit.title + '/status', method='POST') 
+                                            input(type='hidden', value= current_label, name='current_label')
+                                            .row
+                                                .col.text-left 
+                                                    button.btn.btn-success(type='submit', name='plus') <i class="las la-plus-square"></i>
+                                                .col.text-center
+                                                    h5(style="color: " + habit.label_color + ";").text-center= habit.title
+                                                    p= habit.label
+                                                        | <br> + #{habit.done}/ - #{habit.undone}
+                                                .col.text-right
+                                                    button.btn.btn-danger(type='submit', name='minus') <i class="las la-minus-square"></i>
+                                    .card-footer.text-muted.text-center
+                                        .dropup
+                                            button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                                | <i class="las la-hammer"></i>
+                                            .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                                                a.dropdown-item(href='http://localhost:3000/habits/' + habit.id + '/edit') Edit
+                                                form(action='/habits/' + habit.id + '/delete', method='POST')
+                                                    input(type='hidden', value= current_label, name='current_label')
+                                                    button.dropdown-item(type='submit') Delete
+                                                form(action='/habits/' + habit.id + '/reset', method='POST') 
+                                                    input(type='hidden', value= current_label, name='current_label')
+                                                    button.dropdown-item(type='submit') Reset progress
