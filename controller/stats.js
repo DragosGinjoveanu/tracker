@@ -49,8 +49,10 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
             uncompletedHabits[i] = parseInt(await queries.getHabitsStatsByDate(false, days[i], name));
         }
         //error: pass data to chart.js not working
-        const stats = {name, points, pages, doneTasks, undoneTasks, percentage, completedHabits, uncompletedHabits};
-        res.render('userStats', {user: req.session.username, stats: stats});
+        const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
+        const data = {completedHabits, uncompletedHabits};
+        console.log(data.completedHabits)
+        res.render('userStats', {user: req.session.username, stats: stats, data: data});
     } catch (error) {
         console.log(error.message);
     }
