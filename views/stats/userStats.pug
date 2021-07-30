@@ -21,7 +21,6 @@ block content
   .card.text-center
     h5 Habits progress (last week)
     canvas#myChart(width='200' height='50')
-  -console.log(stats.completedHabits, stats.uncompletedHabits);
   script.
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -31,14 +30,14 @@ block content
         datasets: [
           {
             label: 'failed habits',
-            data: stats.uncompletedHabits,
+            data: [],
             backgroundColor: 'red',
             borderColor: 'red',
             borderWidth: 3
           },
           {
             label: 'completed habits',
-            data: stats.completedHabits,
+            data: [],
             backgroundColor: 'green',
             borderColor: 'green',
             borderWidth: 3
@@ -53,3 +52,12 @@ block content
         }
       }
     });
+    function addData(chart, data) {
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(data);
+      });
+      chart.update();
+    }
+    for (let i = 0; i <= 6; i++) {
+      addData(myChart, 2);
+    }

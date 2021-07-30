@@ -16,6 +16,7 @@ block content
                         option(value='points') total points
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
+                        option(value='habits') completed habits
     ul
         each val in users
             .card
@@ -27,8 +28,15 @@ block content
                         a(class="link-success", href='http://localhost:3000/stats/' + val.name)
                             h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
                     if val.points != undefined
-                        h5.card-text= 'Points: ' + val.points
+                        h5.card-text= 'Points: '
+                            span(style='color:red')= val.points
                     else if val.numberofpages != undefined
-                        h5.card-text= 'Journal pages: ' + val.numberofpages
+                        h5.card-text= 'Journal pages: '
+                            span(style='color:red')= val.numberofpages
                     else if val.numberoftasks != undefined
-                         h5.card-text= 'Done tasks: ' + val.numberoftasks
+                         h5.card-text= 'Done tasks: '
+                            span(style='color:red')= val.numberoftasks
+                    else if val.numberofhabits != undefined
+                        h5.card-text= 'Completed habits '
+                            span(style='color:red')= val.numberofhabits
+                            |  times
