@@ -1,0 +1,9 @@
+extends ../layouts/loggedInLayout
+
+block content
+    .card
+        .card-header.text-center
+            h4(style="color:red;")= message
+        .card-body.text-center
+            form(action='http://localhost:3000' + location, method=method)
+                button.btn.btn-secondary(type='submit') Go back

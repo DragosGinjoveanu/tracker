@@ -1,9 +1,0 @@
-extends ../logedInLayout
-
-block content
-    .card
-        .card-header.text-center
-            h4(style="color:red;")= message
-        .card-body.text-center
-            -var link= 'http://localhost:3000' + location;
-            a(class="btn btn-secondary" href=link) Go back

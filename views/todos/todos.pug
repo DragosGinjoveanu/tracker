@@ -1,4 +1,4 @@
-extends ../logedInLayout
+extends ../layouts/loggedInLayout
 
 block content
     .card
@@ -19,6 +19,8 @@ block content
                         .card-body
                             h3.card-title(style="color:#585858;")=val.title 
                             h5.card-text= val.content
+                            if date == '-all-'
+                                h5.card-text= val.date
                             -var editUrl = 'http://localhost:3000/todos/' + val.id;
                             -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
                             -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/done';
@@ -28,7 +30,7 @@ block content
                                     button.btn.btn-danger(type='submit') Delete
                                 form(method="POST" action=doneUrl)
                                     button.btn.btn-primary(type='submit') Done
-                                    input.form-control(type='hidden', name ='date', value=date)
+                                    input.form-control(type='hidden', name ='date', value=val.date)
     .card 
         .card-header.text-center
             h4 Finished tasks 
@@ -39,6 +41,8 @@ block content
                         .card-body
                             h3.card-title(style="color:#585858;")=val.title 
                             h5.card-text= val.content
+                            if date == '-all-'
+                                h5.card-text= val.date
                             -var editUrl = 'http://localhost:3000/todos/' + val.id;
                             -var deleteUrl = 'http://localhost:3000/todos/' + val.id + '/delete';
                             -var doneUrl = 'http://localhost:3000/todos/' + val.id + '/undone';
@@ -48,4 +52,4 @@ block content
                                     button.btn.btn-danger(type='submit') Delete
                                 form(method="POST" action=doneUrl)
                                     button.btn.btn-primary(type='submit') Undone
-                                    input.form-control(type='hidden', name ='date', value=date)
+                                    input.form-control(type='hidden', name ='date', value=val.date)

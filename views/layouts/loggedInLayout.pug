@@ -9,11 +9,15 @@ head
   link(rel='stylesheet' href="/resources/demos/style.css")
   script(src='https://code.jquery.com/jquery-1.12.4.js')
   script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
+  //popper.js
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous")
   //bootstrap
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4' crossorigin='anonymous')
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x' crossorigin='anonymous')
   link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+  link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous")
+  script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous")
 body
     .container
       nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
@@ -21,6 +25,8 @@ body
           i.las.la-home
         #navbarNavDropdown.collapse.navbar-collapse
           ul.navbar-nav
+            li.nav-item
+              a.nav-link(href='http://localhost:3000/habits') Habits
             li.nav-item
               a.nav-link(href='http://localhost:3000/journal') Journal
             li.nav-item
@@ -42,6 +48,7 @@ body
                       span(aria-hidden='true') &times;
                   .modal-body
                     | Are you sure that you want to <i class="las la-trash"></i> your account? <br>
+                    | All of your stats and progress will be deleted. <br>
                     | This is a permanent decision. <br>
                     | Your choice, #{user}.
                   .modal-footer

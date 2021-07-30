@@ -1,0 +1,26 @@
+extends ../layouts/loggedInLayout
+
+block content
+    .card
+        .card-header.text-center
+            h4(style="color:green;")= message
+        .card-body.text-center
+            form(action='/habits/' + habit + '/create', method='POST')
+                .mb-3
+                    input#label.form-control(type='text', name='label' placeholder='add a label')
+                .mb-3
+                    select.form-select(name='color')
+                        option(selected, value='black') Color:
+                        option(value='black') black (default)
+                        option(value='green') green
+                        option(value='blue') blue
+                        option(value='red') red
+                        option(value='yellow') yellow
+                        option(value='brown') brown
+                .form-check
+                    input.form-check-input(type="checkbox", name="not_checked", value="false")
+                    input.form-check-input(type="checkbox", name="checked", checked, value="true")
+                    label.form-check-label(for='check') add color only
+                button.btn.btn-success(type='submit', name='yes') Add
+                button.btn.btn-danger(type='submit', name='no') No
+

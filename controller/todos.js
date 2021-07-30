@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/todos/queries');
-const authentication = require('../helper/javascript/authentication');
+const authentication = require('../helper/authentication');
 const moment = require('moment');
 
 //'select todos by date' form
@@ -15,20 +15,37 @@ router.get('/create', authentication.restrictUser(), function (req, res) {
     res.render('createToDo', {user: req.session.username});
 });
 
+//gets all the todos
+router.get('/view/all', async function (req, res) {
+    try {
+        const user = req.session.username;
+        undoneToDos = await queries.getAllToDos(user, false);
+        doneToDos = await queries.getAllToDos(user, true);
+        if (undoneToDos.length == 0 && doneToDos.length == 0) {
+            res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks'});
+        } else {
+            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 //gets todos from selected date
 router.post('/view', async function (req, res) {
     try {
-        var user = req.session.username;
+        const user = req.session.username;
         var date = req.body.date;
-        var undoneToDos = await queries.getUndoneToDos(user, date);
-        var doneToDos = await queries.getDoneToDos(user, date);
+        date = moment(date).format('YYYY-MM-DD'); // correct format
+        var undoneToDos = await queries.getToDosByDate(user, date, false);
+        var doneToDos = await queries.getToDosByDate(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
-            res.render('toDoError', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
+            res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date});
         } else {
             res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: date});
         }
     } catch (error) {
-        res.render('toDoError', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
+        res.render('error', {user: req.session.username, location: '/todos', message: 'Please enter valid date'});
     }
 });
 
@@ -44,7 +61,7 @@ router.get('/:id', authentication.restrictUser(), async function(req, res) {
 router.post('/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description'});
+        res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description'});
     } else {
         try {
             var user = req.session.username;
@@ -54,7 +71,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             await queries.createToDo(user, title, content, date);
             res.redirect(307, '/todos/view');
         } catch (error) {
-            res.render('toDoError', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
+            res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date'});
         }
     }
 });
@@ -64,7 +81,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description'});
+        res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description'});
     } else {
         try {
             var title = req.body.title;
@@ -73,16 +90,17 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
             await queries.editToDo(title, content, date, id);
             res.redirect(307, '/todos/view');
         } catch (error) {
-            res.render('toDoError', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date'});
+            res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date'});
         }
     }
 });
 
 //deletes selected todo
 router.post('/:id/delete', async function(req, res) {
-    var id = req.params.id;
+    const id = req.params.id;
+    const user = req.session.username;
     try {
-        await queries.deleteToDo(id);
+        await queries.deleteToDo(user, id);
         res.redirect('http://localhost:3000/todos');
     } catch (error) {
         console.log(error.message);

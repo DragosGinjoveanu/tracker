@@ -1,8 +1,28 @@
-extends ../logedInLayout
+extends ../layouts/loggedInLayout
 
 block content
     .card
         .card-header
             h1= 'Hello ' + user + '!'
             h5= message
-        .card-body 
+        .card-header.text-center
+            .row
+                .col.text-left
+                    a(class="btn btn-primary" href='http://localhost:3000/habits/info') Info
+                .col.text-left
+                    h3 List of habits for success:
+                .col
+        .card-body
+            .row
+                each image, index in habits.images
+                    .col
+                        .card(style='width: 20rem;')
+                            img.card-img-top(src='/images/' + image, alt='Card image cap')
+                            .card-body
+                                h3.card-title.text-center= habits.titles[index]
+                                p.card-text= habits.descriptions[index]
+                            .card-footer.text-muted
+                                form(action='/habits/' + habits.titles[index] + '/create', method='POST')    
+                                    .row
+                                        .col.text-right
+                                            button.btn.btn-success.text-right(type='submit') Add habit

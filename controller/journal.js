@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/journal/queries');
-const authentication = require('../helper/javascript/authentication');
+const authentication = require('../helper/authentication');
 
 //gets all pages
 router.get('/', authentication.restrictUser(), async function (req, res) {
@@ -26,7 +26,7 @@ router.get('/page/:id', authentication.restrictUser(), async function(req, res) 
 router.post('/page/create', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {user: req.session.username, location: '/journal/page/create'});
+        res.render('error', {user: req.session.username, location: '/journal/page/create', message: 'Please complete all the fields!'});
     } else {
         try {
             var user = req.session.username;
@@ -45,7 +45,7 @@ router.post('/page/:id/edit', body('title').isLength({ min: 1 }), body('content'
     var id = req.params.id;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('pageError', {user: req.session.username, location: '/journal/page/' + id});
+        res.render('error', {user: req.session.username, location: '/journal/page/' + id, message: 'Please complete all the fields!'});
     } else {
         try {
             var title = req.body.title;
