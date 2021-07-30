@@ -18,3 +18,38 @@ block content
       .progress(style="height: 30px;")
         -var width = 'width: ' + stats.percentage + '%';
         .progress-bar.progress-bar-striped.progress-bar-animated.bg-success(role='progress', style= width, aria-valuemin='0', aria-valuemax='100')= stats.percentage + '%'
+  .card.text-center
+    h5 Habits progress (last week)
+    canvas#myChart(width='200' height='50')
+  -console.log(stats.completedHabits, stats.uncompletedHabits);
+  script.
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['6 days ago', '5', '4', '3', '2', '1', 'today'],
+        datasets: [
+          {
+            label: 'failed habits',
+            data: stats.uncompletedHabits,
+            backgroundColor: 'red',
+            borderColor: 'red',
+            borderWidth: 3
+          },
+          {
+            label: 'completed habits',
+            data: stats.completedHabits,
+            backgroundColor: 'green',
+            borderColor: 'green',
+            borderWidth: 3
+          }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });

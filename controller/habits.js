@@ -161,8 +161,9 @@ router.post('/:id/delete', async function(req, res) {
 
 //resets habit stats(completions/uncompletions)
 router.post('/:id/reset', async function(req, res) {
+    const user = req.session.username;
     const id = req.params.id;
-    await queries.resetHabitStats(id);
+    await queries.resetHabitStats(user, id);
     const current_label = req.body.current_label;
     if (current_label == 'all') {
         res.redirect('http://localhost:3000/habits');

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
 const authentication = require('../helper/authentication');
+const moment = require('moment');
 
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
@@ -37,7 +38,16 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         if (isNaN(percentage)) {
             percentage = 0;
         }
-        const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
+        //chart
+        var days = [];
+        var uncompletedHabits = [];
+        var completedHabits = [];
+        for (let i = 0; i <= 6; i++) {
+            days[i] = moment().subtract(i, 'days').format("YYYY-MM-DD");
+            completedHabits[i] = parseInt(await queries.getHabitsStatsByDate(true, days[i], name));
+            uncompletedHabits[i] = parseInt(await queries.getHabitsStatsByDate(false, days[i], name));
+        }
+        const stats = {name, points, pages, doneTasks, undoneTasks, percentage, completedHabits, uncompletedHabits};
         res.render('userStats', {user: req.session.username, stats: stats});
     } catch (error) {
         console.log(error.message);

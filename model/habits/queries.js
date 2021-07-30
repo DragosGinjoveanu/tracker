@@ -40,8 +40,10 @@ async function setHabitCompletion(user, status, id) {
     const habit_date = current_date.rows[0].current_date;
     await pool.query('INSERT INTO habit_completion (name, id, habit_date, status) VALUES ($1, $2, $3, $4)', [user, id, habit_date, status]);
     if (status == true) {
+        stats.addPoints(user, 10);
         console.log('Habit id: ' + id + ' was marked as completed on ' + habit_date + '.');
     } else {
+        stats.removePoints(user, 10);
         console.log('Habit id: ' + id + ' was marked as uncompleted on ' + habit_date + '.');
     }
 }
@@ -70,7 +72,12 @@ async function deleteHabit(id) {
     console.log('Habit id: ' + id + ' was deleted.');
 }
 
-async function resetHabitStats(id) {
+async function resetHabitStats(user, id) {
+    //resetting points
+    const completed = await getHabitStatus(user, id, true);
+    stats.removePoints(user, completed * 10);
+    const uncompleted = await getHabitStatus(user, id, false);
+    stats.addPoints(user, uncompleted * 10);
     await pool.query('DELETE FROM habit_completion WHERE id = $1', [id]);
     console.log('Habit id: ' + id + ' has been reset.');
 }
