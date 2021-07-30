@@ -10,9 +10,9 @@ async function getMostActiveUsers() {
 async function getUsers(table) {
     var users;
     if (table == 'journals') { //gets users by written journal pages
-        users = await pool.query('SELECT name, COUNT(*) as numberOfPages FROM journals GROUP BY name ORDER BY numberOfPages DESC');
+        users = await pool.query('SELECT name, COUNT(*) as numberOfJournals FROM journals GROUP BY name ORDER BY numberOfJournals DESC');
     } else if (table == 'todos') { // gets users by done todos
-        users = await pool.query('SELECT name, COUNT(*) as numberOfTasks FROM todos WHERE done = $1 GROUP BY name ORDER BY numberOfTasks DESC', [true]);
+        users = await pool.query('SELECT name, COUNT(*) as numberOfTodos FROM todos WHERE done = $1 GROUP BY name ORDER BY numberOfTodos DESC', [true]);
     } else if (table == 'habits') { // gets users by completed habits
         users = await pool.query('SELECT name, COUNT(*) as numberOfHabits FROM habit_completion WHERE status = $1 GROUP BY name ORDER BY numberOfHabits DESC', [true]);
     }

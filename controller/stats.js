@@ -7,7 +7,13 @@ const moment = require('moment');
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
         const users = await queries.getMostActiveUsers();
-        res.render('top', {user: req.session.username, users: users});
+        var stats = [];
+        for (var i = 0; i < users.length; i++) {
+            stats[i] = parseInt(users[i].points);
+        }
+        console.log(stats)
+        //bug data not passed to chart.js
+        res.render('top', {user: req.session.username, users: users, stats: stats});
     } catch (error) {
         console.log(error.message);
     }
@@ -20,7 +26,14 @@ router.post('/top', async function(req, res) {
     } else {
         try {
             const users = await queries.getUsers(selection);
-            res.render('top', {user: req.session.username, users: users});
+            var stats = [];
+            const prop = 'numberof' + selection;
+            for (var i = 0; i < users.length; i++) {
+                stats[i] = parseInt(users[i][prop]);
+            }
+            console.log(stats)
+            //bug data not passed to chart.js
+            res.render('top', {user: req.session.username, users: users, stats: stats});
         } catch (error) {
             console.log(error.message);
         }
@@ -34,7 +47,7 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         const pages = await queries.getNrJournalPages(name);
         const doneTasks = await queries.getNrTasks(name, true);
         const undoneTasks = await queries.getNrTasks(name, false);
-        //progress bar
+        //progress bar - inlocuit cu donut
         var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
         if (isNaN(percentage)) {
             percentage = 0;

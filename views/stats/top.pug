@@ -17,6 +17,26 @@ block content
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
                         option(value='habits') completed habits
+    .card(style='width: 500px')
+        canvas#myChart(width='200' height='50')
+        script.
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    label: 'Users doughnut',
+                    data: [0, 2, 3],
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+                }
+            });
     ul
         each val in users
             .card
@@ -30,12 +50,12 @@ block content
                     if val.points != undefined
                         h5.card-text= 'Points: '
                             span(style='color:red')= val.points
-                    else if val.numberofpages != undefined
+                    else if val.numberofjournals != undefined
                         h5.card-text= 'Journal pages: '
-                            span(style='color:red')= val.numberofpages
-                    else if val.numberoftasks != undefined
+                            span(style='color:red')= val.numberofjournals
+                    else if val.numberoftodos != undefined
                          h5.card-text= 'Done tasks: '
-                            span(style='color:red')= val.numberoftasks
+                            span(style='color:red')= val.numberoftodos
                     else if val.numberofhabits != undefined
                         h5.card-text= 'Completed habits '
                             span(style='color:red')= val.numberofhabits
