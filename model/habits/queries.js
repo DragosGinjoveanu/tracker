@@ -36,15 +36,13 @@ async function getHabitStatus(user, id, status) {
 }
 
 async function setHabitCompletion(user, status, id) {
-    const current_date = await pool.query('SELECT CURRENT_DATE');
-    const habit_date = current_date.rows[0].current_date;
-    await pool.query('INSERT INTO habit_completion (name, id, habit_date, status) VALUES ($1, $2, $3, $4)', [user, id, habit_date, status]);
+    await pool.query('INSERT INTO habit_completion (name, id, status) VALUES ($1, $2, $3)', [user, id, status]);
     if (status == true) {
         stats.addPoints(user, 10);
-        console.log('Habit id: ' + id + ' was marked as completed on ' + habit_date + '.');
+        console.log('Habit id: ' + id + ' was marked as completed.');
     } else {
         stats.removePoints(user, 10);
-        console.log('Habit id: ' + id + ' was marked as uncompleted on ' + habit_date + '.');
+        console.log('Habit id: ' + id + ' was marked as uncompleted.');
     }
 }
 

@@ -72,7 +72,7 @@ router.post('/create/custom', body('title').isLength({ min: 1 }), async function
 });
 
 //marks habit as completed/uncompleted
-router.post('/:habit/status', async function(req, res) {
+router.post('/:habit/update_status', async function(req, res) {
     const current_label = req.body.current_label;
     const user = req.session.username;
     const habit = req.params.habit;

@@ -37,7 +37,7 @@ block content
                         .col
                             .card(style='width: 20rem;')       
                                     .card-body
-                                        form(action='/habits/' + habit.title + '/status', method='POST') 
+                                        form(action='/habits/' + habit.title + '/update_status', method='POST') 
                                             input(type='hidden', value= current_label, name='current_label')
                                             .row
                                                 .col.text-left 
