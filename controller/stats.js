@@ -7,13 +7,17 @@ const moment = require('moment');
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     try {
         const users = await queries.getMostActiveUsers();
-        var stats = [];
+        var stats = [], labels = [];
         for (var i = 0; i < users.length; i++) {
             stats[i] = parseInt(users[i].points);
+            labels[i] = users[i].name;
         }
-        console.log(stats)
+        var data = {};
+        data.stats = stats;
+        data.labels = labels;
+        console.log(data)
         //bug data not passed to chart.js
-        res.render('top', {user: req.session.username, users: users, stats: stats});
+        res.render('top', {user: req.session.username, users: users, data: data});
     } catch (error) {
         console.log(error.message);
     }
@@ -26,14 +30,18 @@ router.post('/top', async function(req, res) {
     } else {
         try {
             const users = await queries.getUsers(selection);
-            var stats = [];
+            var stats = [], labels = [];
             const prop = 'numberof' + selection;
             for (var i = 0; i < users.length; i++) {
                 stats[i] = parseInt(users[i][prop]);
+                labels[i] = users[i].name;
             }
-            console.log(stats)
+            var data = {};
+            data.stats = stats;
+            data.labels = labels;
+            console.log(data)
             //bug data not passed to chart.js
-            res.render('top', {user: req.session.username, users: users, stats: stats});
+            res.render('top', {user: req.session.username, users: users, data: data});
         } catch (error) {
             console.log(error.message);
         }
@@ -47,12 +55,12 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         const pages = await queries.getNrJournalPages(name);
         const doneTasks = await queries.getNrTasks(name, true);
         const undoneTasks = await queries.getNrTasks(name, false);
-        //progress bar - inlocuit cu donut
+        //progress-bar
         var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
         if (isNaN(percentage)) {
             percentage = 0;
         }
-        //chart
+        //chart.js - data from last 7 days
         var days = [];
         var uncompletedHabits = [];
         var completedHabits = [];
@@ -64,7 +72,7 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         //error: pass data to chart.js not working
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
         const data = {completedHabits, uncompletedHabits};
-        console.log(data.completedHabits)
+        //data.completedHabits, data.uncompletedHabits
         res.render('userStats', {user: req.session.username, stats: stats, data: data});
     } catch (error) {
         console.log(error.message);
