@@ -15,7 +15,6 @@ router.get('/top', authentication.restrictUser(), async function(req, res) {
         var data = {};
         data.stats = stats;
         data.labels = labels;
-        console.log(data)
         //bug data not passed to chart.js
         res.render('top', {user: req.session.username, users: users, data: data});
     } catch (error) {
@@ -39,7 +38,6 @@ router.post('/top', async function(req, res) {
             var data = {};
             data.stats = stats;
             data.labels = labels;
-            console.log(data)
             //bug data not passed to chart.js
             res.render('top', {user: req.session.username, users: users, data: data});
         } catch (error) {
@@ -71,8 +69,8 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         }
         //error: pass data to chart.js not working
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
-        const data = {completedHabits, uncompletedHabits};
-        //data.completedHabits, data.uncompletedHabits
+        var data = {completedHabits, uncompletedHabits};
+        console.log(data)
         res.render('userStats', {user: req.session.username, stats: stats, data: data});
     } catch (error) {
         console.log(error.message);

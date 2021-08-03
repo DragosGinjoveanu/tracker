@@ -35,7 +35,7 @@ async function getNrTasks(user, status) {
 }
 
 async function getHabitsStatsByDate(status, date, user) {
-    const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE status = $1 AND habit_date = $2 AND name = $3', [status, date, user]);
+    const res = await pool.query('SELECT COUNT(*) FROM habit_completion WHERE status = $1 AND habit_date::date = $2 AND name = $3', [status, date, user]);
     return res.rows[0].count;
 }
 
