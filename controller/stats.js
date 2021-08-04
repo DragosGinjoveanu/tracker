@@ -12,10 +12,7 @@ router.get('/top', authentication.restrictUser(), async function(req, res) {
             stats[i] = parseInt(users[i].points);
             labels[i] = users[i].name;
         }
-        var data = {};
-        data.stats = stats;
-        data.labels = labels;
-        //bug data not passed to chart.js
+        var data = {stats, labels};
         res.render('top', {user: req.session.username, users: users, data: data});
     } catch (error) {
         console.log(error.message);
@@ -35,10 +32,7 @@ router.post('/top', async function(req, res) {
                 stats[i] = parseInt(users[i][prop]);
                 labels[i] = users[i].name;
             }
-            var data = {};
-            data.stats = stats;
-            data.labels = labels;
-            //bug data not passed to chart.js
+            var data = {stats, labels};
             res.render('top', {user: req.session.username, users: users, data: data});
         } catch (error) {
             console.log(error.message);

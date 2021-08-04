@@ -4,6 +4,9 @@ block content
     .card.text-center
         .card-footer.text-muted
             a(class="btn btn-success" href='http://localhost:3000/stats/' + user) See YOUR stats
+        form
+            input(type="hidden" id="users" value=data.labels)
+            input(type="hidden" id="stats" value=data.stats)
     .card
         .card-body.text-center
             div
@@ -17,21 +20,67 @@ block content
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
                         option(value='habits') completed habits
-    .card(style='width: 500px')
+    .card.mx-auto(style='width: 500px')
+        h5.text-center(style='color:deeppink') The top doughnut:
         canvas#myChart(width='200' height='50')
         script.
+        
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                labels: data.labels,
+                labels: [],
                 datasets: [{
                     label: 'Users doughnut',
-                    data: data.stats,
-                    hoverOffset: 4
+                    data: [],
+                    hoverOffset: 4,
+                    backgroundColor: [],
                 }]
                 }
             });
+
+            //adds data to chart
+            function addData(chart, labels, data, colors) {
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = data;
+                chart.data.datasets[0].backgroundColor = colors;
+                chart.update();
+            }
+
+            //transforms data to correct format
+            function transformData(data) {
+                data = data.substring(1);
+                data = data.slice(0, -1);
+                const newData = data.split(',');
+                return newData;
+            }
+            
+            //returns random colors for the chart background
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            //gets data from hidden inputs
+            function helper() {
+                var users = document.getElementById('users').value;
+                var stats = document.getElementById('stats').value;
+                users = transformData(users);
+                stats = transformData(stats);
+                var colors = [];
+                for (var i = 0; i < users.length; i++) {
+                    colors[i] = getRandomColor();
+                }
+                console.log(colors)
+                addData(myChart, users, stats, colors);
+            }
+            
+            helper();
+
     ul
         each val in users
             .card
