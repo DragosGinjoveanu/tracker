@@ -53,12 +53,12 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         const pages = await queries.getNrJournalPages(name);
         const doneTasks = await queries.getNrTasks(name, true);
         const undoneTasks = await queries.getNrTasks(name, false);
-        //progress-bar
+        //progress-bar for the to-dos
         var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
         if (isNaN(percentage)) {
             percentage = 0;
         }
-        //chart.js - data from last 7 days
+        //chart.js - habit completion data from last 7 days
         var days = [];
         var uncompletedHabits = [];
         var completedHabits = [];
@@ -67,7 +67,6 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
             completedHabits[i] = parseInt(await queries.getHabitsStatsByDate(true, days[i], name));
             uncompletedHabits[i] = parseInt(await queries.getHabitsStatsByDate(false, days[i], name));
         }
-        //error: pass data to chart.js not working
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
         var habits = {completedHabits, uncompletedHabits, days};
         res.render('userStats', {user: req.session.username, stats: stats, habits: habits});

@@ -5,6 +5,10 @@ block content
     .card-body.text-center
       h2 TOP:
       a(class="btn btn-secondary" href='http://localhost:3000/stats/top') See all the users
+      form
+        input(type="hidden" id="days" value=habits.days)
+        input(type="hidden" id="failed" value=habits.uncompletedHabits)
+        input(type="hidden" id="completed" value=habits.completedHabits)
   .card 
     .card-header.text-center
       h1= stats.name + '\'s stats'
@@ -46,10 +50,32 @@ block content
           },
           options: {}
       });
+
+      //adds data to chart
       function addData(chart, labels, failed, completed) {
           chart.data.labels = labels;
           chart.data.datasets[0].data = failed;
           chart.data.datasets[1].data = completed;
           chart.update();
       }
-      //addData(myChart, habits.days, habits.uncompletedHabits, habits.completedHabits);
+
+      //transforms data to correct format
+      function transformData(data) {
+        data = data.substring(1);
+        data = data.slice(0, -1);
+        const newData = data.split(',');
+        return newData;
+      }
+
+      //gets data from hidden inputs
+      function helper() {
+        var failed = document.getElementById('failed').value;
+        var completed = document.getElementById('completed').value;
+        var days = document.getElementById('days').value;
+        failed = transformData(failed);
+        completed = transformData(completed);
+        days = transformData(days);
+        addData(myChart, days, failed, completed);
+      }
+      
+      helper();
