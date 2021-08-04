@@ -1,9 +1,9 @@
 extends ../layouts/defaultLayout
 
 block content
-  .card 
+  .card.mx-auto(style='width: 22rem')
     .card-header 
-      h3 Create new account!
+      h3.text-center Create new account!
     .card-body
       form(action='/user/register' method='POST')
           .mb-3
@@ -11,8 +11,7 @@ block content
             input#authorName.form-control(type='text', name='user' placeholder='please enter at least 3 characters')
           .mb-3
             label.form-label(for='description') Password
-            input#descriptionName.form-control(type='password', name='password' placeholder='the password must contain at least 5 characters')
-          button.btn.btn-success(type='submit') Create account
-    .card 
-        .card-footer.text-muted.text-center
-            a(class="btn btn-secondary" href="http://localhost:3000/user/login") Already registered? Login here.
+            input#descriptionName.form-control(type='password', name='password' placeholder='write at least 5 characters')
+          button.btn.btn-dark(type='submit') Create account
+    .card-footer.text-muted.text-center
+        a(class="btn btn-secondary" href="http://localhost:3000/user/login") Already registered? Login here.
