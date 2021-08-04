@@ -11,4 +11,16 @@ function randomMessage() {
     return message[i];
 }
 
-module.exports = {randomMessage}
+function randomImage() {
+    var images = new Array(
+        'monster.png',
+        'monkey.png', 
+        'chicken.png', 
+        'pig.png',
+        'mouse.png'
+    );
+    var i = Math.floor(images.length * Math.random());
+    return images[i];
+}
+
+module.exports = {randomMessage, randomImage}
