@@ -69,9 +69,8 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         }
         //error: pass data to chart.js not working
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
-        var data = {completedHabits, uncompletedHabits};
-        console.log(data)
-        res.render('userStats', {user: req.session.username, stats: stats, data: data});
+        var habits = {completedHabits, uncompletedHabits, days};
+        res.render('userStats', {user: req.session.username, stats: stats, habits: habits});
     } catch (error) {
         console.log(error.message);
     }

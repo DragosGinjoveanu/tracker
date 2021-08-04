@@ -24,24 +24,32 @@ block content
     script.
       var ctx = document.getElementById('myChart').getContext('2d');
       var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['6 days ago', '5', '4', '3', '2', '1', 'today'],
-          datasets: [
-            {
-              label: 'failed habits',
-              data: data.uncompletedHabits,
-              backgroundColor: 'red',
-              borderColor: 'red',
-              borderWidth: 3,
-            },
-            {
-              label: 'completed habits',
-              data: data.completedHabits,
-              backgroundColor: 'green',
-              borderColor: 'green',
-              borderWidth: 3,
-            }
-          ]
-        },
+          type: 'line',
+          data: {
+              labels: [],
+              datasets: [
+                {
+                  label: 'failed habits',
+                  data: [],
+                  backgroundColor: 'red',
+                  borderColor: 'red',
+                  borderWidth: 3,
+                },
+                {
+                  label: 'completed habits',
+                  data: [],
+                  backgroundColor: 'green',
+                  borderColor: 'green',
+                  borderWidth: 3,
+                }
+              ]
+          },
+          options: {}
       });
+      function addData(chart, labels, failed, completed) {
+          chart.data.labels = labels;
+          chart.data.datasets[0].data = failed;
+          chart.data.datasets[1].data = completed;
+          chart.update();
+      }
+      //addData(myChart, habits.days, habits.uncompletedHabits, habits.completedHabits);
