@@ -1,4 +1,4 @@
-##### **BeSuccessful app** - progress tracking app made in Express.js
+**BeSuccessful app** - progress tracking app made in Express.js
 
 BeSuccessful is an online web application for tracking one person’s progress overtime. The users can see all the statistics to compete, motivate each other and evolve together. 
 There are three sections: regular habits, daily to-dos and journal pages. Each one of them are user-friendly and really simple to use, every ‘move’ being tracked down. The app also contains motivational messages and tips to make the user act productive.
