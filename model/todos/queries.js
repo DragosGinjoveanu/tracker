@@ -6,13 +6,14 @@ async function createToDo(user, title, content, date) {
     console.log(user + '\'s todo was added in the database');
 }
 
-async function getToDosByDate(user, date, status) {
-    try {
-        const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, status]);
-        return result.rows;
-      } catch (err) {
-        return console.log(err.message);
-      }
+async function getToDosByDay(user, date, status) {
+    const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, status]);
+    return result.rows;
+}
+
+async function getToDosByInterval(user, start_date, end_date, status) {
+  const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND todo_date >= $2 AND todo_date <= $3 AND done = $4 ORDER BY id ASC", [user, start_date, end_date, status]);
+  return result.rows;
 }
 
 async function getAllToDos(user, status) {
@@ -58,4 +59,4 @@ async function changeToDoStatus(user, status, id) {
   console.log("ToDo ID: " + id + " was marked as finished");
 }
 
-module.exports = {createToDo, getToDosByDate, getAllToDos, selectToDo, editToDo, deleteToDo, changeToDoStatus};
+module.exports = {createToDo, getToDosByDay, getToDosByInterval, getAllToDos, selectToDo, editToDo, deleteToDo, changeToDoStatus};

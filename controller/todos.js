@@ -34,14 +34,14 @@ router.get('/view/all', async function (req, res) {
 });
 
 //gets todos from selected date
-router.post('/view', async function (req, res) {
+router.post('/view/day', async function (req, res) {
     const errorImage = random.randomImage();
     try {
         const user = req.session.username;
         var date = req.body.date;
         date = moment(date).format('YYYY-MM-DD'); // correct format
-        var undoneToDos = await queries.getToDosByDate(user, date, false);
-        var doneToDos = await queries.getToDosByDate(user, date, true);
+        var undoneToDos = await queries.getToDosByDay(user, date, false);
+        var doneToDos = await queries.getToDosByDay(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date, image: errorImage});
         } else {
@@ -49,6 +49,34 @@ router.post('/view', async function (req, res) {
         }
     } catch (error) {
         res.render('error', {user: req.session.username, location: '/todos', message: 'Please enter valid date', image: errorImage});
+    }
+});
+
+//gets todos from selected date
+router.post('/view/period', body('startDate').isLength({ min: 1 }), body('endDate').isLength({ min: 1 }), async function (req, res) {
+    const errorImage = random.randomImage();
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('error', {user: req.session.username, location: '/todos', message: "Please complete the 'start' and 'end' dates", image: errorImage});
+    } else {
+        const user = req.session.username;
+        var startDate = req.body.startDate;
+        var endDate = req.body.endDate;
+        //correct format
+        startDate = moment(startDate).format('YYYY-MM-DD');
+        endDate = moment(endDate).format('YYYY-MM-DD');
+        console.log(endDate.length)
+        try {
+            var undoneToDos = await queries.getToDosByInterval(user, startDate, endDate, false);
+            var doneToDos = await queries.getToDosByInterval(user, startDate, endDate, true);
+            if (undoneToDos.length == 0 && doneToDos.length == 0) {
+                res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks between ' + startDate + ' and ' + endDate, image: errorImage});
+            } else {
+                res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: startDate + ' -> ' + endDate});
+            }
+        } catch (error) {
+            res.render('error', {user: req.session.username, location: '/todos', message: 'Please enter valid dates', image: errorImage});
+        }
     }
 });
 
@@ -73,7 +101,7 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
             var content = req.body.content;
             var date = req.body.date;
             await queries.createToDo(user, title, content, date);
-            res.redirect(307, '/todos/view');
+            res.redirect(307, '/todos/view/day');
         } catch (error) {
             res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please enter valid date', image: errorImage});
         }
@@ -93,7 +121,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
             var content = req.body.content;
             var date = req.body.date;
             await queries.editToDo(title, content, date, id);
-            res.redirect(307, '/todos/view');
+            res.redirect(307, '/todos/view/day');
         } catch (error) {
             res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please enter valid date', image: errorImage});
         }
@@ -123,7 +151,7 @@ router.post('/:id/:status', async function(req, res) {
     }
     try {
         await queries.changeToDoStatus(req.session.username, status, id);
-        res.redirect(307, '/todos/view');
+        res.redirect(307, '/todos/view/day');
     } catch (error) {
         console.log(error.message);
     }
