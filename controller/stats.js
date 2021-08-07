@@ -13,7 +13,7 @@ router.get('/top', authentication.restrictUser(), async function(req, res) {
             labels[i] = users[i].name;
         }
         var data = {stats, labels};
-        res.render('top', {user: req.session.username, users: users, data: data});
+        res.render('top', {user: req.session.username, users: users, data: JSON.stringify(data)});
     } catch (error) {
         console.log(error.message);
     }
@@ -33,7 +33,7 @@ router.post('/top', async function(req, res) {
                 labels[i] = users[i].name;
             }
             var data = {stats, labels};
-            res.render('top', {user: req.session.username, users: users, data: data});
+            res.render('top', {user: req.session.username, users: users, data: JSON.stringify(data)});
         } catch (error) {
             console.log(error.message);
         }
@@ -63,7 +63,7 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
         }
         const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
         var habits = {completedHabits, uncompletedHabits, days};
-        res.render('userStats', {user: req.session.username, stats: stats, habits: habits});
+        res.render('userStats', {user: req.session.username, stats: stats, habits: JSON.stringify(habits)});
     } catch (error) {
         console.log(error.message);
     }

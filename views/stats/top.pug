@@ -4,9 +4,6 @@ block content
     .card.text-center
         .card-footer.text-muted
             a(class="btn btn-success" href='http://localhost:3000/stats/' + user) See YOUR stats
-        form
-            input(type="hidden" id="users" value=data.labels)
-            input(type="hidden" id="stats" value=data.stats)
     .card
         .card-body.text-center
             div
@@ -24,37 +21,21 @@ block content
         h5.text-center(style='color:deeppink') The top doughnut:
         canvas#myChart(width='200' height='50')
         script.
-        
+            var data = !{data};
             var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
+            var topChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                labels: [],
+                labels: data.labels,
                 datasets: [{
                     label: 'Users doughnut',
-                    data: [],
+                    data: data.stats,
                     hoverOffset: 4,
                     backgroundColor: [],
                 }]
                 }
             });
 
-            //adds data to chart
-            function addData(chart, labels, data, colors) {
-                chart.data.labels = labels;
-                chart.data.datasets[0].data = data;
-                chart.data.datasets[0].backgroundColor = colors;
-                chart.update();
-            }
-
-            //transforms data to correct format
-            function transformData(data) {
-                data = data.substring(1);
-                data = data.slice(0, -1);
-                const newData = data.split(',');
-                return newData;
-            }
-            
             //returns random colors for the chart background
             function getRandomColor() {
                 var letters = '0123456789ABCDEF'.split('');
@@ -65,21 +46,18 @@ block content
                 return color;
             }
 
-            //gets data from hidden inputs
-            function helper() {
-                var users = document.getElementById('users').value;
-                var stats = document.getElementById('stats').value;
-                users = transformData(users);
-                stats = transformData(stats);
+            //adds data to chart
+            function addColors(chart) {
                 var colors = [];
-                for (var i = 0; i < users.length; i++) {
+                for (var i = 0; i < data.labels.length; i++) {
                     colors[i] = getRandomColor();
                 }
                 console.log(colors)
-                addData(myChart, users, stats, colors);
+                chart.data.datasets[0].backgroundColor = colors;
+                chart.update();
             }
             
-            helper();
+            addColors(topChart);
 
     ul
         each val in users

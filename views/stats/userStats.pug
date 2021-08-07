@@ -5,11 +5,7 @@ block content
     .card-body.text-center
       h2 TOP:
       a(class="btn btn-secondary" href='http://localhost:3000/stats/top') See all the users
-      form
-        input(type="hidden" id="days" value=habits.days)
-        input(type="hidden" id="failed" value=habits.uncompletedHabits)
-        input(type="hidden" id="completed" value=habits.completedHabits)
-  .card 
+  .card
     .card-header.text-center
       h1= stats.name + '\'s stats'
       h4(style='color:blue')= 'Points: ' + stats.points
@@ -23,26 +19,26 @@ block content
         -var width = 'width: ' + stats.percentage + '%';
         .progress-bar.progress-bar-striped.progress-bar-animated.bg-success(role='progress', style= width, aria-valuemin='0', aria-valuemax='100')= stats.percentage + '%'
   .card.text-center
-    -console.log(habits)
     h5 Habits progress (last week)
     canvas#myChart(width='200' height='50')
   script.
+    var data = !{habits};
     var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    var habitsChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [],
+            labels: data.days,
             datasets: [
               {
                 label: 'failed habits',
-                data: [],
+                data: data.uncompletedHabits,
                 backgroundColor: 'red',
                 borderColor: 'red',
                 borderWidth: 3,
               },
               {
                 label: 'completed habits',
-                data: [],
+                data: data.completedHabits,
                 backgroundColor: 'green',
                 borderColor: 'green',
                 borderWidth: 3,
@@ -50,32 +46,3 @@ block content
             ]
         },
     });
-
-    //adds data to chart
-    function addData(chart, labels, failed, completed) {
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = failed;
-        chart.data.datasets[1].data = completed;
-        chart.update();
-    }
-
-    //transforms data to correct format
-    function transformData(data) {
-      data = data.substring(1);
-      data = data.slice(0, -1);
-      const newData = data.split(',');
-      return newData;
-    }
-
-    //gets data from hidden inputs
-    function helper() {
-      var failed = document.getElementById('failed').value;
-      var completed = document.getElementById('completed').value;
-      var days = document.getElementById('days').value;
-      failed = transformData(failed);
-      completed = transformData(completed);
-      days = transformData(days);
-      addData(myChart, days, failed, completed);
-    }
-    
-    helper();
