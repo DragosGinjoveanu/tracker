@@ -5,7 +5,7 @@ block content
     .card-body.text-center
       h2 TOP:
       a(class="btn btn-secondary" href='http://localhost:3000/stats/top') See all the users
-  .card 
+  .card
     .card-header.text-center
       h1= stats.name + '\'s stats'
       h4(style='color:blue')= 'Points: ' + stats.points
@@ -18,3 +18,31 @@ block content
       .progress(style="height: 30px;")
         -var width = 'width: ' + stats.percentage + '%';
         .progress-bar.progress-bar-striped.progress-bar-animated.bg-success(role='progress', style= width, aria-valuemin='0', aria-valuemax='100')= stats.percentage + '%'
+  .card.text-center
+    h5 Habits progress (last week)
+    canvas#myChart(width='200' height='50')
+  script.
+    var data = !{habits};
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var habitsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.days,
+            datasets: [
+              {
+                label: 'failed habits',
+                data: data.uncompletedHabits,
+                backgroundColor: 'red',
+                borderColor: 'red',
+                borderWidth: 3,
+              },
+              {
+                label: 'completed habits',
+                data: data.completedHabits,
+                backgroundColor: 'green',
+                borderColor: 'green',
+                borderWidth: 3,
+              }
+            ]
+        },
+    });

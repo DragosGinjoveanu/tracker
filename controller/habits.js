@@ -4,6 +4,7 @@ const { body, validationResult } = require('express-validator');
 const queries = require('../model/habits/queries');
 const authentication = require('../helper/authentication');
 const habitHelper = require('../helper/addHabitStats');
+const random = require('../helper/random.js');
 
 //info of how the habits work for the user
 router.get('/info', authentication.restrictUser(), function(req, res) {
@@ -13,15 +14,16 @@ router.get('/info', authentication.restrictUser(), function(req, res) {
 
 //for adding habit from default list (home page)
 router.post('/:habit/create', async function(req, res) {
+    const errorImage = random.randomImage();
     const user = req.session.username;
     const habit = req.params.habit;
     try {
         if (req.body.hasOwnProperty("yes")) {
             const label = req.body.label;
             if (label.length == 0 && req.body.checked == undefined) {
-                res.render('error', {user: user, message: 'Please add a label', location: '/habits/' + habit + '/create', method: 'POST'});
+                res.render('error', {user: user, message: 'Please add a label', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage});
             } else if (req.body.checked != undefined && label.length != 0) {
-                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/' + habit + '/create', method: 'POST'});
+                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage});
             } else if (label.length == 0 && req.body.checked != undefined){
                 //color only
                 const color = req.body.color;
@@ -40,7 +42,7 @@ router.post('/:habit/create', async function(req, res) {
             res.render('habitModal', {user: user, habit: habit, message: 'Do you want to add a label to ' + habit + '?'});
          }
     } catch (error) {
-        res.render('error', {user: user, message: 'The habit already exists', location: '/habits'});
+        res.render('error', {user: user, message: 'The habit already exists', location: '/habits', image: errorImage});
     }
 });
 
@@ -65,14 +67,15 @@ router.post('/create/custom', body('title').isLength({ min: 1 }), async function
     const user = req.session.username;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.render('error', {user: user, location: '/habits/create', message: 'Please complete the habit\'s title'});
+        const errorImage = random.randomImage();
+        res.render('error', {user: user, location: '/habits/create', message: 'Please complete the habit\'s title', image: errorImage});
     } else {
         res.redirect(307, '/habits/' + habit + '/create');
     }
 });
 
 //marks habit as completed/uncompleted
-router.post('/:habit/status', async function(req, res) {
+router.post('/:habit/update_status', async function(req, res) {
     const current_label = req.body.current_label;
     const user = req.session.username;
     const habit = req.params.habit;
@@ -129,8 +132,9 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), async function(req,
     const user = req.session.username;
     const id = req.params.id;
     const errors = validationResult(req);
+    const errorImage = random.randomImage();
     if (!errors.isEmpty()) {
-        res.render('error', {user: user, location: '/habits/' + id + '/edit', message: 'Please complete the habit\'s title'});
+        res.render('error', {user: user, location: '/habits/' + id + '/edit', message: 'Please complete the habit\'s title', image: errorImage});
     } else {
         try {
             const title = req.body.title;
@@ -142,7 +146,7 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), async function(req,
             await queries.editHabit(id, title, label, color);
             res.redirect('http://localhost:3000/habits');
         } catch (error) {
-            res.render('error', {user: user, message: 'The habit already exists', location: '/habits/' + id + '/edit'});
+            res.render('error', {user: user, message: 'The habit already exists', location: '/habits/' + id + '/edit', image: errorImage});
         }
     }
 });
@@ -161,8 +165,9 @@ router.post('/:id/delete', async function(req, res) {
 
 //resets habit stats(completions/uncompletions)
 router.post('/:id/reset', async function(req, res) {
+    const user = req.session.username;
     const id = req.params.id;
-    await queries.resetHabitStats(id);
+    await queries.resetHabitStats(user, id);
     const current_label = req.body.current_label;
     if (current_label == 'all') {
         res.redirect('http://localhost:3000/habits');

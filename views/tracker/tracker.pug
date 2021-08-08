@@ -2,11 +2,12 @@ extends ../layouts/defaultLayout
 
 block content
     .card.text-center.mx-auto(style="width: 30rem;")
-        .card.header
-            h2(style="color:green;") BeSuccessful
-            h4(style="color:blue;") -track your habits and be great-
-        .card.body
+        .card-header
+            h2 BeSuccessful
+            h4(style="color:#34568B;") -track your progress-
+        .card-body
             h5 Old user?
-            a(class="btn btn-primary" href='http://localhost:3000/user/login') Login here
+            a(class="btn btn-warning" href='http://localhost:3000/user/login') Login here
+            | <hr>
             h5 New user?
-            a(class="btn btn-primary" href='http://localhost:3000/user/register') Register here
+            a(class="btn btn-dark" href='http://localhost:3000/user/register') Register here

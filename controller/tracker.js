@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authentication = require('../helper/authentication');
-const functions = require('../helper/randomMessage.js');
+const random = require('../helper/random.js');
 const habits = require('../helper/homeHabits.js');
 
 //default page when opening app (before logging in)
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/home', authentication.restrictUser(), function (req, res) {
-    var message = functions.randomMessage();
+    var message = random.randomMessage();
     res.render('home', {user: req.session.username, message: message, habits: habits});
 });
 

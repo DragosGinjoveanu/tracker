@@ -16,6 +16,49 @@ block content
                         option(value='points') total points
                         option(value='journals') journal pages
                         option(value='todos') completed tasks
+                        option(value='habits') completed habits
+    .card.mx-auto(style='width: 500px')
+        h5.text-center(style='color:deeppink') The top doughnut:
+        canvas#myChart(width='200' height='50')
+        script.
+            var data = !{data};
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var topChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Users doughnut',
+                    data: data.stats,
+                    hoverOffset: 4,
+                    backgroundColor: [],
+                }]
+                }
+            });
+
+            //returns random colors for the chart background
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            //adds data to chart
+            function addColors(chart) {
+                var colors = [];
+                for (var i = 0; i < data.labels.length; i++) {
+                    colors[i] = getRandomColor();
+                }
+                console.log(colors)
+                chart.data.datasets[0].backgroundColor = colors;
+                chart.update();
+            }
+            
+            addColors(topChart);
+
     ul
         each val in users
             .card
@@ -27,8 +70,15 @@ block content
                         a(class="link-success", href='http://localhost:3000/stats/' + val.name)
                             h3.card-title(style="color:#585858;")=val.name + ' (YOU)'
                     if val.points != undefined
-                        h5.card-text= 'Points: ' + val.points
-                    else if val.numberofpages != undefined
-                        h5.card-text= 'Journal pages: ' + val.numberofpages
-                    else if val.numberoftasks != undefined
-                         h5.card-text= 'Done tasks: ' + val.numberoftasks
+                        h5.card-text= 'Points: '
+                            span(style='color:red')= val.points
+                    else if val.numberofjournals != undefined
+                        h5.card-text= 'Journal pages: '
+                            span(style='color:red')= val.numberofjournals
+                    else if val.numberoftodos != undefined
+                         h5.card-text= 'Done tasks: '
+                            span(style='color:red')= val.numberoftodos
+                    else if val.numberofhabits != undefined
+                        h5.card-text= 'Completed habits '
+                            span(style='color:red')= val.numberofhabits
+                            |  times

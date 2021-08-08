@@ -6,16 +6,45 @@ block content
         h2= user + '\'s to-dos'
         a(class="btn btn-secondary" href='http://localhost:3000/todos/create') Create new to-do
         a(class="btn btn-primary" href='http://localhost:3000/todos/view/all') View all to-dos
-  .card 
-    .card-body
-      form(action= '/todos/view' method='POST')
-          .mb-3
-            h3(style="color:green;") Select a date:
-            input#datepicker.form-control(type='text', name='date' placeholder='date of to-dos')
-          button.btn.btn-success(type='submit') View to-dos
-    script. 
-        $(function () {
-            $('#datepicker').datepicker({ 
-                dateFormat: 'yy-mm-dd',
-            });
+  .card.mx-auto(style='width:19rem;')
+    .card-body.text-center
+      form(action= '/todos/view/day' method='POST')
+        .mb-3
+          h3(style="color:dark;") Select a specific day
+          input#dayPicker.form-control(type='text', name='date', placeholder='date of to-dos')
+        button.btn.btn-dark(type='submit') View to-dos
+  .card.mx-auto(style='width:40rem;')
+    .card-body.text-center
+      form(action= '/todos/view/period' method='POST')
+        .mb-3
+          h3.text-center(style="color:#34568B;") Select an interval
+          .row
+            .col
+              input#startDatePicker.form-control(type='text', name='startDate', placeholder='start date')
+            .col
+              input#endDatePicker.form-control(type='text', name='endDate', placeholder='end date')
+        button.btn.btn-warning(type='submit') View to-dos
+  script. 
+    $(function () {
+        $('#dayPicker').datepicker({ 
+            dateFormat: 'yy-mm-dd',
         });
+    });
+
+    $(function () {
+        $('#startDatePicker').datepicker({ 
+            dateFormat: 'yy-mm-dd',
+            onSelect: function(date) {
+            var selectedDate = new Date(date);
+            var msecsInADay = 86400000;
+            var endDate = new Date(selectedDate.getTime() + msecsInADay);
+            $("#endDatePicker").datepicker( "option", "minDate", endDate );
+            }
+        });
+    });
+
+    $(function () {
+        $('#endDatePicker').datepicker({ 
+            dateFormat: 'yy-mm-dd',
+        });
+    });

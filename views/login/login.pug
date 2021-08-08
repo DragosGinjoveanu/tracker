@@ -1,9 +1,9 @@
 extends ../layouts/defaultLayout
 
 block content
-  .card 
+  .card.mx-auto(style='width: 22rem')
     .card-header 
-      h3 Login!
+      h3.text-center Login!
     .card-body
       form(action='/user/login' method='POST')
           .mb-3
@@ -12,7 +12,6 @@ block content
           .mb-3
             label.form-label(for='description') Password
             input#descriptionName.form-control(type='password', name='password' placeholder='enter your password')
-          button.btn.btn-success(type='submit') Login
-  .card 
+          button.btn.btn-warning(type='submit') Login
     .card-footer.text-muted.text-center
       a(class="btn btn-secondary" href="http://localhost:3000/user/register") Don't have an account?
