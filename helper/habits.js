@@ -1,3 +1,16 @@
+const queries = require('../model/habits/queries');
+
+async function addHabitStats(user, habits) {
+    for (let i = 0; i < habits.length; i++) {
+        const id = habits[i].id;
+        const done = await queries.getHabitStatus(user, id, true);
+        const undone = await queries.getHabitStatus(user, id, false);
+        habits[i].done = done;
+        habits[i].undone = undone;
+    }
+    return habits;
+}
+
 const images = ['writing.png', 'diet.png', 'workingOut.png', 'sleep.png', 'offline.png', 'hygene.png'];
 const titles = ['Journaling', 'Eating Healthy', 'Working Out', 'Sleeping Well', 'Going Offline', 'Practicing personal hygiene']
 const descriptions = [
@@ -9,4 +22,4 @@ const descriptions = [
     'Wash hands frequently, bathe & brush teeth regularly, wear clean clothes. Shine like a star.'
 ];
 
-module.exports={images, titles, descriptions};
+module.exports = {addHabitStats, images, titles, descriptions}

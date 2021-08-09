@@ -21,8 +21,8 @@ async function getAllToDos(user, status) {
 }
 
 async function selectToDo(id) {
-    const result = await pool.query('SELECT id as id, title AS title, content AS content, todo_date AS date FROM todos WHERE id = $1', [id]);
-    return result.rows[0];
+  const result = await pool.query('SELECT id as id, title AS title, content AS content, todo_date AS date FROM todos WHERE id = $1', [id]);
+  return result.rows[0];
 }
 
 async function editToDo(title, content, date, id) {

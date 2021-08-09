@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authentication = require('../helper/authentication');
 const random = require('../helper/random.js');
-const habits = require('../helper/homeHabits.js');
+const habits = require('../helper/habits.js');
 
 //default page when opening app (before logging in)
 router.get('/', function (req, res) {
