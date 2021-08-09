@@ -30,15 +30,11 @@ router.post('/page/create', body('title').isLength({ min: 1 }), body('content').
         const errorImage = random.randomImage();
         res.render('error', {user: req.session.username, location: '/journal/page/create', message: 'Please complete all the fields!', image: errorImage});
     } else {
-        try {
-            var user = req.session.username;
-            var title = req.body.title;
-            var content = req.body.content;
-            await queries.createPage(user, title, content);
-            res.redirect('http://localhost:3000/journal');
-        } catch (error) {
-            console.log(error.message);
-        }
+        var user = req.session.username;
+        var title = req.body.title;
+        var content = req.body.content;
+        await queries.createPage(user, title, content);
+        res.redirect('http://localhost:3000/journal');
     }
 });
 
@@ -50,26 +46,18 @@ router.post('/page/:id/edit', body('title').isLength({ min: 1 }), body('content'
         const errorImage = random.randomImage();
         res.render('error', {user: req.session.username, location: '/journal/page/' + id, message: 'Please complete all the fields!', image: errorImage});
     } else {
-        try {
-            var title = req.body.title;
-            var content = req.body.content;
-            await queries.editPage(title, content, id);
-            res.redirect('http://localhost:3000/journal');
-        } catch (error) {
-            console.log(error.message);
-        }
+        var title = req.body.title;
+        var content = req.body.content;
+        await queries.editPage(title, content, id);
+        res.redirect('http://localhost:3000/journal');
     }
 });
 
 //deletes selected journal page
 router.post('/page/:id/delete', async function(req, res) {
     var id = req.params.id;
-    try {
-        await queries.deletePage(req.session.username, id);
-        res.redirect('http://localhost:3000/journal');
-    } catch (error) {
-        console.log(error.message);
-    }
+    await queries.deletePage(req.session.username, id);
+    res.redirect('http://localhost:3000/journal');
 });
 
 module.exports = router;

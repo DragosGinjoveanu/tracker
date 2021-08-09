@@ -18,18 +18,14 @@ router.get('/create', authentication.restrictUser(), function (req, res) {
 
 //gets all the todos
 router.get('/view/all', async function (req, res) {
-    try {
-        const user = req.session.username;
-        undoneToDos = await queries.getAllToDos(user, false);
-        doneToDos = await queries.getAllToDos(user, true);
-        if (undoneToDos.length == 0 && doneToDos.length == 0) {
-            const errorImage = random.randomImage();
-            res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks', image: errorImage});
-        } else {
-            res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
-        }
-    } catch (error) {
-        console.log(error);
+    const user = req.session.username;
+    undoneToDos = await queries.getAllToDos(user, false);
+    doneToDos = await queries.getAllToDos(user, true);
+    if (undoneToDos.length == 0 && doneToDos.length == 0) {
+        const errorImage = random.randomImage();
+        res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks', image: errorImage});
+    } else {
+        res.render('todos', {user: user, undoneToDos: undoneToDos, doneToDos: doneToDos, date: '-all-'});
     }
 });
 
@@ -39,7 +35,7 @@ router.post('/view/day', async function (req, res) {
     try {
         const user = req.session.username;
         var date = req.body.date;
-        date = moment(date).format('YYYY-MM-DD'); // correct format
+        date = moment(date).format('YYYY-MM-DD'); //correct format
         var undoneToDos = await queries.getToDosByDay(user, date, false);
         var doneToDos = await queries.getToDosByDay(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
@@ -84,7 +80,7 @@ router.post('/view/period', body('startDate').isLength({ min: 1 }), body('endDat
 router.get('/:id', authentication.restrictUser(), async function(req, res) {
     var id = req.params.id;
     var todo = await queries.selectToDo(id);
-    var todo_date = moment(todo.date).format('YYYY-MM-DD'); // correct format
+    var todo_date = moment(todo.date).format('YYYY-MM-DD'); //correct format
     res.render('todo', {user: req.session.username, todo: todo, date: todo_date});
 });
 
@@ -132,12 +128,8 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isL
 router.post('/:id/delete', async function(req, res) {
     const id = req.params.id;
     const user = req.session.username;
-    try {
-        await queries.deleteToDo(user, id);
-        res.redirect('http://localhost:3000/todos');
-    } catch (error) {
-        console.log(error.message);
-    }
+    await queries.deleteToDo(user, id);
+    res.redirect('http://localhost:3000/todos');
 });
 
 //marks todo as completed/uncompleted
@@ -149,12 +141,8 @@ router.post('/:id/:status', async function(req, res) {
     } else {
         status = false;
     }
-    try {
-        await queries.changeToDoStatus(req.session.username, status, id);
-        res.redirect(307, '/todos/view/day');
-    } catch (error) {
-        console.log(error.message);
-    }
+    await queries.changeToDoStatus(req.session.username, status, id);
+    res.redirect(307, '/todos/view/day');
 });
 
 module.exports = router;
