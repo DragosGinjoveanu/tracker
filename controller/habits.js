@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/habits/queries');
 const authentication = require('../helper/validator/authentication');
+const habitValidator = require('../helper/validator/habit');
 const habitHelper = require('../helper/habits');
 const random = require('../helper/random');
 
@@ -20,11 +21,8 @@ router.post('/:habit/create', async function(req, res) {
     try {
         if (req.body.hasOwnProperty("yes")) {
             const label = req.body.label;
-            if (label.length == 0 && req.body.checked == undefined) {
-                res.render('error', {user: user, message: 'Please add a label', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage});
-            } else if (req.body.checked != undefined && label.length != 0) {
-                res.render('error', {user: user, message: 'Please remove the label or uncheck the box', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage});
-            } else if (label.length == 0 && req.body.checked != undefined){
+            habitValidator.checkHabitLabels(label, user, errorImage, habit, req, res);
+            if (label.length == 0 && req.body.checked != undefined){
                 //color only
                 const color = req.body.color;
                 await queries.createHabit(user, habit, color);
