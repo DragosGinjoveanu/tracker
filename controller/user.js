@@ -53,10 +53,9 @@ router.post('/register', body('user').isLength({ min: 3 }), body('password').isL
 });
 
 router.post('/delete', async function(req, res) {
+    req.session.destroy();
     var name = req.session.username;
     await queries.deleteUser(name);
-    req.session.destroy();
-    console.log('Account deleted. Name: ' + name);
     res.redirect('http://localhost:3000/');
 });
 

@@ -2,8 +2,7 @@ const pool = require('../database');
 const stats = require('../stats/queries');
 
 async function createHabit(user, title, color, label) {
-    const habit = await pool.query('INSERT INTO habits (name, title, label, label_color) VALUES ($1, $2, $3, $4) RETURNING *', [user, title, label, color]);
-    console.log(user + '\'s habit was added to the database. Title: ' + title);
+    await pool.query('INSERT INTO habits (name, title, label, label_color) VALUES ($1, $2, $3, $4) RETURNING *', [user, title, label, color]);
 }
 
 async function getAllHabits(user) {
@@ -39,10 +38,8 @@ async function setHabitCompletion(user, status, id) {
     await pool.query('INSERT INTO habit_completion (name, id, status) VALUES ($1, $2, $3)', [user, id, status]);
     if (status == true) {
         stats.addPoints(user, 10);
-        console.log('Habit id: ' + id + ' was marked as completed.');
     } else {
         stats.removePoints(user, 10);
-        console.log('Habit id: ' + id + ' was marked as uncompleted.');
     }
 }
 
@@ -62,12 +59,10 @@ async function getHabitsByColor(user, color) {
 
 async function editHabit(id, title, label, color) {
     await pool.query('UPDATE habits SET title = $1, label = $2, label_color = $3 WHERE id = $4', [title, label, color, id]);
-    console.log('Habit id: ' + id + ' was edited.');
 }
 
 async function deleteHabit(id) {
     await pool.query('DELETE FROM habits WHERE id = $1', [id]);
-    console.log('Habit id: ' + id + ' was deleted.');
 }
 
 async function resetHabitStats(user, id) {
@@ -77,7 +72,6 @@ async function resetHabitStats(user, id) {
     const uncompleted = await getHabitStatus(user, id, false);
     stats.addPoints(user, uncompleted * 10);
     await pool.query('DELETE FROM habit_completion WHERE id = $1', [id]);
-    console.log('Habit id: ' + id + ' has been reset.');
 }
 
 module.exports = {createHabit, getAllHabits, getHabitByTitle, getHabitById, getLabelsAndColors, setHabitCompletion, getHabitStatus, getHabitsByLabel, getHabitsByColor, editHabit, deleteHabit, resetHabitStats};
