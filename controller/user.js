@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/user/queries');
-const authentication = require('../helper/authentication');
+const authentication = require('../helper/validator/authentication');
 
 router.get('/register', (req, res) => {
     res.render('register');

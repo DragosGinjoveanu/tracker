@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const queries = require('../model/habits/queries');
-const authentication = require('../helper/authentication');
-const habitHelper = require('../helper/habits.js');
-const random = require('../helper/random.js');
+const authentication = require('../helper/validator/authentication');
+const habitHelper = require('../helper/habits');
+const random = require('../helper/random');
 
 //info of how the habits work for the user
 router.get('/info', authentication.restrictUser(), function(req, res) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../model/stats/queries');
-const authentication = require('../helper/authentication');
+const authentication = require('../helper/validator/authentication');
 const moment = require('moment');
 
 router.get('/top', authentication.restrictUser(), async function(req, res) {
