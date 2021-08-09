@@ -8,7 +8,7 @@ async function getMostActiveUsers() {
 
 //gets users by criterion
 async function getUsers(table) {
-    var users;
+    let users;
     if (table == 'journals') { //gets users by written journal pages
         users = await pool.query('SELECT name, COUNT(*) as numberOfJournals FROM journals GROUP BY name ORDER BY numberOfJournals DESC');
     } else if (table == 'todos') { //gets users by done todos

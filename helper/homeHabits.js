@@ -1,6 +1,6 @@
-var images = ['writing.png', 'diet.png', 'workingOut.png', 'sleep.png', 'offline.png', 'hygene.png'];
-var titles = ['Journaling', 'Eating Healthy', 'Working Out', 'Sleeping Well', 'Going Offline', 'Practicing personal hygiene']
-var descriptions = [
+const images = ['writing.png', 'diet.png', 'workingOut.png', 'sleep.png', 'offline.png', 'hygene.png'];
+const titles = ['Journaling', 'Eating Healthy', 'Working Out', 'Sleeping Well', 'Going Offline', 'Practicing personal hygiene']
+const descriptions = [
     'Commit to writing daily. Set aside the time. Start small.',
     'Read labels. Reduce fat and sugar. Eat lots of fruit and vegetables.',
     'Start slowly and build up. Use proper form. Breathe. Listen to your body.',

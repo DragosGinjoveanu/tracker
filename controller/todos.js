@@ -19,8 +19,8 @@ router.get('/create', authentication.restrictUser(), function (req, res) {
 //gets all the todos
 router.get('/view/all', async function (req, res) {
     const user = req.session.username;
-    undoneToDos = await queries.getAllToDos(user, false);
-    doneToDos = await queries.getAllToDos(user, true);
+    const undoneToDos = await queries.getAllToDos(user, false);
+    const doneToDos = await queries.getAllToDos(user, true);
     if (undoneToDos.length == 0 && doneToDos.length == 0) {
         const errorImage = random.randomImage();
         res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks', image: errorImage});
@@ -34,10 +34,10 @@ router.post('/view/day', async function (req, res) {
     const errorImage = random.randomImage();
     try {
         const user = req.session.username;
-        var date = req.body.date;
+        let date = req.body.date;
         date = moment(date).format('YYYY-MM-DD'); //correct format
-        var undoneToDos = await queries.getToDosByDay(user, date, false);
-        var doneToDos = await queries.getToDosByDay(user, date, true);
+        const undoneToDos = await queries.getToDosByDay(user, date, false);
+        const doneToDos = await queries.getToDosByDay(user, date, true);
         if (undoneToDos.length == 0 && doneToDos.length == 0) {
             res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks on ' + date, image: errorImage});
         } else {
@@ -56,15 +56,14 @@ router.post('/view/period', body('startDate').isLength({ min: 1 }), body('endDat
         res.render('error', {user: req.session.username, location: '/todos', message: "Please complete the 'start' and 'end' dates", image: errorImage});
     } else {
         const user = req.session.username;
-        var startDate = req.body.startDate;
-        var endDate = req.body.endDate;
+        let startDate = req.body.startDate;
+        let endDate = req.body.endDate;
         //correct format
         startDate = moment(startDate).format('YYYY-MM-DD');
         endDate = moment(endDate).format('YYYY-MM-DD');
-        console.log(endDate.length)
         try {
-            var undoneToDos = await queries.getToDosByInterval(user, startDate, endDate, false);
-            var doneToDos = await queries.getToDosByInterval(user, startDate, endDate, true);
+            const undoneToDos = await queries.getToDosByInterval(user, startDate, endDate, false);
+            const doneToDos = await queries.getToDosByInterval(user, startDate, endDate, true);
             if (undoneToDos.length == 0 && doneToDos.length == 0) {
                 res.render('error', {user: req.session.username, location: '/todos', message: 'There are no tasks between ' + startDate + ' and ' + endDate, image: errorImage});
             } else {
@@ -78,9 +77,9 @@ router.post('/view/period', body('startDate').isLength({ min: 1 }), body('endDat
 
 //gets selected todo
 router.get('/:id', authentication.restrictUser(), async function(req, res) {
-    var id = req.params.id;
-    var todo = await queries.selectToDo(id);
-    var todo_date = moment(todo.date).format('YYYY-MM-DD'); //correct format
+    const id = req.params.id;
+    const todo = await queries.selectToDo(id);
+    const todo_date = moment(todo.date).format('YYYY-MM-DD'); //correct format
     res.render('todo', {user: req.session.username, todo: todo, date: todo_date});
 });
 
@@ -92,10 +91,10 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
         res.render('error', {user: req.session.username, location: '/todos/create', message: 'Please complete title/description', image: errorImage});
     } else {
         try {
-            var user = req.session.username;
-            var title = req.body.title;
-            var content = req.body.content;
-            var date = req.body.date;
+            const user = req.session.username;
+            const title = req.body.title;
+            const content = req.body.content;
+            const date = req.body.date;
             await queries.createToDo(user, title, content, date);
             res.redirect(307, '/todos/view/day');
         } catch (error) {
@@ -106,16 +105,16 @@ router.post('/create', body('title').isLength({ min: 1 }), body('content').isLen
 
 //edits todo data and redirects user to all the todos from specific date
 router.post('/:id/edit', body('title').isLength({ min: 1 }), body('content').isLength({ min: 1 }), async function(req, res) {
-    var id = req.params.id;
+    const id = req.params.id;
     const errors = validationResult(req);
     const errorImage = random.randomImage();
     if (!errors.isEmpty()) {
         res.render('error', {user: req.session.username, location: '/todos/' + id, message: 'Please complete title/description', image: errorImage});
     } else {
         try {
-            var title = req.body.title;
-            var content = req.body.content;
-            var date = req.body.date;
+            const title = req.body.title;
+            const content = req.body.content;
+            const date = req.body.date;
             await queries.editToDo(title, content, date, id);
             res.redirect(307, '/todos/view/day');
         } catch (error) {
@@ -134,14 +133,15 @@ router.post('/:id/delete', async function(req, res) {
 
 //marks todo as completed/uncompleted
 router.post('/:id/:status', async function(req, res) {
-    var id = req.params.id;
-    var status = req.params.status;
+    const id = req.params.id;
+    const user = req.session.username;
+    let status = req.params.status;
     if (status == 'done') {
         status = true;
     } else {
         status = false;
     }
-    await queries.changeToDoStatus(req.session.username, status, id);
+    await queries.changeToDoStatus(user, status, id);
     res.redirect(307, '/todos/view/day');
 });
 

@@ -49,7 +49,7 @@ router.post('/:habit/create', async function(req, res) {
 //gets all the user's habits (no labels)
 router.get('/', authentication.restrictUser(), async function(req, res) {
     const user = req.session.username;
-    var habits = await queries.getAllHabits(user);
+    let habits = await queries.getAllHabits(user);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: 'all'});
@@ -96,11 +96,11 @@ router.post('/:habit/update_status', async function(req, res) {
 //gets habits by their label
 router.post('/label', async function(req, res){
     const user = req.session.username;
-    var label = req.body.label_selection;
+    let label = req.body.label_selection;
     if (label == undefined) {
         label = req.body.current_label;
     }
-    var habits = await queries.getHabitsByLabel(user, label);
+    let habits = await queries.getHabitsByLabel(user, label);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: label});
@@ -110,11 +110,11 @@ router.post('/label', async function(req, res){
 router.post('/color', async function(req, res){
     const user = req.session.username;
     const label = req.body.current_label;
-    var color = req.body.color_selection;
+    let color = req.body.color_selection;
     if (color == undefined) {
         color = label
     }
-    var habits = await queries.getHabitsByColor(user, color);
+    let habits = await queries.getHabitsByColor(user, color);
     habits = await habitHelper.addHabitStats(user, habits);
     const labels = await queries.getLabelsAndColors(user);
     res.render('habits', {user: user, habits: habits, labels: labels, current_label: color});
@@ -138,8 +138,8 @@ router.post('/:id/edit', body('title').isLength({ min: 1 }), async function(req,
     } else {
         try {
             const title = req.body.title;
-            var label = req.body.label;
-            if(label.length == 0) {
+            let label = req.body.label;
+            if (label.length == 0) {
                 label = null;
             }
             const color = req.body.color;

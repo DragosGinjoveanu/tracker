@@ -2,12 +2,12 @@ const pool = require('../database');
 const stats = require('../stats/queries');
 
 async function createToDo(user, title, content, date) {
-    await pool.query("INSERT INTO todos (name, title, content, todo_date) VALUES ($1, $2, $3, $4) RETURNING *", [user, title, content, date]);
+  await pool.query("INSERT INTO todos (name, title, content, todo_date) VALUES ($1, $2, $3, $4) RETURNING *", [user, title, content, date]);
 }
 
 async function getToDosByDay(user, date, status) {
-    const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, status]);
-    return result.rows;
+  const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND todo_date = $2 AND done = $3 ORDER BY id ASC", [user, date, status]);
+  return result.rows;
 }
 
 async function getToDosByInterval(user, start_date, end_date, status) {
@@ -16,8 +16,8 @@ async function getToDosByInterval(user, start_date, end_date, status) {
 }
 
 async function getAllToDos(user, status) {
-    const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND done = $2 ORDER BY id ASC", [user, status]);
-    return result.rows;
+  const result = await pool.query("SELECT id AS id, title AS title, content AS content, todo_date as date FROM todos WHERE name = $1 AND done = $2 ORDER BY id ASC", [user, status]);
+  return result.rows;
 }
 
 async function selectToDo(id) {

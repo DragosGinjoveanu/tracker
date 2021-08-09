@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/home', authentication.restrictUser(), function (req, res) {
-    var message = random.randomMessage();
+    const message = random.randomMessage();
     res.render('home', {user: req.session.username, message: message, habits: habits});
 });
 

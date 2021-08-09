@@ -6,12 +6,13 @@ const moment = require('moment');
 
 router.get('/top', authentication.restrictUser(), async function(req, res) {
     const users = await queries.getMostActiveUsers();
-    var stats = [], labels = [];
-    for (var i = 0; i < users.length; i++) {
+    let stats = [];
+    let labels = [];
+    for (let i = 0; i < users.length; i++) {
         stats[i] = parseInt(users[i].points);
         labels[i] = users[i].name;
     }
-    var data = {stats, labels};
+    const data = {stats, labels};
     res.render('top', {user: req.session.username, users: users, data: JSON.stringify(data)});
 });
 
@@ -21,13 +22,14 @@ router.post('/top', async function(req, res) {
         res.redirect('http://localhost:3000/stats/top');
     } else {
         const users = await queries.getUsers(selection);
-        var stats = [], labels = [];
+        let stats = [];
+        let labels = [];
         const prop = 'numberof' + selection;
-        for (var i = 0; i < users.length; i++) {
+        for (let i = 0; i < users.length; i++) {
             stats[i] = parseInt(users[i][prop]);
             labels[i] = users[i].name;
         }
-        var data = {stats, labels};
+        const data = {stats, labels};
         res.render('top', {user: req.session.username, users: users, data: JSON.stringify(data)});
     }
 });
@@ -39,21 +41,21 @@ router.get('/:username', authentication.restrictUser(), async function(req, res)
     const doneTasks = await queries.getNrTasks(name, true);
     const undoneTasks = await queries.getNrTasks(name, false);
     //progress-bar for the to-dos
-    var percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
+    let percentage = parseInt((doneTasks * 100) / (parseInt(doneTasks) + parseInt(undoneTasks)));
     if (isNaN(percentage)) {
         percentage = 0;
     }
+    const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
     //chart.js - habit completion data from last 7 days
-    var days = [];
-    var uncompletedHabits = [];
-    var completedHabits = [];
+    let days = [];
+    let uncompletedHabits = [];
+    let completedHabits = [];
     for (let i = 0; i <= 6; i++) {
         days[i] = moment().subtract(i, 'days').format("YYYY-MM-DD");
         completedHabits[i] = parseInt(await queries.getHabitsStatsByDate(true, days[i], name));
         uncompletedHabits[i] = parseInt(await queries.getHabitsStatsByDate(false, days[i], name));
     }
-    const stats = {name, points, pages, doneTasks, undoneTasks, percentage};
-    var habits = {completedHabits, uncompletedHabits, days};
+    const habits = {completedHabits, uncompletedHabits, days};
     res.render('userStats', {user: req.session.username, stats: stats, habits: JSON.stringify(habits)});
 });
 

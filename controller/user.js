@@ -18,12 +18,11 @@ router.get('/logout', authentication.restrictUser(), (req, res) => {
 });
 
 router.post('/login', async function(req, res) {
-    var name = req.body.user;
-    var password = req.body.password;
+    const name = req.body.user;
+    const password = req.body.password;
     try {
         const user = await queries.selectUser(name);
         if (user.password == password) {
-            console.log(name +' logged in.');
             req.session.loggedin = true;
             req.session.username = name;
             res.redirect('http://localhost:3000/home');
@@ -41,10 +40,9 @@ router.post('/register', body('user').isLength({ min: 3 }), body('password').isL
         res.render('loginFail', {fail: 'Registration failed!', location: '/user/register', error: 'Please enter valid username/password.'});
     } else {
         try {
-            var user = req.body.user;
-            var password = req.body.password;
+            const user = req.body.user;
+            const password = req.body.password;
             await queries.newUser(user, password);
-            console.log('Account created.\nUsername: ' + user +', Password: '+ password);
             res.redirect('http://localhost:3000/user/login');
         } catch (error) {
             res.render('loginFail', {fail: 'Registration failed!', location: '/user/register', error: 'Username already exists.'});
@@ -54,7 +52,7 @@ router.post('/register', body('user').isLength({ min: 3 }), body('password').isL
 
 router.post('/delete', async function(req, res) {
     req.session.destroy();
-    var name = req.session.username;
+    const name = req.session.username;
     await queries.deleteUser(name);
     res.redirect('http://localhost:3000/');
 });

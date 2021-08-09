@@ -23,7 +23,7 @@ async function getHabitById(id) {
 async function getLabelsAndColors(user) {
     const colors_res = await pool.query('SELECT DISTINCT label_color FROM habits WHERE name = $1', [user]);
     const labels_res = await pool.query('SELECT DISTINCT label FROM habits WHERE name = $1', [user]);
-    var labels = {};
+    let labels = {};
     labels.colors = colors_res.rows;
     labels.labels = labels_res.rows;
     return labels;

@@ -1,5 +1,5 @@
 function randomMessage() {
-    var message = [
+    const message = [
         "Keep up the good work.",
         "Be a good example for others.",
         "Don't stop now! You'll regret it...",
@@ -7,19 +7,19 @@ function randomMessage() {
         "Choose your friends wisely.",
         "You are absolutely unique."
     ];
-    var i = Math.floor(message.length * Math.random());
+    const i = Math.floor(message.length * Math.random());
     return message[i];
 }
 
 function randomImage() {
-    var images = new Array(
+    const images = new Array(
         'monster.png',
         'monkey.png', 
         'chicken.png', 
         'pig.png',
         'mouse.png'
     );
-    var i = Math.floor(images.length * Math.random());
+    const i = Math.floor(images.length * Math.random());
     return images[i];
 }
 
