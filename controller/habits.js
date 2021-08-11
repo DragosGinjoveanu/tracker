@@ -21,20 +21,19 @@ router.post('/:habit/create', async function(req, res) {
     try {
         if (req.body.hasOwnProperty("yes")) {
             if (!habitValidator.checkHabitLabels(req)) {
-                res.render('error', {user: user, message: 'Please check the labels', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage}); 
-            } else {
-                const label = req.body.label;
-                if (label.length == 0 && req.body.checked != undefined){
-                    //color only
-                    const color = req.body.color;
-                    await queries.createHabit(user, habit, color);
-                    res.redirect('http://localhost:3000/habits');
-                } else if (label.length != 0) {
-                    //color and label
-                    const color = req.body.color;
-                    await queries.createHabit(user, habit, color, label);
-                    res.redirect('http://localhost:3000/habits');
-                }
+                return res.render('error', {user: user, message: 'Please check the labels', location: '/habits/' + habit + '/create', method: 'POST', image: errorImage}); 
+            }
+            const label = req.body.label;
+            if (label.length == 0 && req.body.checked != undefined){
+                //color only
+                const color = req.body.color;
+                await queries.createHabit(user, habit, color);
+                res.redirect('http://localhost:3000/habits');
+            } else if (label.length != 0) {
+                //color and label
+                const color = req.body.color;
+                await queries.createHabit(user, habit, color, label);
+                res.redirect('http://localhost:3000/habits');
             }
          } else if (req.body.hasOwnProperty("no")){
             await queries.createHabit(user, habit);
