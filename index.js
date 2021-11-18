@@ -11,6 +11,7 @@ const journal = require('./controller/journal');
 const todos = require('./controller/todos');
 const stats = require('./controller/stats');
 const habits = require('./controller/habits');
+const timer = require('./controller/timer');
 
 app.use(session({
 	store: new (require('connect-pg-simple')(session))({
@@ -33,6 +34,7 @@ app.set('views', [
   path.join(__dirname, 'views/todos'),
   path.join(__dirname, 'views/stats'),
   path.join(__dirname, 'views/habits'),
+  path.join(__dirname, 'views/timer'),
   path.join(__dirname, 'views/errors'),
   path.join(__dirname, 'views/layouts')
 ]);
@@ -44,6 +46,7 @@ app.use('/journal', journal);
 app.use('/todos', todos);
 app.use('/stats', stats);
 app.use('/habits', habits);
+app.use('/timer', timer);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
