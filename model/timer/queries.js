@@ -1,9 +1,9 @@
 const pool = require('../database');
 
 //gets most active users (overall)
-async function getMostActiveUsers() {
-    const users = await pool.query('SELECT name, points from users WHERE points != 0 ORDER BY points DESC');
-    return users.rows;
+async function getTracker(user) {
+    const trackers = await pool.query('SELECT name, points from users WHERE points != 0 ORDER BY points DESC');
+    return trackers.rows;
 }
 
-module.exports = {getPoints, getNrJournalPages, getNrTasks, removePoints, addPoints, getMostActiveUsers, getUsers, getHabitsStatsByDate};
+module.exports = {getTracker};

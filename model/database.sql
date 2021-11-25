@@ -37,3 +37,14 @@ CREATE TABLE habit_completion (
 	habit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	status BOOLEAN
 );
+
+CREATE TABLE projects (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) REFERENCES users(name)
+);
+
+CREATE TABLE tracker (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) REFERENCES users(name) ON DELETE CASCADE,
+	project VARCHAR(255)
+);

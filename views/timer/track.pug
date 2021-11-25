@@ -1,18 +1,37 @@
 extends ../layouts/loggedInLayout
 
 block content
-    .card
+    .card 
         .card-header.text-center
             h1 Track your shit
-        .card-body.text-center
-            form(method = 'POST', action = '/timer/update')
-                #stopwatch
-                    |00:00:00
-                #buttons
-                    button.btn.btn-success(type="button" onclick='startTimer()') Start
-                    button.btn.btn-danger(type="button" onclick='stopTimer()') Pause
-                    button.btn.btn-secondary(type="button" onclick='resetTimer()') Reset
-                    button.btn.btn-primary(type='submit') Done
+    .row 
+        .col
+            .card
+                .card-header.text-center 
+                    h3 Create new projects
+                form(method = 'POST', action = '/timer/add/label')
+                    .card-body.text-center
+                        input#label.form-control(type='text', name='label' placeholder='add new project')
+                    .card-footer.text-muted.text-center
+                        button.btn.btn-secondary(type='submit') Add it
+        .col
+            .card
+                .card-header.text-center 
+                    h3 Track a project
+                .card-body.text-center
+                    form(method = 'POST', action = '/timer/update')
+                        .mb-3
+                            select.form-select(name='label_selection' onchange="this.form.submit();")
+                                option(selected) select project:
+                                //each val in labels.labels
+                                    if val.label != null
+                                        option(value= val.label)= val.label
+                        #stopwatch
+                            |00:00:00
+                        #buttons
+                            button.btn.btn-success(type="button" onclick='startTimer()') Start
+                            button.btn.btn-danger(type="button" onclick='stopTimer()') Pause
+                            button.btn.btn-secondary(type='submit') Done
     script.
         const timer = document.getElementById('stopwatch');
         var hr = 0;
@@ -60,8 +79,4 @@ block content
                 timer.innerHTML = hr + ':' + min + ':' + sec;
                 setTimeout("timerCycle()", 1000);
             }
-        }
-
-        function resetTimer() {
-            timer.innerHTML = '00:00:00';
         }
